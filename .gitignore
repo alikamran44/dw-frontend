@@ -1,0 +1,37 @@
+# Node.js and NPM
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+build/
+dist/
+*.js.map
+
+# IDE and editor files
+.vscode/
+.idea/
+*.iml
+
+# Compiled output
+*.css
+*.js
+
+# Logs
+log.txt
+
+# Environment files
+.env.local
+.env.development.local
+.env
+.env.production.local
+
+# Dependency lock files
+yarn.lock
+package-lock.json
+
+#media
+*.jpg
+*.png
+*.pdf
+*.webp

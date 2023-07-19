@@ -1,0 +1,15 @@
+[
+  {
+    "_id": 1,
+    "name": "",
+    "categories": [],
+    "like": { "count": 3366, "isLiked": true },
+    "bookmark": { "count": 3007, "isBookmarked": false },
+    "date": "",
+    "slug": "",
+    "thumbnail": "",
+    "count": null,
+    "color": ""
+  }
+]
+
