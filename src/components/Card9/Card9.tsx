@@ -30,7 +30,7 @@ const Card9: FC<Card9Props> = ({
   const pHref = post.postType === 'audio' ? `/blog-audio/${slug}` :
               post.postType === 'video' ? `/blog-video/${slug}` :post.isSideBar ? `/blog-view/${slug}` : `/blog/${slug}`
 
-  const fImage = (media && media?.find(data=> data.fileFolder === 'feature'))?.url || featuredImage
+  const fImage = (media && media?.find((data: any)=> data.fileFolder === 'feature'))?.url || featuredImage
 
   const fullName = postedBy && `${postedBy.firstName} ${postedBy.lastName}`
   const renderMeta = () => {

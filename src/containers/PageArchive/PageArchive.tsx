@@ -29,28 +29,31 @@ export interface PageArchiveProps {
 
 // Tag and category have same data type - we will use one demo data
 const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < 16);
-
+interface RouteParams {
+  slug: string;
+  blogType?: string;
+}
 const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const { fetchBlogs, blogBookmark, recentBlogsHelper, CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[0];
-  const {blogType, slug} = useParams()
+  const {blogType, slug} = useParams<RouteParams>();
   // const [tabActive, setTabActive] = useState<string>(TABS[0]);
   const [filter, setFilter] = useState({limit: 2, skip: 0});
-  const [blogs, setBlogs] = useState(null);
+  const [blogs, setBlogs] = useState<PostDataType[] | null>(null);
   const [size, setSize] = useState(null);
   const [postLoading, setPostLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
 
   const [filterCategory, setFilterCategory] = useState({limit: 20, skip: 0});
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [loadingCategory, setLoadingCategory] = useState(false);
   const [tags, setTags] = useState(null);
   const tagLoading = useAppSelector(selectTagLoading)
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
    const [users, setUsers] = useState(null);
   const repeatedCategoriesArray = Array.from({ length: filterCategory.limit }, (_, index) =>
-    DEMO_FAKE_CATEGORY_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
+    DEMO_FAKE_CATEGORY_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
 
   const FILTERS = [
@@ -61,11 +64,11 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
     { name: "Most Viewed" },
   ];
   const fakePosts = Array.from({ length: filter.limit }, (_, index) =>
-    DEMO_FAKE_POST_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
+    DEMO_FAKE_POST_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
 
   useEffect(()=>{
-     TagWithTotalBlogs({skip: 0, limit: 20}).then((res)=> {
+     TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
       setTags(res)
     })
   },[])
@@ -76,24 +79,27 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
 
     let countCategory = {limit: filterCategory.limit, skip: filterCategory.skip + filterCategory.limit}
     setLoadingCategory(true)
-    CategoryWithTotalBlogs(filterCategory).then((res) => {
+    CategoryWithTotalBlogs(filterCategory).then((res: any) => {
       setFilterCategory(countCategory)
-      setCategories(res)
       setLoadingCategory(false)
+      if(res)
+        setCategories(res)
     }).catch(()=> setLoadingCategory(false))
 
     // .......... Fetch Blogs ..................
     let count = {limit: filter.limit, skip: filter.skip + filter.limit}
-    fetchBlogs(blogType,filter,slug).then((res) => {
+    const filteredBlogType = blogType || 'default-blog-type';
+    fetchBlogs(filteredBlogType!,filter,slug).then((res: any) => {
       setFilter(count)
-      setSize(res.size) 
+      // setSize(res.size) 
       setPostLoading(false)
-      setBlogs(res.blogs) 
+      if(res)
+        setBlogs(res.blogs) 
     }).catch(() => {
       setPostLoading(false)
     })
 
-     AllBloggers(filter).then((res) => {
+     AllBloggers(filter).then((res: any) => {
       setUsers(res)
     })
   }, [slug])
@@ -106,12 +112,13 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const loadMoreCategory = () => {
     setMoreLoadingCategory(true)
     let count = {limit: filterCategory.limit, skip: filterCategory.skip + filterCategory.limit}
-    CategoryWithTotalBlogs(filterCategory).then((res)=> {
+    CategoryWithTotalBlogs(filterCategory).then((res: any)=> {
       setMoreLoadingCategory(false)
       setFilterCategory(count)
       if(res.length){
-        let newArray = categories.concat(res)
-        setCategories(newArray)
+        let newArray = categories?.concat(res)
+        if(newArray)
+          setCategories(newArray)
       }
     }).catch(()=> setMoreLoadingCategory(false))
   }
@@ -119,12 +126,15 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const loadMore = () => {
     setMorePostLoading(true)
     let count = {limit: filter.limit, skip: filter.skip + filter.limit}
-    fetchBlogs(blogType, filter, slug).then((res) => {
+    fetchBlogs(blogType, filter, slug).then((res: any) => {
       setFilter(count)
       setSize(res.size)
       setMorePostLoading(false)
-      let newArray = blogs.concat(res.blogs)
-      setBlogs(newArray);
+      if(res){
+        let newArray = blogs?.concat(res.blogs)
+        if(newArray)
+          setBlogs(newArray);
+      }
     }).catch(() => {
       setMorePostLoading(false)
     })
@@ -182,7 +192,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
                <Card11 loading={postLoading} key={post._id} post={post} />
                ))
               :
-             blogs && blogs.length > 0 ? blogs.map((post) => (
+             blogs && blogs.length > 0 ? blogs.map((post: any) => (
                 <Card11 key={post._id} post={post} />
               ))
              :
@@ -190,7 +200,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
             }
             {
               morePostLoading &&
-              fakePosts.map((post) => (
+              fakePosts.map((post: any) => (
                <Card11 loading={morePostLoading} key={post._id} post={post} />
               ))
             }

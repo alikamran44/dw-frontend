@@ -6,7 +6,7 @@ import { PostDataType } from "data/types";
 export interface PostCardLikeAndCommentProps {
   className?: string;
   itemClass?: string;
-  postData: Pick<PostDataType, "like" | "id" | "href" | "commentCount">;
+  postData: PostDataType;
   hiddenCommentOnMobile?: boolean;
   loading?: boolean;
   onClickLike?: (id: PostDataType["id"]) => void;

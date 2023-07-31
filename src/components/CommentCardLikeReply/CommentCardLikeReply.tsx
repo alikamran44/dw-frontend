@@ -6,13 +6,13 @@ import twFocusClass from "utils/twFocusClass";
 
 export interface CommentCardLikeReplyProps {
   className?: string;
-  commentId: number;
+  commentId: any;
   onClickLike: (id: number) => void;
   onClickReply: (id: number) => void;
   likeCount: number;
   isLiked: boolean;
   hasComment: boolean;
-  parentId: string | null;
+  parentId?: string | null;
 }
 
 const CommentCardLikeReply: FC<CommentCardLikeReplyProps> = ({

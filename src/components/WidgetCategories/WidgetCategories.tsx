@@ -8,7 +8,7 @@ import React, { FC } from "react";
 export interface WidgetCategoriesProps {
   className?: string;
   categories: TaxonomyType[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const WidgetCategories: FC<WidgetCategoriesProps> = ({
@@ -27,7 +27,7 @@ const WidgetCategories: FC<WidgetCategoriesProps> = ({
     >
       {
         show &&
-        <ModalCategories categories={categories} isOpenProp={show} onCloseModal={modalHandler}
+        <ModalCategories  isOpenProp={show} onCloseModal={modalHandler}
           modalTitle={'More Categories'}
         />
       }

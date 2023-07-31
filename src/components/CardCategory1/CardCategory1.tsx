@@ -9,7 +9,7 @@ export interface CardCategory1Props {
   className?: string;
   taxonomy: TaxonomyType;
   size?: "large" | "normal";
-  loading: boolean;
+  loading?: boolean;
 }
 
 const CardCategory1: FC<CardCategory1Props> = ({

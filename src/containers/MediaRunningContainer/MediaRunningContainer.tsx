@@ -36,10 +36,9 @@ const MediaRunningContainer: FC<MediaRunningContainerProps> = ({
   //
 
   const getMediaUrl = (postData: PostDataType) => {
-    console.log(postData,'teedddttt')
     if (postData.postType === "audio") {
       const aUrl = postData.audioUrl || 
-      (postData.media ? postData.media?.find((data=> data.fileFolder === 'audio'))?.url : '')
+      (postData.media ? postData.media?.find(((data: any)=> data.fileFolder === 'audio'))?.url : '')
 
       return aUrl;
     }
@@ -176,7 +175,7 @@ const MediaRunningContainer: FC<MediaRunningContainerProps> = ({
 
   const renderLeft = (post: PostDataType) => {
     const { id, href, featuredImage, categories, title, like, bookmark, _id, media, slug } = post;
-    const fImage = media && media?.find((data=> data.fileFolder === 'feature'))?.url
+    const fImage = media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url
 
     const pHref = slug ? `/blog-audio/${slug}` : ''
     return (
@@ -212,6 +211,7 @@ const MediaRunningContainer: FC<MediaRunningContainerProps> = ({
             <PostCardLikeContainer like={like} postId={id || _id} />
             <BookmarkContainer
               initBookmarked={bookmark.isBookmarked}
+              bookmark={bookmark}
               postId={id || _id}
             />
           </div>

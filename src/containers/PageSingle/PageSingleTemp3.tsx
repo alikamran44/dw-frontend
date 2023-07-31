@@ -14,20 +14,17 @@ export interface PageSingleTemplate3Props {
   className?: string;
 }
 
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+interface RouteParams {
+  slug: string;
 }
-
 const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
   className = "",
 }) => {
   const dispatch = useAppDispatch();
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [blogLoading, setBlogLoading] = useState(true)
   const [fetched, setFetched] = useState(true)
-  const [blog, setBlog] = useState(null)
+  const [blog, setBlog] = useState<PostDataType | null>(null);
   // UPDATE CURRENTPAGE DATA IN PAGEREDUCERS
   useEffect(() => {
     // dispatch(changeCurrentPage({ type: "/single/:slug", data: SINGLE }));
@@ -69,7 +66,7 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
             <div className="hidden md:block absolute top-0 left-0 bottom-0 w-1/5 from-neutral-900 dark:from-black bg-gradient-to-r"></div>
             <img
               className="block w-full h-full object-cover"
-              src={blog ? blog.media?.find((data=> data.fileFolder === 'cover'))?.url : ''}
+              src={blog ? blog.media?.find(((data: any)=> data.fileFolder === 'cover'))?.url : ''}
               alt=""
             />
           </div>

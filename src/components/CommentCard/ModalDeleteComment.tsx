@@ -6,18 +6,20 @@ import ButtonSecondary from "components/Button/ButtonSecondary";
 import { deleteComment } from '../../Actions/CommentAction';
 
 export interface ModalDeleteCommentProps {
-  commentId: CommentType["id"];
+  commentId: CommentType["_id"];
   show: boolean;
   onCloseModalDeleteComment: () => void;
-  setComments: () => void;
-  parentId: string | null;
+  setComments: (data: any) => void;
+  parentId?: string | null;
+  id?: string | number ;
+  comments: any;
 }
 
 const ModalDeleteComment: FC<ModalDeleteCommentProps> = ({
   commentId,
   show,
   onCloseModalDeleteComment,
-  id,
+  id = '',
   comments,
   setComments, 
   parentId
@@ -25,14 +27,14 @@ const ModalDeleteComment: FC<ModalDeleteCommentProps> = ({
   const textareaRef = useRef(null);
 
   const handleClickSubmitForm = () => {
-    deleteComment(id).then((res) => {
+    deleteComment(id).then((res: CommentType) => {
         let updateBlog = null
         if(!parentId){
-          updateBlog = comments.filter((rec) => rec._id !== id && rec)
+          updateBlog = comments.filter((rec: CommentType) => rec._id !== id && rec)
         }else{
-          updateBlog = comments.map((rec) => ({
+          updateBlog = comments.map((rec: CommentType) => ({
             ...rec,
-            replyCM: rec.replyCM.filter((reply) => reply._id !== id)
+            replyCM: (rec.replyCM || []).filter((reply: CommentType) => reply._id !== id)
           }));
         }
         if(updateBlog){

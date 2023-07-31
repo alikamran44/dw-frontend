@@ -15,7 +15,7 @@ const Card3Small: FC<Card3SmallProps> = ({ className = "h-full", post }) => {
   const { title, href, featuredImage } = post;
 
   const pHref = post.slug ? `/blog/${post.slug}` : ''
-  const fUrl = (post.media && post.media?.find((data=> data.fileFolder === 'feature'))?.url) || ''
+  const fUrl = (post.media && post.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || ''
   return (
     <div
       className={`nc-Card3Small relative flex flex-col-reverse sm:flex-row sm:justify-between sm:items-center ${className}`}

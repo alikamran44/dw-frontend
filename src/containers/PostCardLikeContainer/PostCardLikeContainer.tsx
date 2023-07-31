@@ -15,7 +15,7 @@ import  { setAlert,
           selectConfirmAlert, 
           onRemoveConfirmAlert, 
           removeAlert 
-        } from "app/auth/authSlice";
+        } from "app/auth/auth";
 import  PostCardLikeAction, 
         {
           PostCardLikeActionProps,
@@ -24,6 +24,7 @@ import  PostCardLikeAction,
 export interface PostCardLikeContainerProps
   extends Omit<PostCardLikeActionProps, "isLiked" | "likeCount"> {
   like: PostDataType["like"];
+  postId: any;
 }
 const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
   like,
@@ -37,9 +38,14 @@ const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
   const recentRemoveds = useAppSelector(selectRecentRemoveds);
   const loading = useAppSelector(selectBlogLoading)
   const dispatch = useAppDispatch();
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null; 
-
-
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
 
   useEffect(()=>{
     if(like.users?.includes(user?._id)){
@@ -68,19 +74,19 @@ const PostCardLikeContainer: FC<PostCardLikeContainerProps> = ({
     // Recent Liked
     if (user && recentLikeds.includes(postId) ) {
       if(like.users?.includes(user?._id) ){
-        return like.count
+        return (like.count ?? 0)
       }
-      return like.count + 1;
+      return (like.count ?? 0) + 1;
     }
     if (like.users?.includes(user?._id) && recentRemoveds.includes(postId)) {
-      return like.count - 1;
+      return (like.count ?? 0) - 1;
     }
-    return like.count;
+    return (like.count ?? 0);
   };
 
   const handleClickLike = () => {
     if(user){
-      dispatch(likeBlog(postId)).then((res) => { })
+      dispatch(likeBlog(postId)).then((res: any) => { })
       if (isLiked()) {
         dispatch(removeLikedByPostId(postId));
       } else {

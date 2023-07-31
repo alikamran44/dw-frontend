@@ -31,7 +31,7 @@ const Card10V3: FC<Card10V3Props> = ({
     readingTime,
   } = post;
   const [isHover, setIsHover] = useState(false);
-  const gImages = (media && media?.filter((data=> data.fileFolder === 'gallery'))) || galleryImgs
+  const gImages = (media && media?.filter(((data: any)=> data.fileFolder === 'gallery'))) || galleryImgs
   
   const renderGallery2 = () => {
     if (!gImages) return null;
@@ -123,7 +123,7 @@ const Card10V3: FC<Card10V3Props> = ({
         ></Link>
       </div>
       <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4">
-        <CategoryBadgeList categories={categories} postType={postType} />
+        <CategoryBadgeList categories={categories} postType={postType || null} />
         <PostCardSaveAction postData={post} />
       </div>
 

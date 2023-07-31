@@ -1,56 +1,62 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from 'app/store';
+import { RootState } from "app/store";
 
 interface User {
-  // Define your user properties here
+  _id: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  pic: string;
+  bgImage: string;
+  email: string;
+  token: string;
+  password: string | null;
 }
 
-interface Profile {
-  // Define your profile properties here
-}
-
-export interface AlertProps {
-  children?: React.ReactNode;
+interface AlertProps {
+  children?: any;
   containerClassName?: string;
   type?: "default" | "warning" | "info" | "success" | "error";
   title?: string;
-  emoji?: string;
+  emoji?: any;
   showCloseButton?: boolean;
   showConfirmButton?: boolean;
   showCancel?: boolean;
-  alertAction: string;
-  confirmButtonText?: string;
-  cancelButtonText?: string;
+  alertAction: any;
+  confirmButtonText?: any;
+  cancelButtonText?: any;
 }
-
 
 interface LoginState {
   user: User | null;
   loading: boolean;
-  profile: Profile | null;
+  profile: any | null; // Replace 'any' with the actual type of your profile if needed
   pageLoading: boolean;
   loadMoreLoading: boolean;
-  alert: object | null;
-  confirmAlert: null;
+  confirmAlert: any | null;
+  alert: AlertProps | null;
 }
 
+const userInfo = localStorage.getItem('userInfo');
+const user = userInfo ? JSON.parse(userInfo) : null;
 const initialState: LoginState = {
-  user: JSON.parse(localStorage.getItem('userInfo')) || null,
+  user: user,
   loading: false,
   profile: null,
   pageLoading: true,
   loadMoreLoading: false,
-  confirmAlert: false
+  confirmAlert: null,
+  alert: null,
 };
 
-const loginSlice = createSlice({
+const authSlice = createSlice({
   name: 'login',
   initialState,
   reducers: {
     login(state, action: PayloadAction<User>) {
       state.user = action.payload;
     },
-    setUserProfile(state, action: PayloadAction<Profile>) {
+    setUserProfile(state, action: PayloadAction<any>) {
       state.profile = action.payload;
     },
     logout(state) {
@@ -64,7 +70,7 @@ const loginSlice = createSlice({
     stopLoading(state) {
       state.loading = false;
     },
-    setLoadMoreLoading(state, action: PayloadAction<boolean>) {
+    setLoadMoreLoading(state, action) {
       state.loadMoreLoading = action.payload;
     },
     setPageLoading(state, action: PayloadAction<boolean>) {
@@ -73,10 +79,10 @@ const loginSlice = createSlice({
     setAlert(state, action: PayloadAction<AlertProps>) {
       state.alert = action.payload;
     },
-    removeAlert(state, action) {
+    removeAlert(state) {
       state.alert = null;
     },
-    onConfirmAlert(state, action) {
+    onConfirmAlert(state, action: PayloadAction<boolean>) {
       state.confirmAlert = action.payload;
     },
     onRemoveConfirmAlert(state) {
@@ -85,19 +91,8 @@ const loginSlice = createSlice({
   },
 });
 
-export const {
-  login,
-  setUserProfile,
-  startLoading,
-  stopLoading,
-  logout,
-  setLoadMoreLoading,
-  setPageLoading,
-  setAlert,
-  removeAlert,
-  onConfirmAlert,
-  onRemoveConfirmAlert
-} = loginSlice.actions;
+export const { login, setUserProfile, startLoading, stopLoading, logout, setLoadMoreLoading, 
+  setPageLoading, setAlert, removeAlert, onConfirmAlert, onRemoveConfirmAlert } = authSlice.actions;
 
 // Selectors
 export const selectUser = (state: RootState) => state.login.user;
@@ -108,6 +103,4 @@ export const selectProfile = (state: RootState) => state.login.profile;
 export const selectPageLoading = (state: RootState) => state.login.pageLoading;
 export const selectLoadMoreLoading = (state: RootState) => state.login.loadMoreLoading;
 
-
-
-export default loginSlice.reducer;
+export default authSlice.reducer;

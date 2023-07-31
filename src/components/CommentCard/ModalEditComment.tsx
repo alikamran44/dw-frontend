@@ -8,15 +8,16 @@ export interface ModalEditCommentProps {
   comment: CommentType;
   show: boolean;
   onCloseModalEditComment: () => void;
-  setComments: () => void;
+  setComments: (data: any) => void;
+  id?: string | number;
+  comments: any;
 }
 
 const ModalEditComment: FC<ModalEditCommentProps> = ({
   comment,
   show,
   onCloseModalEditComment,
-  id,
-  blog_user_id,
+  id = '',
   setComments,
   comments
 }) => {
@@ -37,12 +38,12 @@ const ModalEditComment: FC<ModalEditCommentProps> = ({
     }
   }, [show]);
 
-  const editCommentHandler = (values) => {
+  const editCommentHandler = (values: any) => {
     if(values){
       values._id = id;
       // values.reply_user_id = user?._id
-      updateComment(values).then((res) => {
-        const updateBlog = comments.map((rec) => rec._id === res._id ? res : rec)
+      updateComment(values).then((res: CommentType) => {
+        const updateBlog = comments.map((rec: CommentType) => rec._id === res._id ? res : rec)
         setComments(updateBlog)
         onCloseModalEditComment()
       })

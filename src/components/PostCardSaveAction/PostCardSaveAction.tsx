@@ -7,7 +7,7 @@ export interface PostCardSaveActionProps
   extends Pick<PostActionDropdownProps, "dropdownPositon"> {
   className?: string;
   classBgIcon?: string;
-  readingTime?: number;
+  readingTime?: number | null;
   hidenReadingTime?: boolean;
   postData: PostDataType;
   loading?: boolean;

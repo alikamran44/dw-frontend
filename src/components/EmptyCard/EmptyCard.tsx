@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 
-
-const EmptyCard = ({text}) => {
+interface EmptyCardProps {
+  text: string;
+}
+const EmptyCard: React.FC<EmptyCardProps> = ({ text }) => {
 
   return (
     <div

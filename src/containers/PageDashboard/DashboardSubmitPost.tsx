@@ -22,15 +22,32 @@ import Page3 from './SubmitOtherPages/Page3';
 import Page4 from './SubmitOtherPages/Page4';
 
 // import 'ckeditor/plugins/colorbutton';
+interface RouteParams {
+  slug: string;
+  currentUrl: string;
+}
 
+interface InitialValues {
+  id: any;
+  isSideBar: any;
+  title: any;
+  description: any;
+  content: any;
+  tags: any;
+  isBrakingNews: any;
+  postType: any;
+  categories: any;
+  media: any;
+  cover: any;
+}
 const DashboardSubmitPost = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const [postLoading, setPostLoading] = useState(false);
-  const {slug, currentUrl} = useParams()
-  const [tagLoading, setTagLoading] = useState(false);
-  const [categoryLoading, setCategoryLoading] = useState(false);
-  const [initialValues, setInitialValues] = useState(null);
+  const [postLoading, setPostLoading] = useState<boolean>(false);
+  const { slug, currentUrl } = useParams<RouteParams>();
+  const [tagLoading, setTagLoading] = useState<boolean>(false);
+  const [categoryLoading, setCategoryLoading] = useState<boolean>(false);
+  const [initialValues, setInitialValues] = useState<InitialValues | null>(null);
   const [categories, setCategories] = useState(null);
   const [tags, setTags] = useState(null);
   const [feature, setFeature] = useState({url: '', name: 'media', selected: null, 
@@ -40,7 +57,7 @@ const DashboardSubmitPost = () => {
     title: 'Upload or Select Cover Photo', fileFolder: 'cover', text: 'Cover Photo'
   });
 
-  const { createPostHandler, fetchMediaFiles, fetchMedia, uploadFile } = helperForm();
+  const { createPostHandler, fetchMediaFiles, uploadFile } = helperForm();
 
   const tool = 'custom';
   const tool_custom = [
@@ -63,16 +80,16 @@ const DashboardSubmitPost = () => {
   useEffect(() => {
       setCategoryLoading(true)
       setTagLoading(true)
-      dispatch(FetchCategories()).then((res)=> {
+      dispatch(FetchCategories()).then((res: any)=> {
         setCategoryLoading(false)
-        const newArray = res.map(item => ({
+        const newArray = res.map((item: any) => ({
           value: item._id,
           label: item.name,
         }));
         setCategories(newArray)
       }).catch(() => setCategoryLoading(false))
-      dispatch(FetchTags()).then((res)=> {
-        const newArray = res.map(item => ({
+      dispatch(FetchTags()).then((res: any)=> {
+        const newArray = res.map((item: any) => ({
           value: item._id,
           label: item.name,
         }));
@@ -81,26 +98,41 @@ const DashboardSubmitPost = () => {
       }).catch(() => setTagLoading(false))
       if(slug !== undefined && slug !== null){
       setPostLoading(true)
-      fetchPost(slug).then((res) => {
+      fetchPost(slug).then((res: any) => {
         setInitialValues({id: res._id, isSideBar: res.isSideBar, title: res.title, description: res.description, 
           content: res.content, 
-          tags: res.tags.map((tag) => tag._id), isBrakingNews: res.isBrakingNews, 
-          postType: res.postType, categories: res.categories.map((category) => category._id), 
-          media: res.media?.find((res) => res.fileFolder === 'feature')?._id, 
-          cover: res.media?.find((res) => res.fileFolder === 'cover')?._id}
+          tags: res.tags.map((tag: any) => tag._id), isBrakingNews: res.isBrakingNews, 
+          postType: res.postType, categories: res.categories.map((category: any) => category._id), 
+          media: res.media?.find((res: any) => res.fileFolder === 'feature')?._id, 
+          cover: res.media?.find((res: any) => res.fileFolder === 'cover')?._id}
         )
         setPostLoading(false)
       }).catch(() => setPostLoading(false))
     }else{
-      setInitialValues({ title: '', description: '', content: '', tags: [], isSideBar: true, 
-        isBrakingNews: false, categories: [], media: '', cover: '', postType: ''}
-      )
+      setInitialValues({
+        id: null,
+        title: '',
+        description: '',
+        content: '',
+        tags: [],
+        isSideBar: true,
+        isBrakingNews: false,
+        categories: [],
+        media: '',
+        cover: '',
+        postType: '',
+      });
     }
   },[slug])
 
   if(!initialValues) return <></>
-  let currentPage = currentUrl.split("-").pop();
-  currentPage = parseInt(currentPage)
+  let currentPage: number = 1;
+  if (currentUrl) {
+    const currentPageString = currentUrl.split("-").pop();
+    if (currentPageString) {
+      currentPage = parseInt(currentPageString);
+    }
+  }
 
   const nextPageUrl = `/dashboard/submit-post/page-${currentPage+1}${slug ? `/${slug}` : ''}`
   const prevPageUrl = `/dashboard/submit-post/page-${currentPage-1}${slug ? `/${slug}` : ''}`
@@ -121,7 +153,6 @@ const DashboardSubmitPost = () => {
         >
           {({ values, errors, touched, setFieldValue }) => (
             <Form>
-
               {
                 currentPage === 1 ?
                   <Page1 setCover={setCover}
@@ -131,7 +162,7 @@ const DashboardSubmitPost = () => {
                   <Page2
                     feature={feature} setFeature={setFeature} cover={cover} setCover={setCover}
                     values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
-                    fetchMediaFiles={fetchMediaFiles} fetchMedia={fetchMedia} uploadFile={uploadFile}
+                    fetchMediaFiles={fetchMediaFiles} uploadFile={uploadFile}
                   />
                 : currentPage === 3 ?
                   <Page3

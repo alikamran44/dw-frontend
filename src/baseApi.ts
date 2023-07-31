@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 const API_ROOT = 'http://127.0.0.1:5000/api';
 export const APP_NAME = 'Daily World';
 let token;
@@ -15,8 +14,15 @@ let token;
 //     return Promise.reject(error)
 //   }
 // )
-const getRequestConfig = () => {
-  let auth = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null
+interface RequestConfig {
+  headers: {
+    accept: string;
+    authorization?: string;
+    'Content-Type': string;
+  };
+}
+const getRequestConfig = (): RequestConfig => {
+  let auth = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")!) : null;
   return {
     headers: {
       accept: 'application/json',
@@ -26,7 +32,14 @@ const getRequestConfig = () => {
   };
 };
 
-const requests = {
+interface RequestMethods {
+  get: (url: string) => Promise<any>;
+  put: (url: string, body: any) => Promise<any>;
+  delete: (url: string) => Promise<any>;
+  post: (url: string, body: any) => Promise<any>;
+}
+
+const requests: RequestMethods = {
   get: async url => {
     const config = getRequestConfig();
     return await axios.get(`${API_ROOT}${url}`, { ...config }).then(responseBody => {
@@ -59,7 +72,7 @@ const config = {
   }
 };
 const getMediaConfig = () => {
-  let auth = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")) : null
+  let auth = localStorage.getItem("userInfo") ? JSON.parse(localStorage.getItem("userInfo")!) : null;
   return {
     headers: {
       authorization: `${auth ? `Bearer ${auth?.token}` : ''}`,
@@ -69,28 +82,28 @@ const getMediaConfig = () => {
 };
 
 const Auth = {
-  allBloggers: (values) =>
+  allBloggers: (values: any) =>
     requests.post('/user/all/blogger', values),
   allUsers: () => 
     requests.get('/user'),
-  login: (values) =>
+  login: (values: any) =>
     requests.post('/user/login', values),
-  toatalUserBlogs: (values) =>
+  toatalUserBlogs: (values: any) =>
     requests.post('/user/total/blogs', values),
-  register: (values) =>
+  register: (values: any) =>
     requests.post('/user', values),
-  registerBlogger: (values) =>
+  registerBlogger: (values: any) =>
     axios.post(`${API_ROOT}`+'/user/blogger',values,config),
   fetchUserProfile: () => 
     requests.get('/user/profile'),
-  ___register: ( values ) =>
+  ___register: ( values: any ) =>
     axios.post(`${API_ROOT}`+'/user',{data: values},config
   ),
-  removeUser:(id) => 
+  removeUser:(id: any) => 
     requests.delete('/user/'+id),
-  updateUser: (values,id) =>
+  updateUser: (values: any,id: any) =>
     axios.put(`${API_ROOT}`+`/user/${id}`,values,getMediaConfig()),
-  updateProfile: (values,id) =>
+  updateProfile: (values: any,id: any) =>
     requests.put(`/user/${id}`, values),
 
 //   role: (values) =>
@@ -107,93 +120,93 @@ const Post = {
     requests.get('/home/blogs'),
   fetchRecentPosts: () => 
     requests.get('/blogs/recent'),
-  fetchPost: (slug) => 
+  fetchPost: (slug: any) => 
     requests.get('/blog/'+slug),
-  fetchPosts: (data) =>  
+  fetchPosts: (data: any) =>  
     requests.post('/blogs/', data),
-  blogsType: (data) =>  
+  blogsType: (data: any) =>  
     requests.post('/blogs-type', data),
-  createPost: (values) =>
+  createPost: (values: any) =>
     requests.post('/blog', values),
-  updatePost: (values) =>
+  updatePost: (values: any) =>
     requests.put(`/blog/${values.id}`, values),
-  uploadFile: ( values ) =>
+  uploadFile: ( values: any ) =>
     axios.post(`${API_ROOT}`+'/media',values,config
   ),
-  fetchMediaFiles: (id) => 
+  fetchMediaFiles: (id: any) => 
     requests.post(`/media/folder`,id),
-  fetchMedia: (id) => 
+  fetchMedia: (id: any) => 
     requests.get(`/media/${id}`),
-  fetchUserBlogs: (id, data) => 
+  fetchUserBlogs: (id: any, data: any) => 
     requests.post(`/blogs/user/${id}`, data),
-  fetchUserPublicBlogs: (id, filter) => 
+  fetchUserPublicBlogs: (id: any, filter: any) => 
     requests.post(`/blogs/public/user/${id}`, filter),
-  removeBlog: (id) => 
+  removeBlog: (id: any) => 
     requests.delete('/blog/'+id),
-  bookmarkBlog: (id) => 
-    requests.post(`/blog/bookmark/${id}`),
-  likeBlog: (id) => 
-    requests.post(`/blog/like/${id}`),
-  relatedBog: (data) => 
+  bookmarkBlog: (id: any) => 
+    requests.post(`/blog/bookmark/${id}`,{}),
+  likeBlog: (id: any) => 
+    requests.post(`/blog/like/${id}`,{}),
+  relatedBog: (data: any) => 
     requests.post(`/blogs/related`, data),
-  searchBlog: (slug,data) => 
+  searchBlog: (slug: any,data: any) => 
     requests.post(`/search/blogs/${slug}`,data),
-  changeBlogPrivacy: (id,data) => 
+  changeBlogPrivacy: (id: any,data: any) => 
     requests.put(`/blog/${id}`,{data}),
 };
 
 const Category = {
   fetchCategories: () => 
     requests.get('/category'),
-  viewCategory: (id) => 
+  viewCategory: (id: any) => 
     requests.get(`/category/${id}`),
-  fetchCategory: (slug, data) => 
+  fetchCategory: (slug: any, data: any) => 
     requests.post(`/category/fetch/${slug}`, data), 
-  createCategory: (values) =>
+  createCategory: (values: any) =>
     requests.post('/category', values),
-  deleteCategory: (id) =>
+  deleteCategory: (id: any) =>
     requests.delete(`/category/${id}`),
-  updateCategory: (values,id) =>
+  updateCategory: (values: any,id: any) =>
     requests.put(`/category/${id}`, values),
   navCategories: () => 
     requests.get('/category/navbar'),
-  categoryWithTotalBlogs: (data) => 
+  categoryWithTotalBlogs: (data: any) => 
     requests.post('/category/total/blogs',data),
 };
 
 const Tag = {
   fetchTags: () => 
     requests.get('/tags'),
-  fetchTag: (slug, data) => 
+  fetchTag: (slug: any, data: any) => 
     requests.post(`/tag/fetch/${slug}`, data), 
-  viewtag: (id) => 
+  viewtag: (id: any) => 
     requests.get(`/tag/${id}`),
-  createTag: (values) =>
+  createTag: (values: any) =>
     requests.post('/tag', values),
-  deleteTag: (id) =>
+  deleteTag: (id: any) =>
     requests.delete(`/tag/${id}`),
-  updateTag: (values,id) =>
+  updateTag: (values: any,id: any) =>
     requests.put(`/tag/${id}`, values),
-  tagWithTotalBlogs: (data) => 
+  tagWithTotalBlogs: (data: any) => 
     requests.post('/tag/total/blogs', data),
 };
 
 const Comment = {
-  fetchComments: (id, num, limit) => 
+  fetchComments: (id: any, num: any, limit: any) => 
     requests.get(`/comments/blog/${id}?page=${num}&limit=${limit}`),
-  createComment: (values) =>
+  createComment: (values: any) =>
     requests.post('/comment', values),
-  likeComment: (id) => 
-     requests.post(`/comment/like/${id}`),
-  deleteComment: (id) =>
+  likeComment: (id: any) => 
+     requests.post(`/comment/like/${id}`,{}),
+  deleteComment: (id: any) =>
     requests.delete(`/comment/${id}`),
-  replyComment: (data) =>
+  replyComment: (data: any) =>
     requests.post(`/reply_comment`, data),
-  updateComment: (id, data) => 
+  updateComment: (id: any, data: any) => 
     requests.put(`/comment/${data._id}`, { data }),
   
 };
 export default {
   Auth,Post, Category, Tag, Comment,
-  setToken: _token => { token = _token; }
+  setToken: (_token: string) => { token = _token; }
 };

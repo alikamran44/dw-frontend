@@ -15,7 +15,7 @@ export interface ModalCategoriesProps {
 
 const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, modalTitle }) => {
   const [filterData, setFilterData] = useState({skip: 0, limit: 20});
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch()
@@ -26,17 +26,18 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
   const loadMore = () => {
     setMoreLoading(true)
     let count = {limit: filterData.limit, skip: filterData.skip + 1}
-    dispatch(categoryWithTotalBlogs(filterData)).then((res)=> {
+    dispatch(categoryWithTotalBlogs(filterData)).then((res: TaxonomyType)=> {
       setMoreLoading(false)
       setFilterData(count)
-      let newArray = categories.concat(res)
-      setCategories(newArray)
+      let newArray = categories?.concat(res)
+      if(newArray)
+        setCategories(newArray)
     }).catch(()=> setMoreLoading(false))
   }
   useEffect(()=>{
     setLoading(true)
     let count = {limit: filterData.limit, skip: filterData.skip + 1}
-    dispatch(categoryWithTotalBlogs(filterData)).then((res)=> {
+    dispatch(categoryWithTotalBlogs(filterData)).then((res: any)=> {
       setLoading(false)
       setFilterData(count)
       setCategories(res)
@@ -51,11 +52,11 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
     return (
       <div>
         <div className="grid gap-6 sm:grid-cols-2 sm:py-2 md:gap-8 md:grid-cols-3 lg:grid-cols-4 xl:md:grid-cols-5">
-          {categories && categories.map((cat) => (
+          {categories && categories.map((cat: any) => (
             <CardCategory1 key={cat._id} taxonomy={cat} size="normal" />
           ))}
           {
-            moreLoading && repeatedCategoriesArray.map((cat) => (
+            moreLoading && repeatedCategoriesArray.map((cat: any) => (
               <CardCategory1 key={cat._id} taxonomy={cat} size="normal" />
             ))
           }

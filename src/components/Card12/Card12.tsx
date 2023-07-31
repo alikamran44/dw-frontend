@@ -20,7 +20,7 @@ const Card12: FC<Card12Props> = ({ className = "h-full", post }) => {
       data-nc-id="Card12"
     >
       <Link
-        to={href}
+        to={href || '/*'}
         className="block flex-shrink-0 flex-grow relative w-full h-0 aspect-w-4 aspect-h-3 rounded-3xl overflow-hidden"
       >
         <NcImage
@@ -44,7 +44,7 @@ const Card12: FC<Card12Props> = ({ className = "h-full", post }) => {
         <h2
           className={`nc-card-title block font-semibold text-neutral-900 dark:text-neutral-100 transition-colors text-lg sm:text-2xl`}
         >
-          <Link to={href} className="line-clamp-2" title={title}>
+          <Link to={href || '/*'} className="line-clamp-2" title={title}>
             {title}
           </Link>
         </h2>

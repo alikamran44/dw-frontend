@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector } from "app/hooks";
-import { selectProfile } from "app/auth/authSlice";
+import { selectProfile } from "app/auth/auth";
 
 const data = [
   { name: "Subcription Name", content: " Premium" },

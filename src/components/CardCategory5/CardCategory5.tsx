@@ -17,7 +17,7 @@ const CardCategory5: FC<CardCategory5Props> = ({
 
   return (
     <Link
-      to={href}
+      to={href || '/*'}
       className={`nc-CardCategory5 relative block group ${className}`}
       data-nc-id="CardCategory5"
     >

@@ -29,10 +29,10 @@ const Card10: FC<Card10Props> = ({ className = "h-full", post }) => {
 
             <span className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
           </div>
-        </Link>
+        </Link> 
       </div>
       <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4 z-10">
-        <CategoryBadgeList categories={post?.categories} postType={post.postType} />
+        <CategoryBadgeList categories={post?.categories} postType={post.postType || null} />
         <PostCardSaveAction postData={post} />
       </div>
 

@@ -81,7 +81,7 @@ const Card17Podcast: FC<Card17PodcastProps> = ({ className = "", post }) => {
       className={`nc-Card17Podcast relative flex items-center justify-between p-2.5 space-x-5 rounded-full bg-neutral-100 dark:bg-neutral-800 dark:bg-opacity-30 hover:shadow-xl transition-shadow ${className}`}
       data-nc-id="Card17Podcast"
     >
-      <Link to={href} className="flex  items-center space-x-4">
+      <Link to={href || '/*'} className="flex  items-center space-x-4">
         <div className="block flex-shrink-0 w-11 h-11 sm:w-16 sm:h-16 relative rounded-full overflow-hidden shadow-lg">
           <NcImage
             containerClassName="absolute inset-0"

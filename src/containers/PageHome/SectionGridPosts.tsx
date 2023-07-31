@@ -24,7 +24,7 @@ export interface SectionGridPostsProps {
   heading?: ReactNode;
   subHeading?: ReactNode;
   headingIsCenter?: boolean;
-  href: string;
+  href?: string;
   postCardName?:
     | "card3"
     | "card4"

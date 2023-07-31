@@ -4,7 +4,8 @@ import Card3 from "components/Card3/Card3";
 import Heading from "components/Heading/Heading";
 import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_POSTS } from "data/posts";
-import { DEMO_CATEGORIES, DEMO_TAGS, DEMO_FAKE_CATEGORY_DATA } from "data/taxonomies";
+import { DEMO_CATEGORIES, DEMO_TAGS, DEMO_FAKE_CATEGORY_DATA,
+} from "data/taxonomies";
 import { PostAuthorType, PostDataType, TaxonomyType, FakeCategoryType } from "data/types";
 import WidgetCategories from "components/WidgetCategories/WidgetCategories";
 import { DEMO_AUTHORS } from "data/authors";
@@ -46,10 +47,10 @@ const authorsDemo: PostAuthorType[] = DEMO_AUTHORS.filter((_, i) => i < 5);
 export interface SectionLatestPostsProps {
   posts?: PostDataType[];
   widgetPosts?: PostDataType[];
-  categories?: FakeCategoryType[];
+  categories?: TaxonomyType[];
   categoryLoading: boolean;
   tagLoading: boolean;
-  tags?: FakeCategoryType[];
+  tags?: TaxonomyType[];
   authors?: PostAuthorType[];
   gridClass?: string;
   className?: string;

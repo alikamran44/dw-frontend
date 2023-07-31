@@ -8,7 +8,7 @@ export interface TagProps {
   className?: string;
   tag: TaxonomyType;
   hideCount?: boolean;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, loading = false, }) => { 

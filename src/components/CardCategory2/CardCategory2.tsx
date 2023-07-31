@@ -10,7 +10,7 @@ export interface CardCategory2Props {
   className?: string;
   taxonomy: TaxonomyType;
   index?: string;
-  loading: boolean,
+  loading?: boolean,
 }
 
 const CardCategory2: FC<CardCategory2Props> = ({

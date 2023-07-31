@@ -20,19 +20,15 @@ import { fetchPost } from '../../Actions/PostAction';
 export interface PageSingleVideoProps {
   className?: string;
 }
-
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+interface RouteParams {
+  slug: string;
 }
-
 const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [blogLoading, setBlogLoading] = useState(false)
   const [fetched, setFetched] = useState(true)
-  const [blog, setBlog] = useState(null)
+  const [blog, setBlog] = useState<PostDataType | null>(null);
 
   const [isPlay, setIsPlay] = useState(false);
 
@@ -43,7 +39,7 @@ const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
     //   dispatch(changeCurrentPage({ type: "/", data: {} }));
     // };
     setBlogLoading(true)
-    fetchPost(slug).then((res) => {
+    fetchPost(slug).then((res: any) => {
       setBlogLoading(false)
       if(res && Object.keys(res).length > 0){
         setBlog(res)
@@ -54,8 +50,8 @@ const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
   }, []);
 
   const renderMainVideo = () => {
-    const fUrl = (blog ? blog.media?.find((data=> data.fileFolder === 'feature'))?.url : '')
-    const vUrl = (blog ? blog.media?.find((data=> data.fileFolder === 'video'))?.url : '')
+    const fUrl = (blog ? blog.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url : '')
+    const vUrl = (blog ? blog.media?.find(((data: any)=> data.fileFolder === 'video'))?.url : '')
     return (
       <div className="bg-neutral-800 rounded-3xl overflow-hidden border-4 border-white dark:border-neutral-700 shadow-2xl">
         {isSafariBrowser() && fUrl && !isPlay && (

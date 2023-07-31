@@ -52,7 +52,7 @@ const Card2: FC<Card2Props> = ({
       </span>
 
       <SocialsShare className="absolute hidden md:grid gap-[5px] right-4 top-4 opacity-0 z-[-1] group-hover:z-10 group-hover:opacity-100 transition-all duration-300" />
-      <Link to={href} className="absolute inset-0" />
+      <Link to={href || '/*'} className="absolute inset-0" />
 
       <div className="p-4 sm:p-5 flex flex-col">
         <div className="space-y-3">
@@ -62,7 +62,7 @@ const Card2: FC<Card2Props> = ({
               size === "large" ? "text-lg sm:text-2xl" : "text-base"
             }`}
           >
-            <Link to={href} className="line-clamp-2" title={title}>
+            <Link to={href || '/*'} className="line-clamp-2" title={title}>
               {title}
             </Link>
           </h2>
@@ -76,7 +76,7 @@ const Card2: FC<Card2Props> = ({
           <PostCardSaveAction
             className="relative"
             postData={post}
-            readingTime={readingTime}
+            readingTime={readingTime || null}
           />
         </div>
       </div>

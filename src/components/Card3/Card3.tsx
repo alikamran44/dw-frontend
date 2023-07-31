@@ -34,7 +34,7 @@ const Card3: FC<Card3Props> = ({
       className={`nc-Card3 relative flex flex-col-reverse sm:flex-row sm:items-center rounded-[40px] group ${className}`}
       data-nc-id="Card3"
     >
-      <Link to={href} className="absolute inset-0"></Link>
+      <Link to={href || '/*'} className="absolute inset-0"></Link>
       <div className="flex flex-col flex-grow">
         <div className="space-y-3.5 mb-4">
           <CategoryBadgeList categories={categories} />
@@ -44,7 +44,7 @@ const Card3: FC<Card3Props> = ({
                 size === "large" ? "text-xl" : "text-base"
               }`}
             >
-              <Link to={href} className="line-clamp-2" title={title}>
+              <Link to={href || '/*'} className="line-clamp-2" title={title}>
                 {title}
               </Link>
             </h2>
@@ -61,7 +61,7 @@ const Card3: FC<Card3Props> = ({
         </div>
         <div className="flex items-center flex-wrap justify-between mt-auto">
           <PostCardLikeAndComment postData={post} />
-          <PostCardSaveAction postData={post} readingTime={readingTime} />
+          <PostCardSaveAction postData={post} readingTime={readingTime || null} />
         </div>
       </div>
 
@@ -87,7 +87,7 @@ const Card3: FC<Card3Props> = ({
             />
           </span>
         </div>
-        <Link to={href} className="absolute inset-0"></Link>
+        <Link to={href || '/*'} className="absolute inset-0"></Link>
       </div>
     </div>
   );

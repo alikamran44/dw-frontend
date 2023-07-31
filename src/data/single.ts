@@ -1,10 +1,10 @@
-import { SinglePageType } from "containers/PageSingle/PageSingle";
 import { DEMO_TAGS } from "./taxonomies";
 import __comments from "./jsons/__comments.json";
 import a10 from "./avatars/11.jpg";
 import { DEMO_AUTHORS } from "./authors";
 import { CommentType } from "components/CommentCard/CommentCard";
 import podcastImg from "images/podcast.jpg";
+import { PostDataType } from "./types";
 
 // function nested the comment child -- make tree comment
 const nest = (
@@ -25,61 +25,7 @@ const commentHasAuthor = __comments.map((item) => ({
   author: DEMO_AUTHORS[Math.floor(Math.random() * 10)],
 }));
 
-//
-export const DEMO_COMMENTS = nest(commentHasAuthor, null);
-export const SINGLE: SinglePageType = {
-  id: "",
-  featuredImage: "",
-  title: "",
-  desc: "",
-  date: "",
-  href: "",
-  commentCount: null,
-  viewdCount: null,
-  readingTime: null,
-  bookmark: { count: null, isBookmarked: '' },
-  like: { count: null, isLiked: '' },
-  author: {
-    id: 10,
-    firstName: "",
-    lastName: "",
-    displayName: "Fones Mimi",
-    email: "mfones9@canalblog.com",
-    avatar: a10,
-    count: null,
-    href: "",
-    desc: "",
-    jobName: "",
-  },
-  categories: [
-    {
-      id: 1,
-      name: "",
-      href: "",
-      thumbnail:
-        "",
-      count: null,
-      color: "pink",
-      taxonomy: "",
-    },
-    {
-      id: 2,
-      name: "",
-      href: "",
-      thumbnail:
-        "",
-      count: 16,
-      color: "",
-      taxonomy: "",
-    },
-  ],
-  postType: "standard",
-  tags: [DEMO_TAGS[0], DEMO_TAGS[1], DEMO_TAGS[3]],
-  content: "",
-  comments: DEMO_COMMENTS,
-};
-
-export const FAKE_SINGLE_POST: SinglePageType = {
+export const FAKE_SINGLE_POST: PostDataType = {
   _id: "",
   featuredImage: "",
   title: "",
@@ -110,16 +56,71 @@ export const FAKE_SINGLE_POST: SinglePageType = {
       thumbnail: "",
       count: null,
       color: "",
-      taxonomy: "",
+      taxonomy: null,
     },
   ],
-  postType: "",
+  postType: null,
   tags: [],
   content: "",
   comments: [],
 };
 
-export const SINGLE_AUDIO: SinglePageType = {
+//
+export const DEMO_COMMENTS = nest(commentHasAuthor, null);
+export const SINGLE: PostDataType = {
+  id: "eae0212192f63287e0c212",
+  featuredImage:
+    "https://images.unsplash.com/photo-1605487903301-a1dff2e6bbbe?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1957&q=80",
+  title: "Quiet ingenuity: 120,000 lunches and counting",
+  desc: "We’re an online magazine dedicated to covering the best in international product design. We started as a little blog back in 2002 covering student work and over time",
+  date: "May 20, 2021",
+  href: "/single/this-is-single-slug",
+  commentCount: 14,
+  viewdCount: 2378,
+  readingTime: 6,
+  bookmark: { count: 3502, isBookmarked: false },
+  like: { count: 773, isLiked: true },
+  author: {
+    id: 10,
+    firstName: "Mimi",
+    lastName: "Fones",
+    displayName: "Fones Mimi",
+    email: "mfones9@canalblog.com",
+    avatar: a10,
+    count: 38,
+    href: "/author/the-demo-author-slug",
+    desc: "There’s no stopping the tech giant. Apple now opens its 100th store in China.There’s no stopping the tech giant.",
+    jobName: "Author Job",
+  },
+  categories: [
+    {
+      id: 1,
+      name: "Garden",
+      href: "/archive/the-demo-archive-slug",
+      thumbnail:
+        "https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGdhcmRlbmluZ3xlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+      count: 13,
+      color: "pink",
+      taxonomy: "category",
+    },
+    {
+      id: 2,
+      name: "Jewelry",
+      href: "/archive/the-demo-archive-slug",
+      thumbnail:
+        "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjV8fGpld2Vscnl8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=60",
+      count: 16,
+      color: "red",
+      taxonomy: "category",
+    },
+  ],
+  postType: "standard",
+  tags: [DEMO_TAGS[0], DEMO_TAGS[1], DEMO_TAGS[3]],
+  content: "",
+  comments: DEMO_COMMENTS,
+};
+
+export const SINGLE_AUDIO: PostDataType = {
   id: "ea21212f687e0c",
   featuredImage: podcastImg,
   title: "Programming Languages",
@@ -162,7 +163,7 @@ export const SINGLE_AUDIO: SinglePageType = {
   comments: DEMO_COMMENTS,
 };
 
-export const SINGLE_VIDEO: SinglePageType = {
+export const SINGLE_VIDEO: PostDataType = {
   id: "ea21ac32ds-6c192f68dscx7e0c212",
   featuredImage:
     "https://images.pexels.com/photos/326900/pexels-photo-326900.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
@@ -206,7 +207,7 @@ export const SINGLE_VIDEO: SinglePageType = {
   comments: DEMO_COMMENTS,
 };
 
-export const SINGLE_GALLERY: SinglePageType = {
+export const SINGLE_GALLERY: PostDataType = {
   id: "eae0e85fd226c192f68dscx7e220c",
   featuredImage:
     "https://images.pexels.com/photos/326900/pexels-photo-326900.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",

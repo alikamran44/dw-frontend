@@ -12,7 +12,7 @@ const postsDemo: PostDataType[] = DEMO_POSTS_GALLERY.filter(
 export interface SectionMagazine7Props {
   posts?: PostDataType[];
   className?: string;
-  href: string;
+  href?: string;
 }
 
 const SectionMagazine7: FC<SectionMagazine7Props> = ({

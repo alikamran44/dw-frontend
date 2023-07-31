@@ -7,7 +7,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   desc?: ReactNode;
   hasNextPrev?: boolean;
   isCenter?: boolean;
-  href: string;
+  href?: string;
 }
 
 const Heading: React.FC<HeadingProps> = ({
@@ -30,7 +30,7 @@ const Heading: React.FC<HeadingProps> = ({
       >
         {
           href ? 
-            <Link to={href} >
+            <Link to={href || '/*'} >
               <h2 className={`text-3xl md:text-4xl font-semibold`} {...args}>
                 {children || `Section Heading`}
               </h2>

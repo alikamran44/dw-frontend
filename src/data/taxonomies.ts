@@ -1,8 +1,7 @@
 import __taxonomies from "./jsons/__taxonomies.json";
+import { TaxonomyType, FakePostType, FakeCategoryType } from "./types";
 import __postFakeSkeletonData from "./jsons/__postFakeSkeletonData.json";
 import __categoriesSkeleton from "./jsons/__categoriesSkeleton.json";
-
-import { TaxonomyType, FakePostType, FakeCategoryType } from "./types";
 
 const DEMO_CATEGORIES: TaxonomyType[] = __taxonomies.map((item) => ({
   ...item,

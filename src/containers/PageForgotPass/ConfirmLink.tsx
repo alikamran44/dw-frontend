@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { selectUser } from "app/auth/authSlice";
+import { selectUser } from "app/auth/auth";
 import { useAppSelector } from "app/hooks";
 import LayoutPage from "components/LayoutPage/LayoutPage";
 import NcLink from "components/NcLink/NcLink";

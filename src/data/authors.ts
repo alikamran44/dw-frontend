@@ -11,7 +11,7 @@ import a7 from "./avatars/7.jpg";
 import a8 from "./avatars/8.jpg";
 import a9 from "./avatars/9.jpg";
 import a10 from "./avatars/11.jpg";
-import { PostAuthorType, FakeAuthorType } from "./types";
+import { PostAuthorType } from "./types";
 
 let as = [a1, a2, a3, a4, a5, a6, a7, a8, a9, a10];
 
@@ -20,7 +20,7 @@ const DEMO_AUTHORS: PostAuthorType[] = __authors.map((item, index) => ({
   avatar: as[index],
 }));
 
-const DEMO_FAKE_SKELETON_USERS: FakeAuthorType[] = __fakeUserSkeletonData.map((item, index) => ({
+const DEMO_FAKE_SKELETON_USERS: PostAuthorType[] = __fakeUserSkeletonData.map((item, index) => ({
   ...item,
   avatar: '',
 }));

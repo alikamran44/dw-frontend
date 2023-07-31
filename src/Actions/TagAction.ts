@@ -1,15 +1,7 @@
 import axios from 'axios';
 import baseApi from '../baseApi';
 import { toast } from 'react-toastify';
-import {
-    CREATE_TAG,
-    FETCH_TAGS,
-    DELETE_TAG,
-    TAGLOADINGSTART,
-    TAGLOADINGSTOP, 
-    UPDATE_TAG,
-    LOAD_MORE_LOADING
-} from "./Types";
+import { AppDispatch } from "app/store";
 
 import {
   // fetchTags,
@@ -19,7 +11,7 @@ import {
   loadMoreLoading
 } from "../app/tag/tagSlice";
 
-export const CreateTag = (values) => (dispatch) => {
+export const CreateTag = (values: any) => (dispatch: AppDispatch): Promise<any> => {
   dispatch(startLoading())
   return baseApi.Tag.createTag(values).then(
     (data) => {
@@ -46,7 +38,7 @@ export const CreateTag = (values) => (dispatch) => {
   );
 };
 
-export const FetchTags = () => (dispatch) => {
+export const FetchTags = () => (dispatch: AppDispatch) => {
     dispatch(startLoading())
     return baseApi.Tag.fetchTags().then(
       (data) => {
@@ -68,7 +60,7 @@ export const FetchTags = () => (dispatch) => {
     );
 };
 
-export const deleteTag = (id) => (dispatch) => {
+export const deleteTag = (id: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Tag.deleteTag(id).then(
    
@@ -91,7 +83,7 @@ export const deleteTag = (id) => (dispatch) => {
   );
 };
 
-export const UpdateTag = (values, id) => (dispatch) => {
+export const UpdateTag = (values: any, id: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Tag.updateTag(values, id).then(
     (data) => {
@@ -113,7 +105,7 @@ export const UpdateTag = (values, id) => (dispatch) => {
   );
 };
 
-export const tagWithTotalBlogs = (data) => (dispatch) => {
+export const tagWithTotalBlogs = (data: any) => (dispatch: AppDispatch) => {
   const {skip} = data
     if(skip === 0)
       dispatch(startLoading())
@@ -148,27 +140,23 @@ export const tagWithTotalBlogs = (data) => (dispatch) => {
   );
 };
 
-export const fetchTag = (slug, data) => (dispatch) => {
+export const fetchTag = (slug: any, data: any) => (dispatch: AppDispatch) => {
   const {skip} = data
   if(skip === 0)
     dispatch(startLoading())
   else
-    dispatch({
-      type: LOAD_MORE_LOADING,payload: true
-    });
+    dispatch(loadMoreLoading(true));
   return baseApi.Tag.fetchTag(slug,data).then(
     (data) => {
       if(skip === 0)
         dispatch(stopLoading())
       else
-        dispatch({
-          type: LOAD_MORE_LOADING,payload: false
-        });
+        dispatch(loadMoreLoading(false));
       return Promise.resolve(data);
     },
     (error) => {
-      if (error.response.status === 401)
-        dispatch({ type: 'PAGE_LOADING', payload: false })
+      // if (error.response.status === 401)
+      //   dispatch({ type: 'PAGE_LOADING', payload: false })
       const message =
         (error.response &&
           error.response.data &&
@@ -178,9 +166,7 @@ export const fetchTag = (slug, data) => (dispatch) => {
        if(skip === 0)
         dispatch(stopLoading())
       else
-        dispatch({
-          type: LOAD_MORE_LOADING,payload: false
-        });
+        dispatch(loadMoreLoading(false));
       if(message !== 'Network Error'){
         toast.error(message);
       }
@@ -189,7 +175,7 @@ export const fetchTag = (slug, data) => (dispatch) => {
   );
 };
 
-export const viewTag = (id) => (dispatch) => {
+export const viewTag = (id: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Tag.viewtag(id).then(
     (data) => {

@@ -8,14 +8,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded?: string;
   errors:any;
   touched: any;
-  name: string;
+  values: any;
   feature: any;
-  setFeature: () => void;
+  setFeature: (media: any) => void;
   cover: any;
-  setCover: () => void;
-  fetchMediaFiles: () => void;
-  fetchMedia: () => void;
-  uploadFile: () => void;
+  setCover: (media: any) => void;
+  fetchMediaFiles: (id: any) => void;
+  setFieldValue: (name: string, value: any) => void;
+  uploadFile: (data: any) => Promise<any>;
 }
 
 const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
@@ -26,10 +26,8 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
       fontClass = "text-sm font-normal",
       rounded = "rounded-full",
       children,
-      type = "text",
       errors={},
       touched={},
-      name,
       values,
       setFieldValue,
       feature,
@@ -37,7 +35,6 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
       cover,
       setCover,
       fetchMediaFiles,
-      fetchMedia,
       uploadFile,
       ...args
     },
@@ -60,7 +57,6 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
                 data={feature}
                 setMedia={setFeature}
                 fetchMediaFiles={fetchMediaFiles}
-                fetchMedia={fetchMedia}
                 uploadFile={uploadFile}
                 setField={setFieldValue}
               />
@@ -87,12 +83,13 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
             <p className="text-neutral-500 dark:text-neutral-400  text-xs">Do you want's to show sidebar?
             </p>
           </div>
-          <button onClick={()=> setFieldValue('isSideBar', !values['isSideBar'])} className={`${values['isSideBar'] ? 'bg-teal-700' : 'bg-neutral-400 dark:bg-neutral-6000'}
+          <button onClick={()=> setFieldValue('isSideBar', !values['isSideBar'])} 
+            className={`${values['isSideBar'] ? 'bg-teal-700' : 'bg-neutral-400 dark:bg-neutral-6000'}
             relative inline-flex flex-shrink-0 h-8 w-[68px] border-2 
             border-transparent rounded-full cursor-pointer transition-colors 
             ease-in-out duration-200 focus:outline-none focus-visible:ring-2  
             focus-visible:ring-white focus-visible:ring-opacity-75`} 
-            id="headlessui-switch-:r39:" role="switch" type="button" tabIndex="0" 
+            id="headlessui-switch-:r39:" role="switch" type="button" tabIndex={0}
             aria-checked="false" data-headlessui-state=""
           >
             <span className="sr-only">Show Sidebar</span>
@@ -114,7 +111,7 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
             border-transparent rounded-full cursor-pointer transition-colors 
             ease-in-out duration-200 focus:outline-none focus-visible:ring-2  
             focus-visible:ring-white focus-visible:ring-opacity-75`} 
-            id="headlessui-switch-:r39:" role="switch" type="button" tabIndex="0" 
+            id="headlessui-switch-:r39:" role="switch" type="button" tabIndex={0}
             aria-checked="false" data-headlessui-state=""
           >
             <span className="sr-only">Show Sidebar</span>

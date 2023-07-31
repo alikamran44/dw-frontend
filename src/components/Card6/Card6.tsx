@@ -22,12 +22,12 @@ const Card6: FC<Card6Props> = ({ className = "h-full", post }) => {
       className={`nc-Card6 relative flex group flex-col-reverse sm:flex-row sm:items-center p-4  [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ] ${className}`}
       data-nc-id="Card6"
     >
-      <Link to={href} className="absolute inset-0 z-0"></Link>
+      <Link to={href || '/*'} className="absolute inset-0 z-0"></Link>
       <div className="flex flex-col flex-grow">
         <div className="space-y-3 mb-4">
           <CategoryBadgeList categories={categories} />
           <h2 className={`block font-semibold text-base`}>
-            <Link to={href} className="line-clamp-2" title={title}>
+            <Link to={href || '/*'} className="line-clamp-2" title={title}>
               {title}
             </Link>
           </h2>
@@ -44,7 +44,7 @@ const Card6: FC<Card6Props> = ({ className = "h-full", post }) => {
       </div>
 
       <Link
-        to={href}
+        to={href || '/*'}
         className={`block relative flex-shrink-0 w-full sm:w-40 h-40 sm:h-full sm:ml-5 rounded-2xl overflow-hidden mb-5 sm:mb-0 `}
       >
         <NcImage

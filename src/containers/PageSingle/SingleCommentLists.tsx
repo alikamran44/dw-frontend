@@ -6,15 +6,16 @@ export interface SingleCommentListsProps {
   comments: CommentType[];
   blog_id: any;
   blog_user_id: any;
-  setComments: () => void;
-  totalComments: String;
+  setComments: (data: any) => void;
+  totalComments: String | null;
+  loading?: boolean;
 }
 
 const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, blog_id,
   blog_user_id, setComments, totalComments }) => {
-  let cmtLv1 = comments ? comments.filter((item) => !item.parentId) : [];
+  let cmtLv1 = comments ? comments.filter((item: CommentType) => !item.parentId) : [];
 
-  const renderCommentItemChild = (comment: CommentType, parentCommentId: string) => {
+  const renderCommentItemChild = (comment: CommentType, parentCommentId: any) => {
     return (
       <li key={comment._id || comment.id}>
         <CommentCard size="normal" comment={comment} blog_id={blog_id} 
@@ -23,7 +24,7 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, bl
         />
         {comment.children && (
           <ul className="pl-4 mt-5 space-y-5 md:pl-9">
-            {comment.children.map(renderCommentItemChild)}
+            {comment.children.map((childComment: CommentType) => renderCommentItemChild(childComment, comment._id))}
           </ul>
         )}
       </li>
@@ -38,7 +39,7 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, bl
         />
         {comment.replyCM && (
           <ul className="pl-4 mt-5 space-y-5 md:pl-11">
-            {comment.replyCM.map(childComment => renderCommentItemChild(childComment, comment._id))}
+            {comment.replyCM.map((childComment: CommentType) => renderCommentItemChild(childComment, comment._id))}
           </ul>
         )}
       </li>

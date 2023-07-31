@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import LayoutPage from "components/LayoutPage/LayoutPage";
 import { useAppSelector } from "app/hooks";
-import { selectUser } from "app/auth/authSlice";
+import { selectUser } from "app/auth/auth";
 import facebookSvg from "images/Facebook.svg";
 import { Formik, Form } from 'formik';
 import authSchema from './Schema'

@@ -35,11 +35,11 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[2];
-  const [videoBlogs, setVideoBlogs] = useState(null);
+  const [videoBlogs, setVideoBlogs] = useState<PostDataType[] | null>(null);
   const [videoLoading, setVideoLoading] = useState(true);
   const [filter, setFilter] = useState({skip: 0, limit: 1, postType: 'video'});
   const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 6,});
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [users, setUsers] = useState(null);
   const [morePostLoading, setMorePostLoading] = useState(false);
   const [tags, setTags] = useState(null);
@@ -59,37 +59,40 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   ];
 
   useEffect(()=>{
-    TagWithTotalBlogs({skip: 0, limit: 20}).then((res)=> {
+    TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
       setTags(res)
     })
     setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'video'})
     setVideoLoading(true)
-    dispatch(blogsType(filter)).then((res) => {
-      setVideoBlogs(res)
+    dispatch(blogsType(filter)).then((res: any) => {
       setVideoLoading(false)
+      if(res)
+        setVideoBlogs(res)
     }).catch(() => setVideoLoading(false))
 
-    dispatch(allBloggers(filter)).then((res) => {
+    dispatch(allBloggers(filter)).then((res: any) => {
       setUsers(res)
     })
 
     setLoadingCategory(true)
-    CategoryWithTotalBlogs(categoryFilter).then((res)=> {
+    CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
       setLoadingCategory(false)
       setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
-      setCategories(res)
+      if(res)
+        setCategories(res)
     }).catch(()=> setLoadingCategory(false))
   },[])
 
   const loadMoreCategory = () => {
     setMoreLoadingCategory(true)
     let count = {limit: categoryFilter.limit, skip: categoryFilter.skip + categoryFilter.limit}
-    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res)=> {
+    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
       setMoreLoadingCategory(false)
-      setFilterCategory(count)
+      setCategoryFilter(count)
       if(res.length){
-        let newArray = categories.concat(res)
-        setCategories(newArray)
+        let newArray = categories?.concat(res)
+        if(newArray)
+          setCategories(newArray)
       }
     }).catch(()=> setMoreLoadingCategory(false))
   }
@@ -97,12 +100,12 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   const loadMore = () => {
     setMorePostLoading(true)
     let count = {skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'video'}
-    dispatch(blogsType(filter)).then((res) => {
+    dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
-      setSize(res.size)
       setMorePostLoading(false)
-      let newArray = blogs.concat(res.blogs)
-      setBlogs(newArray);
+      let newArray = videoBlogs?.concat(res.blogs)
+      if(newArray)
+      setVideoBlogs(newArray);
     }).catch(() => {
       setMorePostLoading(false)
     })
@@ -140,7 +143,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
 
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mt-8 lg:mt-10">
-            {(videoBlogs || posts ).map((post) => (
+            {(videoBlogs || posts ).map((post: any) => (
               <Card10V2 key={post._id || post.id} post={post} />
             ))}
           </div>

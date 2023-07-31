@@ -12,12 +12,7 @@ import SingleHeader from "./SingleHeader";
 
 export interface PageSingleTemp2SidebarProps {
   className?: string;
-}
-
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+  loading?: boolean;
 }
 
 const PageSingleTemp2Sidebar: FC<PageSingleTemp2SidebarProps> = ({

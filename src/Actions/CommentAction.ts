@@ -1,11 +1,7 @@
 import baseApi from '../baseApi';
 import { toast } from 'react-toastify';
-import {
-    LOADING_COMMENT, GET_COMMENTS, UPDATE_COMMENT, UPDATE_REPLY, DELETE_COMMENT, DELETE_REPLY, CREATE_COMMENT
-} from './Types'
 
-
-export const createComment = (data) => {
+export const createComment = (data: any) => {
     return baseApi.Comment.createComment(data).then(
         (data) => {
             return Promise.resolve(data)
@@ -24,10 +20,8 @@ export const createComment = (data) => {
     );
 }
 
-
-export const getComments = (
-    id, num
-) =>  {
+export const getComments = ( id: any, num: any ) =>  
+{
     let limit = 4;
     return baseApi.Comment.fetchComments(id, num, limit).then(
         (res) => {
@@ -47,8 +41,7 @@ export const getComments = (
     );
 }
 
-
-export const replyComment = (data) => {
+export const replyComment = (data: any) => {
     return baseApi.Comment.replyComment(data).then(
         (res) => {
             return Promise.resolve(res)
@@ -67,7 +60,7 @@ export const replyComment = (data) => {
     );
 }
 
-export const updateComment = (data) => {
+export const updateComment = (data: any) => {
     return baseApi.Comment.updateComment(data._id, data).then(
         (res) => {
           return Promise.resolve(res.data)
@@ -86,7 +79,7 @@ export const updateComment = (data) => {
     );
 }
 
-export const likeComment = (id) => {
+export const likeComment = (id: any) => {
   return baseApi.Comment.likeComment(id).then(
     (data) => {
       return data;
@@ -104,7 +97,7 @@ export const likeComment = (id) => {
   );
 }
 
-export const deleteComment = (_id) => {
+export const deleteComment = (_id: any) => {
     return baseApi.Comment.deleteComment(_id).then(
         (res) => {
            return Promise.resolve(res.data)

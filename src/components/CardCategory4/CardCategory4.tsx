@@ -41,7 +41,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
 
   return (
     <Link
-      to={href}
+      to={href || '/*'}
       className={`nc-CardCategory4 flex flex-col ${className}`}
       data-nc-id="CardCategory4"
     >

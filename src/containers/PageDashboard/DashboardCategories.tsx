@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectCategoryLoading } from "app/category/categorySlice";
 import { FetchCategories, deleteCategory } from '../../Actions/CategoryAction';
@@ -13,44 +13,52 @@ const DashboardCategories = () => {
   const history = useHistory()
   const { createCategory } = helperForm();
   const loading = useAppSelector(selectCategoryLoading)
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<any[]>([]);
   const [selectedDeleteLoading, setSelectedDeleteLoading] = useState(null);
-  const [initialValues, setInitialValues] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const deleteHandler = (id) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  interface InitialValuesType {
+    name: string | null;
+    _id: string | null; // Replace 'string' with the appropriate type for _id
+    media: string | null; // Replace 'string' with the appropriate type for media
+  }
+
+  const [initialValues, setInitialValues] = useState<InitialValuesType>({ name: null, _id: null, media: null });
+
+
+  const deleteHandler = (id: any) => {
     setSelectedDeleteLoading(id)
-    dispatch(deleteCategory(id)).then((res)=> {
-      let removeData = categories.filter((data) => data._id !== id )
+    dispatch(deleteCategory(id)).then((res: any)=> {
+      let removeData = categories ? categories.filter((data: any) => data._id !== id ) : []
       setSelectedDeleteLoading(null)
       setCategories(removeData)
     })
   }
-  const submitHandler = (values) => {
-    createCategory(values).then((res) => {
+  const submitHandler = (values: any) => {
+    createCategory(values).then((res: any) => {
       if(!values._id){
-        setInitialValues(null)
+        setInitialValues({ name: null, _id: null, media: null });
         setCategories([res, ...categories])
       }else{
-        let updatedData = categories.map((data) => data._id === res._id ? res : data)
+        let updatedData = categories.map((data: any) => data._id === res._id ? res : data)
         setCategories(updatedData)
       }
       setIsOpen(!isOpen)
     })
   }
-  const toggle = (data) => {
+  const toggle = (data: any) => {
     if(isOpen){
-      setInitialValues(null)
+      setInitialValues({ name: null, _id: null, media: null });
     }else{
       if(data.name)
         setInitialValues({name: data.name, _id: data._id,media: data.media})
       else
-        setInitialValues({name: ''})
+        setInitialValues({ name: null, _id: null, media: null });
     }
     setIsOpen(!isOpen)
   }
   useEffect(() => {
     let data = {skip: 0, limit: 3}
-    dispatch(FetchCategories(data)).then((res)=> {
+    dispatch(FetchCategories()).then((res: any)=> {
       setCategories(res)
     })
   },[])
@@ -94,9 +102,9 @@ const DashboardCategories = () => {
               <tbody className="bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800">
                 {
                   !loading ?
-                  categories &&
+                  categories.length > 0 &&
                   <>
-                    {categories.map((item) => (
+                    {categories.map((item: any) => (
                       <tr key={item._id}>
                         <td className="px-6 py-4">
                           <div className="flex items-center w-96 lg:w-auto max-w-md overflow-hidden">
@@ -149,9 +157,9 @@ const DashboardCategories = () => {
                   </>
                   :
                   <tr >
-                    <td colspan="4">
+                    <td colSpan={4}>
                       <div className="text-center mx-auto my-10 md:my-16">
-                        <button disable={true}
+                        <button disabled={true}
                             className="text-rose-600 hover:text-rose-900"
                           >
                         <svg className="animate-spin -ml-1 text-primary-800 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

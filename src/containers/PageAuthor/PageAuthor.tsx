@@ -68,10 +68,10 @@ const PageAuthor: FC<PageAuthorProps> = ({ className = "" }) => {
             />
             <div className="mt-5 sm:mt-0 sm:ml-8 space-y-4 max-w-lg">
               <h2 className="inline-block text-2xl sm:text-3xl md:text-4xl font-semibold">
-                {AUTHOR.displayName}ddd
+                {AUTHOR.displayName}
               </h2>
               <span className="block text-sm text-neutral-6000 dark:text-neutral-300 md:text-base">
-                {AUTHOR.desc}ee
+                {AUTHOR.desc}
               </span>
               <SocialsList />
             </div>

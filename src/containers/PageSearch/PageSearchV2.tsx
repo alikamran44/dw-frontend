@@ -4,7 +4,7 @@ import { Formik, Form } from 'formik';
 import { useHistory  } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { useParams } from "react-router-dom";
-import { PostDataType } from "data/types";
+import { PostDataType, TaxonomyType } from "data/types";
 import Pagination from "components/Pagination/Pagination";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import Nav from "components/Nav/Nav";
@@ -48,27 +48,29 @@ const FILTERS = [
   { name: "Most Viewed" },
 ];
 const TABS = ["Articles", "Categories", "Tags", "Authors"];
-
+interface RouteParams {
+  slug: string;
+}
 const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
   const history = useHistory()
   const dispatch = useAppDispatch()
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [tabActive, setTabActive] = useState<string>(TABS[0]);
   const [filter, setFilter] = useState({limit: 2, skip: 0, name: slug});
   const [tagFilter, setTagFilter] = useState({limit: 2, skip: 0, slug: slug});
   const [categoryFilter, setCategoryFilter] = useState({limit: 2, skip: 0, slug: slug});
-  const [blogs, setBlogs] = useState(null);
-  const [authors, setAuthors] = useState(null);
-  const [categories, setCategories] = useState(null);
-  const [tags, setTags] = useState(null);
+  const [blogs, setBlogs] = useState<any[] | null>(null);
+  const [authors, setAuthors] = useState<any[] | null>(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
+  const [tags, setTags] = useState<TaxonomyType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [moreLoading, setMoreLoading] = useState(false);
 
   const repeatedCategoriesArray = Array.from({ length: categoryFilter.limit }, (_, index) =>
-    DEMO_FAKE_CATEGORY_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
+    DEMO_FAKE_CATEGORY_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
   const fakePosts = Array.from({ length: filter.limit }, (_, index) =>
-    DEMO_FAKE_POST_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
+    DEMO_FAKE_POST_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
 
   const handleClickTab = (item: string) => {
@@ -93,7 +95,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
   useEffect(() => {
     if( tabActive === 'Tags' ){
       setLoading(true)
-      dispatch(tagWithTotalBlogs(tagFilter)).then((res) => {
+      dispatch(tagWithTotalBlogs(tagFilter)).then((res: any) => {
         console.log(res)
         setLoading(false)
         setTags(res)  
@@ -101,7 +103,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     }
     else if( tabActive === 'Categories' ){
       setLoading(true)
-      dispatch(categoryWithTotalBlogs(categoryFilter)).then((res) => {
+      dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any) => {
         console.log(res)
         setLoading(false)
         setCategories(res)  
@@ -109,7 +111,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     }
     else if( tabActive === 'Articles' ){
       setLoading(true)
-      dispatch(searchBlog(slug, filter)).then((res) => {
+      dispatch(searchBlog(slug, filter)).then((res: any) => {
         setLoading(false)
         setBlogs(res.blogs) 
       }).catch(() => setLoading(false))
@@ -117,8 +119,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     else if( tabActive === 'Authors' ){
       console.log('helllooo')
       setLoading(true)
-      dispatch(toatalUserBlogs(filter)).then((res) => {
-        console.log(res,'authorsssssssssssssssss')
+      dispatch(toatalUserBlogs(filter)).then((res: any) => {
         setLoading(false)
         setAuthors(res) 
       }).catch(() => setLoading(false))
@@ -130,7 +131,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     if( tabActive === 'Tags' ){
       setMoreLoading(true)
       let filterData = {...tagFilter, skip: tagFilter.skip+1}
-      dispatch(tagWithTotalBlogs(filterData)).then((res) => {
+      dispatch(tagWithTotalBlogs(filterData)).then((res: any) => {
         setMoreLoading(false)
         if(res.length > 0){
           setTagFilter({...tagFilter, skip: tagFilter.skip+1})
@@ -140,7 +141,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     }
     if( tabActive === 'Categories' ){
       setMoreLoading(true)
-      dispatch(categoryWithTotalBlogs(categoryFilter)).then((res) => {
+      dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any) => {
         console.log(res)
         setMoreLoading(false)
         if(res.length > 0){
@@ -151,7 +152,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     }
     if( tabActive === 'Articles' ){
       setMoreLoading(true)
-      dispatch(searchBlog(slug, filter)).then((res) => {
+      dispatch(searchBlog(slug, filter)).then((res: any) => {
         setMoreLoading(false)
         if(res.length > 0){
           setBlogs(res.blogs) 
@@ -160,7 +161,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     }
   }
 
-  const submitHandler = (values) => {
+  const submitHandler = (values: any) => {
     history.push(`/search/${values.search}`)
   }
 
@@ -229,7 +230,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
               containerClassName="w-full overflow-x-auto hiddenScrollbar"
               className=" sm:space-x-2"
             >
-              {TABS.map((item, index) => (
+              {TABS.map((item: any, index: any) => (
                 <NavItem
                   key={index}
                   isActive={tabActive === item}
@@ -249,7 +250,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
           {/* LOOP ITEMS POSTS */}
           {tabActive === "Articles" && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-8 mt-8 lg:mt-10">
-              {blogs && (blogs.length ? blogs.map((post) => (
+              {blogs && (blogs.length ? blogs.map((post: any) => (
                 <Card11 key={post._id} loading={loading} post={post} />))
                 : <EmptyCard text={'No Article found!'} />)
               }
@@ -258,7 +259,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
           {/* LOOP ITEMS CATEGORIES */}
           {tabActive === "Categories" && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 md:gap-8 mt-8 lg:mt-10">
-              {categories && (categories.length > 0 ? categories.map((cat) => (
+              {categories && (categories.length > 0 ? categories.map((cat: any) => (
                 <CardCategory2 key={cat._id} loading={loading} taxonomy={cat} />))
                 : <EmptyCard text={'No Category found!'} />)
               }
@@ -267,7 +268,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
           {/* LOOP ITEMS TAGS */}
           {tabActive === "Tags" && (
             <div className="flex flex-wrap mt-12 ">
-              {tags && (tags.length > 0 ? tags.map((tag) => (
+              {tags && (tags.length > 0 ? tags.map((tag: any) => (
                 <Tag className="mb-3 mr-3" loading={loading} key={tag._id} tag={tag} />))
                 : <EmptyCard text={'No Tag found!'} />)
               }
@@ -276,7 +277,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
           {/* LOOP ITEMS POSTS */}
           {tabActive === "Authors" && (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 md:gap-8 mt-8 lg:mt-10">
-              {authors && authors.map((author) => (
+              {authors && authors.map((author: any) => (
                 <CardAuthorBox2 key={author.id} author={author} />
               ))}
             </div>

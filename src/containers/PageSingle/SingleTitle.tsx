@@ -5,7 +5,7 @@ export interface SingleTitleProps {
   title: string;
   className?: string;
   mainClass?: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const SingleTitle: FC<SingleTitleProps> = ({

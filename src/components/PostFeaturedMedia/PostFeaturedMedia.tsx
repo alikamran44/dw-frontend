@@ -12,6 +12,7 @@ export interface PostFeaturedMediaProps {
   post: PostDataType;
   isHover?: boolean;
   isGallery?: boolean;
+  loading?: boolean;
 }
 
 // CHECK FOR VIDEO CARD ON VIEW
@@ -22,6 +23,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
   post,
   isHover = false,
   isGallery = false,
+  loading = false,
 }) => {
   const { featuredImage, postType, videoUrl, galleryImgs, audioUrl, _id, media, id, url, fileFolder, thumbnail } = post;
 
@@ -50,7 +52,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
     if (postType !== "gallery") return null;
     return (
       <GallerySlider
-        galleryImgs={galleryImgs || (media && media.filter((data=> data.fileFolder === 'gallery')))}
+        galleryImgs={galleryImgs || (media && media.filter(((data: any)=> data.fileFolder === 'gallery')))}
         uniqueClass={`PostFeaturedGallery_${id || _id}`}
       />
     );
@@ -64,7 +66,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 
     // VIDEO
     const vUrl = videoUrl || url || 
-    (media ? media?.find((data=> data.fileFolder === 'video'))?.url : '')
+    (media ? media?.find(((data: any)=> data.fileFolder === 'video'))?.url : '')
     if (
       ((postType === "video" || fileFolder === "video") || (isGallery && (postType === "audio" || fileFolder === "audio") )) &&
       vUrl &&
@@ -75,7 +77,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
 
     // AUDIO
     const aUrl = audioUrl || url || 
-    (media ? media?.find((data=> data.fileFolder === 'audio'))?.url : '')
+    (media ? media?.find(((data: any)=> data.fileFolder === 'audio'))?.url : '')
 
     if ((postType === "audio" || fileFolder === "audio") 
         && aUrl && !isGallery) {
@@ -97,7 +99,7 @@ const PostFeaturedMedia: FC<PostFeaturedMediaProps> = ({
     );
   };
   let imageUrl =  
-        media?.find((data=> data.fileFolder === 'feature'))?.url || ((fileFolder == "video" || fileFolder == "audio") ? thumbnail : url ) || featuredImage 
+        media?.find(((data: any)=> data.fileFolder === 'feature'))?.url || ((fileFolder == "video" || fileFolder == "audio") ? thumbnail : url ) || featuredImage 
   return (
     <div
       className={`nc-PostFeaturedMedia relative ${className}`}

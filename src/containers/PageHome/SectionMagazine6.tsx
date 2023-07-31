@@ -45,7 +45,7 @@ const SectionMagazine6: FC<SectionMagazine6Props> = ({
           <div className="group dark absolute md:w-1/2 lg:w-2/3 max-w-2xl flex flex-col justify-end p-5 lg:p-14">
             <div className="">
               <h2 className="nc-card-title text-2xl lg:text-3xl xl:text-4xl font-semibold text-white">
-                <Link to={href} className="line-clamp-2">
+                <Link to={href || '/*'} className="line-clamp-2">
                   {title}
                 </Link>
               </h2>
@@ -71,7 +71,7 @@ const SectionMagazine6: FC<SectionMagazine6Props> = ({
               {subPosts.map((post) => (
                 <div key={post.id} className="block py-5 lg:py-7">
                   <h2 className="nc-card-title text-base font-semibold">
-                    <Link to={post.href} className="line-clamp-2">
+                    <Link to={post.href || '/*'} className="line-clamp-2">
                       {post.title}
                     </Link>
                   </h2>

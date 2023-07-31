@@ -32,7 +32,7 @@ const Card18: FC<Card18Props> = ({
        `/blog-gallery/${slug}` : post.isSideBar ? `/blog-view/${slug}` : 
        `/blog/${slug}`
 
-  const fUrl = (media && media?.find((data=> data.fileFolder === 'feature'))?.url) || featuredImage
+  const fUrl = (media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
 
   const renderMeta = () => {
     return (
@@ -82,7 +82,7 @@ const Card18: FC<Card18Props> = ({
         <Link to={urlRef} className="absolute inset-0"></Link>
         {showCategories && (
           <div className="mb-3">
-            <CategoryBadgeList categories={categories} postType={postType} />
+            <CategoryBadgeList categories={categories} postType={postType || null} />
           </div>
         )}
         {renderMeta()}

@@ -15,25 +15,34 @@ import { replyComment } from '../../Actions/CommentAction';
 import dateFormat from "hooks/useDateFormat";
 
 export interface CommentType {
-  id: number;
-  author: PostAuthorType;
+   id?: string | number;
+  _id?: string | number;
+  size?: "large" | "normal";
+  comment?: CommentType;
+  user?: any;
+  parentId?: any;
+  updatedAt?: any;
+  author: PostAuthorType | null;
   date: string;
   content: string;
-  children?: CommentType[];
+  children?: CommentType[] | null;
+  replyCM?: CommentType[];
   like: {
-    count: number;
+    count: number | null;
     isLiked: boolean;
+    users?: any;
   };
 }
 
 export interface CommentCardProps {
   className?: string;
   comment: CommentType;
+  // size?: "large" | "normal";
   size?: "large" | "normal";
   blog_id: any;
-  parentId: string | null;
+  parentId?: string | null;
   blog_user_id: any;
-  setComments: () => void;
+  setComments: (data: any) => void;
   comments: CommentType[];
 }
 
@@ -98,9 +107,16 @@ const CommentCard: FC<CommentCardProps> = ({
   };
 
   const renderCommentForm = () => {
-    const user = JSON.parse(localStorage.getItem('userInfo')) || null;
+    interface UserInfo {
+      name: string;
+      email: string;
+      role: string;
+      _id: string;
+    }
+    const userInfoString = localStorage.getItem('userInfo');
+    const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
 
-    const replySubmitHandler = (values) => {
+    const replySubmitHandler = (values: any) => {
       if(values){
         values.blog_user_id = blog_user_id;
         values.blog_id = blog_id;
@@ -110,8 +126,8 @@ const CommentCard: FC<CommentCardProps> = ({
           values.comment_root = _id
         }
         values.reply_user_id = user?._id
-        replyComment(values).then((res) => {
-          const updateBlog = comments.map((rec) => rec._id === res._id ? res : rec)
+        replyComment(values).then((res: any) => {
+          const updateBlog = comments.map((rec: any) => rec._id === res._id ? res : rec)
           setComments(updateBlog)
           closeReplyForm()
         })
@@ -154,8 +170,8 @@ const CommentCard: FC<CommentCardProps> = ({
                   className={`p-2 text-neutral-500 flex items-center justify-center rounded-lg hover:text-neutral-800 dark:hover:text-neutral-200 sm:hover:bg-neutral-100 dark:hover:bg-neutral-800 ${twFocusClass()}`}
                   data={actions}
                   onClick={hanldeClickDropDown}
-                  isComments={true}
-                  comment={comment}
+                  // isComments={true}
+                  // comment={comment}
                 />
                 :
                 <SkeletonTheme baseColor="#ebebeb" highlightColor="#f5f5f5">
@@ -222,14 +238,14 @@ const CommentCard: FC<CommentCardProps> = ({
       />
       <ModalReportItem
         show={isReporting}
-        id={comment._id}
+        id={comment._id || ''}
         onCloseModalReportItem={closeModalReportComment}
       />
       <ModalDeleteComment
         id={_id} 
         setComments={setComments} comments={comments}
         show={isDeleting}
-        commentId={comment._id}
+        commentId={comment._id || ''}
         parentId={parentId}
         onCloseModalDeleteComment={closeModalDeleteComment}
       />

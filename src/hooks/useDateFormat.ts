@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useState } from "react";
-function useDateFormat(date) {
+function useDateFormat(date: any) {
   const [formattedDate, setDateFormat] = useState('');
   const updateEntry = (): void => {
     if(date){

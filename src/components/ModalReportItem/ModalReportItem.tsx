@@ -13,7 +13,7 @@ export interface ProblemPlan {
 }
 
 export interface ModalReportItemProps {
-  id: number | string;
+  id?: number | string;
   show: boolean;
   problemPlans?: ProblemPlan[];
   onCloseModalReportItem: () => void;
@@ -28,7 +28,7 @@ const problemPlansDemo = [
 
 const ModalReportItem: FC<ModalReportItemProps> = ({
   problemPlans = problemPlansDemo,
-  id,
+  id='',
   show,
   onCloseModalReportItem,
 }) => {
@@ -47,13 +47,8 @@ const ModalReportItem: FC<ModalReportItemProps> = ({
     }
   }, [show]);
 
-  const handleClickSubmitForm = (e) => {
+  const handleClickSubmitForm = (e: any) => {
     e.preventDefault()
-    console.log({
-      id,
-      problem: problemSelected,
-      message: (textareaRef.current as unknown as HTMLTextAreaElement).value,
-    });
   };
 
   const renderCheckIcon = () => {
@@ -78,7 +73,7 @@ const ModalReportItem: FC<ModalReportItemProps> = ({
         <RadioGroup value={problemSelected} onChange={setProblemSelected}>
           <RadioGroup.Label className="sr-only">Problem Plans</RadioGroup.Label>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-            {problemPlans.map((plan) => (
+            {problemPlans.map((plan: any) => (
               <RadioGroup.Option 
                 key={plan.name}
                 value={plan}

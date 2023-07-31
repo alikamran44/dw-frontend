@@ -1,13 +1,14 @@
 import { CustomLink } from "data/types";
 import React, { FC } from "react";
 import { Link } from "react-router-dom";
-import ModalCategories from "../containers/PageArchive/ModalCategories";
-import ModalTags from "../containers/PageArchive/ModalTags";
+import ModalCategories from "containers/PageArchive/ModalCategories";
+import ModalTags from "containers/PageArchive/ModalTags";
 export interface WidgetHeading1Props {
   className?: string;
   title: string;
   viewAll: CustomLink;
-  modalHandler: () => void;
+  modalHandler?: () => void;
+  loading?: boolean;
 }
 
 const WidgetHeading1: FC<WidgetHeading1Props> = ({
@@ -24,25 +25,28 @@ const WidgetHeading1: FC<WidgetHeading1Props> = ({
       <h2 className="text-lg text-neutral-900 dark:text-neutral-100 font-semibold flex-grow">
         {title}
       </h2>
-      {!viewAll.allowModal ? (
-        <Link
-          className="flex-shrink-0 block text-primary-700 dark:text-primary-500 font-semibold text-sm"
-          target={viewAll.targetBlank ? "_blank" : undefined}
-          rel="noopener noreferrer"
-          to={viewAll.href}
-        >
-          {viewAll.label}
-        </Link>)
-        :
-        <button
-          className="flex-shrink-0 block text-primary-700 dark:text-primary-500 font-semibold text-sm"
-          target={viewAll.targetBlank ? "_blank" : undefined}
-          rel="noopener noreferrer"
-          onClick={() => modalHandler()}
-        >
-          {viewAll.label}
-        </button>
-    }
+      {viewAll && viewAll.label && (
+        <>
+          {viewAll.targetBlank ? (
+            <a
+              href="#"
+              target={viewAll.targetBlank ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              className="text-sm font-medium text-neutral-5000 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+            >
+              {viewAll.label}
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={() =>  modalHandler && modalHandler()}
+              className="text-sm font-medium text-neutral-5000 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-300"
+            >
+              {viewAll.label}
+            </button>
+          )}
+        </>
+      )}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 import LayoutPage from "components/LayoutPage/LayoutPage";
 import { useAppSelector } from "app/hooks";
-import { selectUser } from "app/auth/authSlice";
+import { selectUser } from "app/auth/auth";
 import facebookSvg from "images/Facebook.svg";
 import { Formik, Form } from 'formik';
 import authSchema from './Schema'
@@ -42,8 +42,8 @@ const PageBloggerSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
   const user = useAppSelector(selectUser);
   const { registerBloggerSubmitHandler } = helperAuth();
   const initialValues = { email: '', password: '', firstName: '', lastName: '', 
-    confirmPassword: '', gender: '', about: '', jobName: '', pic: '', 
-    bgImage: '', username: ''};
+    confirmPassword: '', gender: '', about: '', jobName: '', pic: null, 
+    bgImage: null, username: ''};
   const history = useHistory()
 
   useEffect( ()=>{
@@ -98,7 +98,7 @@ const PageBloggerSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                 </div>
                 <input
                   name="bgImage"
-                  onChange={(e) => setFieldValue(e.target.name, e.target.files[0])}
+                  onChange={(e: any) => setFieldValue(e.target.name, e.target.files[0])}
                   type="file"
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
@@ -120,7 +120,7 @@ const PageBloggerSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                     </svg>
                     <span className="mt-1 text-xs">Change Image</span>
                   </div>
-                  <input name='pic' onChange={(e) => setFieldValue(e.target.name, e.target.files[0])} type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
+                  <input name='pic' onChange={(e: any) => setFieldValue(e.target.name, e.target.files[0])} type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
               </div>
               </div>

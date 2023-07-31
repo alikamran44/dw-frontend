@@ -11,12 +11,7 @@ import SingleHeader from "./SingleHeader";
 
 export interface PageSingleTemplate2Props {
   className?: string;
-}
-
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+   loading?: boolean;
 }
 
 const PageSingleTemplate2: FC<PageSingleTemplate2Props> = ({

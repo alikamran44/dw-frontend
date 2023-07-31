@@ -39,6 +39,7 @@ const SingleMetaAction: FC<SingleMetaActionProps> = ({
               postId={String(_id || id)}
               containerClassName="h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"
               iconClass="h-5 w-5"
+              bookmark={bookmark}
             />
             <PostActionDropdown
               containerClassName="h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"

@@ -1,6 +1,8 @@
 import React from "react";
-
-const SingleContentDemo = ({blogContent}) => {
+interface SingleContentDemoProps {
+  blogContent: string;
+}
+const SingleContentDemo: React.FC<SingleContentDemoProps> = ({blogContent}) => {
   return (
     <>
       {/* THIS IS THE DEMP CONTENT */}

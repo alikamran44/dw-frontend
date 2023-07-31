@@ -199,7 +199,7 @@ const MediaRunningContainerForSafari: FC<MediaRunningContainerForSafariProps> =
           }`}
         >
           <Link
-            to={href}
+            to={href || '/*'}
             className="relative flex items-center max-w-[240px] xl:flex-grow space-x-3 pl-12"
           >
             <NcImage
@@ -221,6 +221,7 @@ const MediaRunningContainerForSafari: FC<MediaRunningContainerForSafariProps> =
             <BookmarkContainer
               initBookmarked={bookmark.isBookmarked}
               postId={id}
+              bookmark={bookmark}
             />
           </div>
         </div>

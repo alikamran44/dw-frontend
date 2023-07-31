@@ -1,28 +1,28 @@
-import React, { FC, useState,useEffect } from "react";
+import React, { FC, useState,useEffect, Dispatch, SetStateAction } from "react";
 import NcModal from "components/NcModal/NcModal";
 import { Formik, Form } from 'formik';
 import { useAppSelector } from "app/hooks";
 import Input from "components/Input/Input";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import ModalGallery from "components/ModalGallery/ModalGallery";
 import helperForm from '../Helper'
+import ModalGallery from "components/ModalGallery/ModalGallery";
 
-export interface ModalCreateProps {
+export interface ModalCreateProps { 
   loading: boolean;
   uploadButtonText: string;
   buttonText: string;
   title: string;
-  name: string;
   submitHandler: (data: any) => void;
   isOpen: boolean;
-  toggle: () => void;
-  setIsOpen: () => void;
+  toggle: (data?: any) => void;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
   initialValues: any;
 }
 
+
 const ModalCreate: FC<ModalCreateProps> = ({ loading, uploadButtonText, buttonText, submitHandler, title,
   toggle, isOpen, setIsOpen, initialValues }) => {
-  const { fetchMediaFiles, fetchMedia, uploadFile } = helperForm();
+  const { fetchMediaFiles, uploadFile } = helperForm();
   const [feature, setFeature] = useState({url: '', name: 'media', selected: null, 
     title: 'Upload or Select Tag Cover Photo', fileFolder: 'cover', text: 'Cover Photo'
   });
@@ -34,7 +34,7 @@ const ModalCreate: FC<ModalCreateProps> = ({ loading, uploadButtonText, buttonTe
     }
   },[isOpen])
   const renderModalContent = () => {
-    if(!initialValues) return <></>
+    if(!initialValues.name) return <></>
     return (
       <div>
         <Formik
@@ -61,11 +61,10 @@ const ModalCreate: FC<ModalCreateProps> = ({ loading, uploadButtonText, buttonTe
                        <div className="mt-8 grid md:grid-cols-2 gap-6">
                           <div className="grid sm:grid-cols-3  md:grid-cols-2 md:gap-2 sm:gap-2 ">
                             <div >
-                              <ModalGallery
+                             <ModalGallery
                                 data={feature}
                                 setMedia={setFeature}
                                 fetchMediaFiles={fetchMediaFiles}
-                                fetchMedia={fetchMedia}
                                 uploadFile={uploadFile}
                                 setField={setFieldValue}
                               />

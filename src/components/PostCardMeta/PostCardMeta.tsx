@@ -8,7 +8,7 @@ import dateFormat from "hooks/useDateFormat";
 
 export interface PostCardMetaProps {
   className?: string;
-  meta: Pick<PostDataType, "date" | "author">;
+  meta: PostDataType;
   hiddenAvatar?: boolean;
   size?: "large" | "normal";
   loading?: boolean;

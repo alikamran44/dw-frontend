@@ -26,6 +26,7 @@ const PostCardSave2: FC<PostCardSave2Props> = ({
         <BookmarkContainer
           initBookmarked={bookmark.isBookmarked}
           containerClassName={classBgIcon}
+          bookmark={bookmark}
           postId={id}
         />
       </span>

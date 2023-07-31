@@ -27,7 +27,7 @@ const Card14: FC<Card14Props> = ({
       className={`nc-Card14 relative flex flex-col group rounded-3xl overflow-hidden ${hoverClass} ${className}`}
       data-nc-id="Card14"
     >
-      <Link to={href} className={`flex items-start relative w-full ${ratio}`}>
+      <Link to={href || '/*'} className={`flex items-start relative w-full ${ratio}`}>
         <NcImage
           containerClassName="absolute inset-0 overflow-hidden"
           className="object-cover w-full h-full rounded-3xl "
@@ -50,25 +50,25 @@ const Card14: FC<Card14Props> = ({
 
       <div className="dark absolute bottom-4 inset-x-4 sm:bottom-5 sm:inset-x-5 flex flex-col flex-grow">
         <h2 className="nc-card-title block text-base font-semibold text-white ">
-          <Link to={href} className="line-clamp-2" title={title}>
+          <Link to={href || '/*'} className="line-clamp-2" title={title}>
             {title}
           </Link>
         </h2>
 
         <div className="p-2 sm:p-2.5 mt-4 sm:mt-5 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full flex items-center text-neutral-50 text-xs sm:text-sm font-medium">
           <Link
-            to={author.href}
+            to={author?.href || '/*'}
             className="relative flex items-center space-x-2"
           >
             <Avatar
               radius="rounded-full"
               containerClassName="ring-2 ring-white"
               sizeClass="h-7 w-7 text-sm"
-              imgUrl={author.avatar}
-              userName={author.displayName}
+              imgUrl={author?.avatar}
+              userName={author?.displayName}
             />
             <span className="block text-white truncate">
-              {author.displayName}
+              {author?.displayName}
             </span>
           </Link>
           <>

@@ -9,6 +9,7 @@ export interface CategoryBadgeListProps {
   itemClass?: string;
   href?: string;
   categories: PostDataType["categories"];
+  postType?: string | null;
 }
 
 const CategoryBadgeList: FC<CategoryBadgeListProps> = ({

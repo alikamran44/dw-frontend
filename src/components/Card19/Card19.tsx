@@ -42,7 +42,7 @@ const Card19: FC<Card19Props> = ({
        `/blog-gallery/${slug}` : post.isSideBar ? `/blog-view/${slug}` : 
        `/blog/${slug}`
 
-  const fUrl = (media && media?.find((data=> data.fileFolder === 'feature'))?.url) || featuredImage
+  const fUrl = (media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
   return (
     <div
       className={`nc-Card19 relative flex flex-col group rounded-xl overflow-hidden ${hoverClass} ${className}`}
@@ -81,7 +81,7 @@ const Card19: FC<Card19Props> = ({
         <Link to={urlRef ? urlRef : ''} className="absolute inset-0"></Link>
         {showCategories && (
           <div className="mb-3">
-            <CategoryBadgeList categories={categories} postType={postType} />
+            <CategoryBadgeList categories={categories} postType={postType || null} />
           </div>
         )}
         {renderMeta()}

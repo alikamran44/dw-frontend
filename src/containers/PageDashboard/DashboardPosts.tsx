@@ -62,17 +62,17 @@ const people = [
 
 const DashboardPosts = () => {
   const history = useHistory()
-  const [blogs, setBlogs] = useState(null);
+  const [blogs, setBlogs] = useState<any[] | null>(null);
   const dispatch = useAppDispatch()
-  const deleteHandler = (id) => {
+  const deleteHandler = (id: any) => {
     let data = {skip: 0, limit: 3}
-    dispatch(removeBlog(id)).then((res)=> dispatch(fetchPosts(data)).then((res)=> {
+    dispatch(removeBlog(id)).then((res: any)=> dispatch(fetchPosts(data)).then((res)=> {
       setBlogs(res.blogs)
     }) 
   )}
   useEffect(() => {
     let data = {skip: 0, limit: 3}
-    dispatch(fetchPosts(data)).then((res)=> {
+    dispatch(fetchPosts(data)).then((res: any)=> {
       setBlogs(res.blogs)
     })
   },[])
@@ -102,13 +102,13 @@ const DashboardPosts = () => {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800">
-                {blogs.map((item) => (
+                {(blogs || []).map((item) => (
                   <tr key={item._id}>
                     <td className="px-6 py-4">
                       <div className="flex items-center w-96 lg:w-auto max-w-md overflow-hidden">
                         <NcImage
                           containerClassName="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden lg:h-14 lg:w-14"
-                          src={`${item.media.find((data=> data.fileFolder === 'cover'))?.url}`}
+                          src={`${item.media.find(((data: any)=> data.fileFolder === 'cover'))?.url}`}
                         />
                         <div className="ml-4 flex-grow">
                           <h2 className="inline-flex line-clamp-2 text-sm font-semibold  dark:text-neutral-300">

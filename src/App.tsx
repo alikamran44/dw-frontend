@@ -1,8 +1,9 @@
 import React, {useEffect} from "react";
 import MyRouter from "routers/index";
-import {AlertBox} from "components/Alert";
+// import {AlertBox} from "components/Alert";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { selectUser, setPageLoading, selectProfile, selectPageLoading, selectLoading } from "app/auth/authSlice";
+import { selectUser, setPageLoading, selectProfile, selectPageLoading, 
+selectLoading } from "app/auth/auth";
 import { fetchUserProfile } from './Actions/AuthAction';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,7 +14,6 @@ function App() {
   const user = useAppSelector(selectUser);
   const pageLoading = useAppSelector(selectPageLoading);
   const profile = useAppSelector(selectProfile);
-  console.log(profile,'profileprofileprofile')
   const dispatch = useAppDispatch();
   useEffect(() => {
     if(user && !profile){
@@ -29,7 +29,7 @@ function App() {
       {
           <div>
             <MyRouter />
-            <AlertBox />
+            {/*<AlertBox />*/}
             <ToastContainer 
               position="bottom-left"
             />

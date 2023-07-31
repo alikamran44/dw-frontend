@@ -3,18 +3,18 @@ import React, { FC } from "react";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import SingleTitle from "./SingleTitle";
-import { SinglePageType } from "./PageSingleTemp3Sidebar";
 import PostMeta2 from "components/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
+import { PostDataType, TaxonomyType } from "data/types";
 
 export interface SingleHeaderProps {
-  pageData: SinglePageType;
+  pageData: PostDataType;
   hiddenDesc?: boolean;
   metaActionStyle?: "style1" | "style2";
   titleMainClass?: string;
   className?: string;
-  loading: boolean;
+  loading?: boolean;
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({

@@ -16,7 +16,7 @@ const SearchDropdown = () => {
               inputRef.current?.focus();
             }, 100);
           }
-          const submitHandler = (values) => {
+          const submitHandler = (values: any) => {
             history.push(`/search/${values.search}`)
           }
           return (

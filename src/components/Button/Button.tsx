@@ -14,7 +14,7 @@ export interface ButtonProps {
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   href?: keyof LocationStates | "#" | LinkProps["to"];
   targetBlank?: boolean;
-  onClick?: () => void;
+  onClick?: any;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -65,7 +65,10 @@ const Button: FC<ButtonProps> = ({
         to={href}
         target={targetBlank ? "_blank" : undefined}
         className={`${CLASSES} `}
-        onClick={onClick}
+        onClick={(e) => {
+          const event = e as React.MouseEvent<HTMLAnchorElement, MouseEvent>;
+          onClick(event);
+        }}
         rel="noopener noreferrer"
       >
         {children || `This is Link`}
@@ -77,7 +80,10 @@ const Button: FC<ButtonProps> = ({
     <button
       disabled={disabled || loading}
       className={`${CLASSES}`}
-      onClick={onClick}
+       onClick={(e) => {
+        const event = e as React.MouseEvent<HTMLButtonElement, MouseEvent>;
+        onClick(event);
+      }}
       type={type}
     >
       {loading && _renderLoading()}

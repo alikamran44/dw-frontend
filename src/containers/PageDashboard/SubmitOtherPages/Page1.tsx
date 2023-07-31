@@ -8,8 +8,9 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded?: string;
   errors:any;
   touched: any;
-  name: string;
-  setCover: () => void;
+  values: any;
+  setCover:(media: any) => void;
+  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
 const Page1 = React.forwardRef<HTMLInputElement, InputProps>(
@@ -18,12 +19,9 @@ const Page1 = React.forwardRef<HTMLInputElement, InputProps>(
       className = "",
       sizeClass = "h-11 px-4 py-3",
       fontClass = "text-sm font-normal",
-      rounded = "rounded-full",
-      children,
-      type = "text",
+      rounded = "rounded-full",      
       errors={},
       touched={},
-      name,
       values,
       setFieldValue,
       setCover,
@@ -31,8 +29,9 @@ const Page1 = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const changeHandler = (e, setFieldValue) => {
-      setFieldValue(e.target.name, e.target.value)
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      if(setFieldValue)
+        setFieldValue(e.target.name, e.target.value)
       if(e.target.value === 'standard'){
         setCover({url: '', name: 'cover', selected: null, 
           title: 'Upload or Select Cover Photo', fileFolder: 'cover', text: 'Cover Photo'
@@ -87,7 +86,7 @@ const Page1 = React.forwardRef<HTMLInputElement, InputProps>(
             <Label>Select Post Type</Label>
             <select className="mt-1 nc-Select block w-full text-sm rounded-lg border-neutral-200 focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 bg-white dark:border-neutral-700 dark:focus:ring-primary-6000 dark:focus:ring-opacity-25 dark:bg-neutral-900"
               name='postType' value={values['postType']}  
-              onChange={(e) => changeHandler(e, setFieldValue)}
+              onChange={(e) => changeHandler(e)}
             >
               <option value="-1">– select –</option>
               <option value="standard">standard</option>

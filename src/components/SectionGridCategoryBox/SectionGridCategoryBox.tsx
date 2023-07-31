@@ -14,8 +14,8 @@ export interface SectionGridCategoryBoxProps {
   headingCenter?: boolean;
   categoryCardType?: "card1" | "card2" | "card3" | "card4" | "card5";
   className?: string;
-  loading: boolean;
-  moreLoading: boolean;
+  loading?: boolean;
+  moreLoading?: boolean;
 }
 
 const DATA = DEMO_CATEGORIES.filter((_, i) => i < 10);
@@ -66,7 +66,7 @@ const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({
           />
         ))}
 
-        {moreLoading && fakeCategories.map((item, i) => (
+        {moreLoading && fakeCategories?.map((item, i) => (
           <CardComponentName
             index={i < 3 ? `#${i + 1}` : undefined}
             key={item._id || item.id}

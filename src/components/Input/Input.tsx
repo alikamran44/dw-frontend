@@ -4,9 +4,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   sizeClass?: string;
   fontClass?: string;
   rounded?: string;
-  errors:any,
-  touched: any,
-  name: string,
+  errors?:any;
+  touched?: any;
+  name?: string;
+  values?: any;
+  type?: any;
+  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -28,20 +31,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ref
   ) => {
     const [cValue, setCValue] = useState('')
-    const handleChange = (e) => {
-      if(e.target.type !== 'file')
-        setFieldValue(name, e.target.value)
-      else{
-        setCValue(e.target.value)
-        setFieldValue(name, e.target.files[0])
+    const handleChange = (e: any) => {
+      if(setFieldValue && name){
+        if(e.target.type !== 'file')
+          setFieldValue(name, e.target.value)
+        else{
+          setCValue(e.target.value)
+          setFieldValue(name, e.target.files[0])
+        }
       }
     }
     return (
       <>        
         <input
           ref={ref}
-          type={type}
-          name={name}
+          type={type || 'text'}
+          name={name || ''}
           value={cValue ? cValue : values}
           onChange={handleChange}
           className={`block w-full border-neutral-200 focus:border-primary-300 focus:ring 
@@ -50,7 +55,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ${rounded} ${fontClass} ${sizeClass} ${className}`}
           {...args}
         />
-          {errors[name] || touched[name] ? <div className="invalid-feedback">{errors[name]}</div> : null}
+          {
+            name && (errors[name] || touched[name] ? <div className="invalid-feedback">{errors[name]
+          }</div> : null)}
       </>
     );
   }

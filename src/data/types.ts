@@ -3,19 +3,26 @@ export interface CustomLink {
   label: string;
   href: string;
   targetBlank?: boolean;
+  allowModal?: boolean;
 }
 
 //  ##########  PostDataType ######## //
 export interface TaxonomyType {
-  id: string | number;
+  id?: string | number;
+  _id?: string | number | null;
   name: string;
-  href: string;
-  count?: number;
+  href?: string;
+  count?: number | null;
+  media?: any;
   thumbnail?: string;
   desc?: string;
+  slug?: string;
+  tagsCount?: any;
   color?: TwMainColor | string;
-  taxonomy: "category" | "tag";
+  taxonomy: "category" | "tag" | null;
 }
+
+// ######### Post Skeleton ########### //
 export interface FakePostType {
   _id: string | number;
   name: string | '';
@@ -47,40 +54,58 @@ export interface FakeAuthorType {
 }
 
 export interface PostAuthorType {
-  id: string | number;
-  firstName: string;
-  lastName: string;
-  displayName: string;
-  avatar: string;
+  id?: string | number;
+  _id?: string | number;
+  firstName?: string;
+  about?: string;
+  lastName?: string;
+  displayName?: string;
+  avatar?: string;
   bgImage?: string;
+  pic?: string;
   email?: string;
-  count: number;
-  desc: string;
+  count?: number;
+  desc?: string;
   jobName: string;
-  href: string;
+  href?: string;
 }
 
+
 export interface PostDataType {
-  id: string | number;
-  author: PostAuthorType;
+  id?: string | number;
+  _id?: string | number;
+  author?: PostAuthorType;
   date: string;
-  href: string;
+  href?: string;
+  content?: string;
+  slug?: string;
+  url?: string;
+  thumbnail?: any;
+  fileFolder?: any;
+  description?: string;
+  isSideBar?: any;
+  media?: any;
+  postedBy?: any;
   categories: TaxonomyType[];
+  tags?: TaxonomyType[];
   title: string;
-  featuredImage: string;
+  featuredImage?: string;
+  comments?: any;
   desc?: string;
   like: {
-    count: number;
+    count: number | null;
     isLiked: boolean;
+    users?: any;
   };
   bookmark: {
-    count: number;
+    count: number | null;
     isBookmarked: boolean;
+    users?: any;
   };
-  commentCount: number;
-  viewdCount: number;
-  readingTime: number;
-  postType: "standard" | "video" | "gallery" | "audio";
+  commentCount: number | null;
+  viewdCount: number | null;
+  readingTime: number | null;
+  postType: "standard" | "video" | "gallery" | "audio" | null;
   videoUrl?: string;
   audioUrl?: string;
   galleryImgs?: string[];

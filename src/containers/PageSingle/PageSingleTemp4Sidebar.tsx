@@ -15,12 +15,6 @@ export interface PageSingleTemp4SidebarProps {
   className?: string;
 }
 
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
-}
-
 const PageSingleTemp4Sidebar: FC<PageSingleTemp4SidebarProps> = ({
   className = "",
 }) => {

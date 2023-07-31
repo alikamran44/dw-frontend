@@ -17,35 +17,36 @@ export interface ModalTagsProps {
 
 const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }) => {
   const [filterData, setFilterData] = useState({skip: 0, limit: 20});
-  const [tags, setTags] = useState(null);
+  const [tags, setTags] = useState<TaxonomyType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   const repeatedCategoriesArray = Array.from({ length: filterData.limit }, (_, index) =>
-    DEMO_FAKE_CATEGORY_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
+    DEMO_FAKE_CATEGORY_DATA.map((item: TaxonomyType) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
 
   const loadMore = () => {
     setMoreLoading(true)
     let count = {limit: filterData.limit + filterData.limit, skip: filterData.skip + 1}
-    dispatch(tagWithTotalBlogs(filterData)).then((res)=> {
-      console.log(res,'lllllllllllll')
+    dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
       setMoreLoading(false)
       setFilterData(count)
       if(res.length){
-        let newArray = tags.concat(res)
-        setTags(newArray)
+        let newArray = tags?.concat(res)
+        if(newArray)
+          setTags(newArray)
       }
     }).catch(()=> setMoreLoading(false))
   }
   useEffect(()=>{
     setLoading(true)
     let count = {limit: filterData.limit + filterData.limit, skip: filterData.skip + 1}
-    dispatch(tagWithTotalBlogs(filterData)).then((res)=> {
+    dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
       setLoading(false)
       setFilterData(count)
-      setTags(res)
+      if(res)
+        setTags(res)
     }).catch(()=> setLoading(false))
   },[])
   useEffect(()=>{
@@ -58,11 +59,11 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
     return (
       <div>
         <div className="flex flex-wrap dark:text-neutral-200">
-          {tags && tags.map((tag) => (
+          {tags && tags.map((tag: TaxonomyType) => (
             <Tag loading={loading} key={tag._id} tag={tag} className="mr-2 mb-2" />
           ))}
           {
-            moreLoading && repeatedCategoriesArray.map((cat) => (
+            moreLoading && repeatedCategoriesArray.map((cat: TaxonomyType) => (
               <Tag loading={moreLoading} key={cat._id} tag={cat} className="mr-2 mb-2" />
             ))
           }

@@ -10,7 +10,8 @@ import PostFeaturedMedia from "components/PostFeaturedMedia/PostFeaturedMedia";
 export interface CardProps {
   className?: string;
   taxonomy: any;
-  onSelectImage: () => void;
+  selectedImg: any;
+  onSelectImage: (id: any, url: any) => void; // Adjust the function signature to accept two arguments
   loading: boolean;
   select: any;
 }
@@ -22,7 +23,7 @@ const Card: FC<CardProps> = ({
   onSelectImage,
   loading
 }) => {
-  const [isHover, setIsHover] = useState(false);
+  const [isHover, setIsHover] = useState<boolean>(false);
   const hasData = (taxonomy ? (taxonomy._id !== null && taxonomy._id !== undefined && taxonomy._id !== '' && !loading) : false)
   return (
       <div className={`${hasData && ((taxonomy._id === select ) || (Array.isArray(select) && select.includes(taxonomy._id))) ? 'bg-teal-600 text-white' :
@@ -31,10 +32,9 @@ const Card: FC<CardProps> = ({
         relative flex-shrink-0 w-44 rounded-xl border border-neutral-200 
         dark:border-neutral-700 px-6 py-5 cursor-pointer flex focus:outline-none`} 
         id="headlessui-radiogroup-option-:r1t:"
-        role="radio" aria-checked="false" tabIndex="-1" data-headlessui-state="" 
+        role="radio" aria-checked="false" tabIndex={-1}  data-headlessui-state="" 
         aria-labelledby="headlessui-label-:r1v:" aria-describedby="headlessui-description-:r1u:"
         onClick={ ()=> {
-          console.log(select,'testtttt')
           if(hasData && !loading){
               onSelectImage(taxonomy._id, 
                 (taxonomy.fileFolder === 'video' || taxonomy.fileFolder === 'audio') ? 

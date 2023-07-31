@@ -1,18 +1,21 @@
-
+import React from 'react';
 import {useEffect, useState} from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { selectLoading } from "app/auth/authSlice";
+import { selectLoading } from "app/auth/auth";
 import { allUsers } from '../../Actions/AuthAction';
 import { useHistory } from "react-router-dom";
 import NcImage from "components/NcImage/NcImage";
 import Pagination from "components/Pagination/Pagination";
 
-const DashboardUsers = () => {
+interface DashboardUsersProps {
+  
+}
+const DashboardUsers: React.FC<DashboardUsersProps> = ({ }) => {
   const history = useHistory()
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState<any[] | null>(null);
   const loading = useAppSelector(selectLoading);
   const dispatch = useAppDispatch()
-  const deleteHandler = (id) => {
+  const deleteHandler = (id: any) => {
     let data = {skip: 0, limit: 3}
     /*dispatch(removeBlog(id)).then((res)=> dispatch(fetchPosts(data)).then((res)=> {
       setBlogs(res.blogs)
@@ -20,7 +23,7 @@ const DashboardUsers = () => {
   }
   useEffect(() => {
     let data = {skip: 0, limit: 3}
-    dispatch(allUsers(data)).then((res)=> {
+    dispatch(allUsers()).then((res: any)=> {
       console.log(res)
       setUsers(res)
     })
@@ -51,7 +54,7 @@ const DashboardUsers = () => {
                 </tr>
               </thead>
               <tbody className="bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800">
-                {users.map((item) => (
+                {(users || []).map((item: any) => (
                   <tr key={item._id}>
                     <td className="px-6 py-4">
                       <div className="flex items-center w-96 lg:w-auto max-w-md overflow-hidden">

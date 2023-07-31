@@ -21,6 +21,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import { blogsType, FetchRecentPosts  } from '../../Actions/PostAction';
 import SectionMagazine7 from "./SectionMagazine7";
 import SectionGridPosts from "./SectionGridPosts";
+import { PostDataType, TaxonomyType, PostAuthorType } from "data/types";
 
 //
 const MAGAZINE1_TABS = ["all", "Garden", "Fitness", "Design"];
@@ -38,29 +39,29 @@ const repeatedTagsArray = Array.from({ length: 20 }, (_, index) =>
   ).flat();
 
 const PageHomeDemo6: React.FC = () => {
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const categoryLoading = useAppSelector(selectCategoryLoading)
 
-  const [mainBlogs, setMainBlogs] = useState(null);
+  const [mainBlogs, setMainBlogs] = useState<PostDataType[] | null>(null);
   const [mainLoading, setMainLoading] = useState(true);
 
   const [audioBlogs, setAudioBlogs] = useState(null);
   const [audioLoading, setAudioLoading] = useState(false);
 
-  const [videoBlogs, setVideoBlogs] = useState(null);
+  const [videoBlogs, setVideoBlogs] = useState<PostDataType[] | null>(null);
   const [videoLoading, setVideoLoading] = useState(true);
 
-  const [galleryBlogs, setGalleryBlogs] = useState(null);
+  const [galleryBlogs, setGalleryBlogs] = useState<PostDataType[] | null>(null);
   const [galleryLoading, setGalleryLoading] = useState(true);
 
-  const [recentBlogs, setRecentBlogs] = useState(null);
+  const [recentBlogs, setRecentBlogs] = useState<PostDataType[] | null>(null);
   const [recentLoading, setRecentLoading] = useState(true);
 
   const [users, setUsers] = useState(null);
 
 
   // const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 5});
-  const [tags, setTags] = useState(null);
+  const [tags, setTags] = useState<TaxonomyType[] | null>(null);
   const tagLoading = useAppSelector(selectTagLoading)
   // const [tagFilter, setTagFilter] = useState({skip: 0, limit: 20});
   const dispatch = useAppDispatch()
@@ -115,7 +116,7 @@ const PageHomeDemo6: React.FC = () => {
 
     const $body = document.querySelector("body");
     if ($body) {
-      $body.className = "theme-demo-6 theme-lightBlue-coolGrey";
+      $body.className = "theme-demo-6 ";
     }
     return () => {
       if ($body) {
@@ -188,11 +189,11 @@ const PageHomeDemo6: React.FC = () => {
             categories &&
             <SectionLatestPosts
               posts={recentBlogs || DEMO_POSTS_NEWS.filter((_, i) => i > 7 && i < 18)}
-              widgetPosts={recentBlogs?.filter((_, i) => i > 2 && i < 7) || DEMO_POSTS_NEWS.filter((_, i) => i > 2 && i < 7)}
+              widgetPosts={recentBlogs?.filter((_, i) : any => i > 2 && i < 7) || DEMO_POSTS_NEWS.filter((_, i) => i > 2 && i < 7)}
               categories={categories}
               categoryLoading={categoryLoading}
               tagLoading={tagLoading}
-              tags={tags}
+              tags={tags || []}
               authors = { users || authorsDemo}
               href={'/blogs'}
               postCardName="card7"

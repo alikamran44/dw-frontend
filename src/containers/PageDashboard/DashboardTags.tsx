@@ -1,3 +1,4 @@
+import React from 'react';
 import {useEffect, useState} from "react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectTagLoading } from "app/tag/tagSlice";
@@ -8,47 +9,57 @@ import NcImage from "components/NcImage/NcImage";
 import Pagination from "components/Pagination/Pagination";
 import helperForm from './Helper'
 
-const DashboardTags = () => {
-  const history = useHistory()
+interface DashboardTagsProps {
+  
+}
+
+const DashboardTags: React.FC<DashboardTagsProps> = ({ }) => {
+  const history = useHistory() 
   const loading = useAppSelector(selectTagLoading)
   const { createTag } = helperForm();
-  const [tags, setTags] = useState(null);
+  const [tags, setTags] = useState<any[]>([]);
   const [selectedDeleteLoading, setSelectedDeleteLoading] = useState(null);
-  const [initialValues, setInitialValues] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  interface InitialValuesType {
+    name: string | null;
+    _id: string | null; // Replace 'string' with the appropriate type for _id
+    media: string | null; // Replace 'string' with the appropriate type for media
+  }
+
+  const [initialValues, setInitialValues] = useState<InitialValuesType>({ name: null, _id: null, media: null });
   const dispatch = useAppDispatch()
-  const toggle = (data) => {
+  const toggle = (data: any) => {
     if(isOpen){
-      setInitialValues(null)
+      setInitialValues({name: null, _id: null, media: null})
     }else{
       if(data.name)
         setInitialValues({name: data.name, _id: data._id, media: data.media})
       else
-        setInitialValues({name: '', media: ''})
+        setInitialValues({name: null, _id: null, media: null})
     }
     setIsOpen(!isOpen)
   }
-  const deleteHandler = (id) => {
+  const deleteHandler = (id: any) => {
     setSelectedDeleteLoading(id)
-    dispatch(deleteTag(id)).then((res)=> {
-      let removeData = tags.filter((data) => data._id !== id )
+    dispatch(deleteTag(id)).then((res: any)=> {
+      let removeData = tags.filter((data: any) => data._id !== id )
       setSelectedDeleteLoading(null)
       setTags(removeData)
     })
   }
   useEffect(() => {
     let data = {skip: 0, limit: 3}
-    dispatch(FetchTags(data)).then((res)=> {
+    dispatch(FetchTags()).then((res: any)=> {
       setTags(res)
     })
   },[])
-  const submitHandler = (values) => {
-      createTag(values).then((res) => {
+  const submitHandler = (values: any) => {
+      createTag(values).then((res: any) => {
         if(!values._id){
-          setInitialValues(null)
+          setInitialValues({name: null, _id: null, media: null})
           setTags([res, ...tags])
         }else{
-          let updatedData = tags.map((data) => data._id === res._id ? res : data)
+          let updatedData = tags.map((data: any) => data._id === res._id ? res : data)
           setTags(updatedData)
         }
         setIsOpen(!isOpen)
@@ -94,8 +105,8 @@ const DashboardTags = () => {
               <tbody className="bg-white dark:bg-neutral-900 divide-y divide-neutral-200 dark:divide-neutral-800">
                 <>
                   {
-                    !loading || tags ?
-                    tags.map((item) => (
+                    !loading || tags.length > 0 ?
+                    tags.map((item: any) => (
                       <tr key={item._id}>
                         <td className="px-6 py-4">
                           <div className="flex items-center w-96 lg:w-auto max-w-md overflow-hidden">
@@ -147,7 +158,7 @@ const DashboardTags = () => {
                     ))
                   :
                   <tr >
-                    <td colSpan="4">
+                    <td colSpan={4}>
                       <div className="text-center mx-auto my-10 md:my-16">
                         <button disabled={true}
                           className="text-rose-600 hover:text-rose-900"

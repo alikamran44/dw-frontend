@@ -20,19 +20,15 @@ import { fetchPost } from '../../Actions/PostAction';
 export interface PageSingleAudioProps {
   className?: string;
 }
-
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+interface RouteParams {
+  slug: string;
 }
-
 const PageSingleAudio: FC<PageSingleAudioProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [blogLoading, setBlogLoading] = useState(false)
   const [fetched, setFetched] = useState(true)
-  const [blog, setBlog] = useState(null)
+  const [blog, setBlog] = useState<PostDataType | null>(null);
 
   useEffect(() => {
     // // UPDATE CURRENTPAGE DATA IN PAGE-REDUCERS
@@ -42,7 +38,7 @@ const PageSingleAudio: FC<PageSingleAudioProps> = ({ className = "" }) => {
     // };
 
     setBlogLoading(true)
-    fetchPost(slug).then((res) => {
+    fetchPost(slug).then((res: any) => {
       setBlogLoading(false)
       if(res && Object.keys(res).length > 0){
         setBlog(res)
@@ -81,7 +77,7 @@ const PageSingleAudio: FC<PageSingleAudioProps> = ({ className = "" }) => {
     if (!isCurrentRunning) {
       newState = null;
     }
-    const fUrl = (blog ? blog.media?.find((data=> data.fileFolder === 'feature'))?.url : '')
+    const fUrl = (blog ? blog.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url : '')
         || SINGLE_AUDIO.featuredImage
     return (
       <div

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "app/hooks";
 import { CommentType } from "components/CommentCard/CommentCard";
 import {
   selectCommentRecentLikeds,
-  selectCommentRecentRemoveds,
+  selectCommentRecentRemoveds, 
   removeLikedByPostId,
   addNewLikedByPostId,
 } from "app/commentLikes/commentLikes";
@@ -16,13 +16,13 @@ import  { setAlert,
           selectConfirmAlert, 
           onRemoveConfirmAlert, 
           removeAlert 
-        } from "app/auth/authSlice";
+        } from "app/auth/auth";
 
 export interface CommentCardLikeReplyContainerProps
   extends Pick<CommentCardLikeReplyProps, "onClickReply"> {
   className?: string;
-  comment: CommentType;
-  parentId: string | null;
+  comment: CommentType; 
+  parentId?: string | null;
 }
 
 const CommentCardLikeReplyContainer: FC<CommentCardLikeReplyContainerProps> = ({
@@ -34,7 +34,14 @@ const CommentCardLikeReplyContainer: FC<CommentCardLikeReplyContainerProps> = ({
   const { like, id, content, _id } = comment;
   const history = useHistory()
   const confirmAlert = useAppSelector(selectConfirmAlert);
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null;
+ interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
   const recentLikeds = useAppSelector(selectCommentRecentLikeds);
   const recentRemoveds = useAppSelector(selectCommentRecentRemoveds);
   const dispatch = useAppDispatch();
@@ -55,32 +62,32 @@ const CommentCardLikeReplyContainer: FC<CommentCardLikeReplyContainerProps> = ({
   },[confirmAlert])
 
   const isLiked = () => {
-    if (recentLikeds.includes(_id)) {
+    if (recentLikeds.includes(_id ?? "")) {
       return true;
     }
     return false;
   };
   const getLikeCount = (): number => {
     // Recent Liked
-    if (user && recentLikeds.includes(_id) ) {
+    if (user && recentLikeds.includes(_id ?? "") ) {
       if(like.users?.includes(user?._id) ){
-        return like.count
+        return (like.count ?? 0)
       }
-      return like.count + 1;
+      return (like.count ?? 0) + 1;
     }
-    if (like?.users?.includes(user?._id) && recentRemoveds.includes(_id)) {
-      return like?.count - 1;
+    if (like?.users?.includes(user?._id) && recentRemoveds.includes(_id ?? "")) {
+      return (like.count ?? 0) - 1;
     }
-    return like?.count;
+    return (like.count ?? 0); 
   };
 
   const handleClickLike = () => {
     if(user){
-      likeComment(_id).then((res) => { })
+      likeComment(_id).then((res: any) => { })
       if (isLiked()) {
-        dispatch(removeLikedByPostId(_id));
+        dispatch(removeLikedByPostId(_id ?? ""));
       } else {
-        dispatch(addNewLikedByPostId(_id));
+        dispatch(addNewLikedByPostId(_id ?? ""));
       }
     }else{
       dispatch(setAlert({

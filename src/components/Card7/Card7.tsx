@@ -31,7 +31,7 @@ const Card7: FC<Card7Props> = ({
     postType,
   } = post;
     const pHref = post.slug ? `/blog/${post.slug}` : ''
-    const fUrl = (post.media && post.media?.find((data=> data.fileFolder === 'feature'))?.url) || featuredImage
+    const fUrl = (post.media && post.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
   return (
     <div
       className={`nc-Card7 relative flex flex-col group rounded-3xl overflow-hidden ${hoverClass} ${className}`}

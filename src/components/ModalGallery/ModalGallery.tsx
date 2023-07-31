@@ -4,7 +4,6 @@ import { useAppSelector } from "app/hooks";
 import { TaxonomyType } from "data/types";
 import Select from "components/Select/Select";
 import Input from "components/Input/Input";
-import CardCategory2 from "components/CardCategory1/CardCategory2";
 import CardGalleryImage from "components/CardGalleryImage/CardGalleryImage";
 import GalleryCard from "./GalleryCard";
 import ButtonPrimary from "components/Button/ButtonPrimary";
@@ -19,12 +18,21 @@ const DATA = DEMO_CATEGORIES.filter((_, i) => i < 10);
 export interface ModalCategoriesProps {
   categories?: TaxonomyType[];
   data: any;
-  setMedia: () => void;
-  fetchMediaFiles: (id:any) => void;
-  uploadFile: (data: any) => void;
-  setField: () => void;
+  setMedia: (data: any) => void;
+  fetchMediaFiles: (id: any) => void;
+  uploadFile: (data: any) => Promise<any>;
+  setField: (name: string, value: any) => void
 }
 
+interface InitialValuesType {
+  fileFolder: string;
+  mediaType: string;
+  url: string;
+  file: any;
+  thumbnail: any;
+  thumbnailType: string;
+  thumbnailUrl: any;
+}
 const GALLERY_TABS = ["feature", "cover", "avatar", 'profile', 'video', 'gallery', 'audio' , "upload"];
 const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetchMediaFiles, setMedia, 
   uploadFile, setField }) => {
@@ -33,17 +41,17 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
   const [tabActive, setTabActive] = useState<string>(fileFolder);
   const mediaRecords = useAppSelector(selectMediaFiles);
   const loading = useAppSelector(selectBlogLoading);
-  let [uploadLoading, setUploadLoading] = useState(false);
+  let [uploadLoading, setUploadLoading] = useState<boolean>(false);
   let [select, setSelect] = useState(data);
-  let [isOpen, setIsOpen] = useState(false);
-  let [initialValues, setInitialValues] = useState(null);
+  let [isOpen, setIsOpen] = useState<boolean>(false);
+  let [initialValues, setInitialValues] = useState<InitialValuesType | null>(null);
   const handleClickTab = (item: string) => {
     if (item === tabActive) {
       return;
     }
     setTabActive(item);
   };
-  const onSelectImage = (imgId, img) => {
+  const onSelectImage = (imgId: any, img: any) => {
     let newMedia = {}
     if(data.fileFolder === 'gallery'){
       newMedia = {
@@ -62,7 +70,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
     setIsOpen(!isOpen)
     if(!isOpen){
       setSelect(data)
-      setInitialValues({file: null, fileFolder: fileFolder, mediaType: 'upload',
+      setInitialValues({ fileFolder: fileFolder, mediaType: 'upload', file: '',
         url: '', thumbnail: '', thumbnailType: `${(fileFolder === 'audio' || fileFolder === 'video') ? 'url' : ''}`, thumbnailUrl: ''})
       
       fetchMediaFiles({fileFolder: fileFolder === 'thumbnail' ? 'feature' : fileFolder});
@@ -78,12 +86,12 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
     setMedia(select)
   }
   const renderModalContent = () => {
-    const handleChange = (e, setFieldValue) => {
+    const handleChange = (e: any, setFieldValue: any) => {
       setFieldValue(e.target.name, e.target.files[0])
     }
-    const submitHandler = (values) => {
+    const submitHandler = (values: any) => {
       setUploadLoading(true)
-       uploadFile(values).then((res)=> {
+       uploadFile(values).then((res: any)=> {
           setUploadLoading(false)
 
           const newMedia = {...data, selected: res._id, url: (data.fileFolder === 'video' || data.fileFolder === 'audio') ? 
@@ -109,7 +117,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
                 </span> 
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-                {mediaRecords?.map((cat) => (
+                {mediaRecords?.map((cat: any) => (
                   <span key={cat?._id}>
                     <GalleryCard 
                       taxonomy={cat} selectedImg={selected} select={select?.selected}
@@ -135,7 +143,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
               <div className="flex flex-col" >
                 <h3 className="text-lg sm:text-2xl font-semibold">Select Cover Photo</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-                {mediaRecords?.map((cat) => (
+                {mediaRecords?.map((cat: any) => (
                   <span key={cat?._id}>
                     <GalleryCard 
                       taxonomy={cat} selectedImg={selected}  select={select?.selected}
@@ -160,7 +168,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
               <div className="flex flex-col" >
                 <h3 className="text-lg sm:text-2xl font-semibold">Select Video</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-                {mediaRecords?.map((cat) => (
+                {mediaRecords?.map((cat: any) => (
                   <span key={cat?._id}>
                     <GalleryCard 
                       taxonomy={cat} selectedImg={selected}  select={select?.selected}
@@ -185,7 +193,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
               <div className="flex flex-col" >
                 <h3 className="text-lg sm:text-2xl font-semibold">Select Multiple Images</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-                {mediaRecords?.map((cat) => (
+                {mediaRecords?.map((cat: any) => (
                   <span key={cat?._id}>
                     <GalleryCard 
                       taxonomy={cat} selectedImg={selected}  select={select?.selected}
@@ -211,7 +219,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
               <div className="flex flex-col" >
                 <h3 className="text-lg sm:text-2xl font-semibold">Select Audio</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">
-                {mediaRecords?.map((cat) => (
+                {mediaRecords?.map((cat: any) => (
                   <span key={cat?._id}>
                     <GalleryCard 
                       taxonomy={cat} selectedImg={selected}  select={select?.selected}
@@ -276,7 +284,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ categories=DATA, data, fetc
                           <div className="mt-3 flex justify-center px-6 pt-5 pb-6 border-2 border-neutral-300 dark:border-neutral-700 border-dashed rounded-md">
                             <div className="space-y-1 text-center">
                               {
-                                !values['file'] ? 
+                                (values && !values['file']) ? 
                                   <svg
                                     className="mx-auto h-12 w-12 text-neutral-400"
                                     stroke="currentColor"

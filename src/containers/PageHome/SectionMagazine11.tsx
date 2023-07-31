@@ -63,7 +63,7 @@ const SectionMagazine11: FC<SectionMagazine11Props> = ({
                     name={""}
                     color={category.color as TwMainColor}
                   />
-                  <Link to={post.href} title={post.title} className="flex">
+                  <Link to={post.href || '/*'} title={post.title} className="flex">
                     {post.title}
                   </Link>
                 </h2>

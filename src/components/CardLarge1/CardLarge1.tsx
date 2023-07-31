@@ -45,7 +45,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
             <CategoryBadgeList categories={categories} />
 
             <h2 className="nc-card-title text-xl sm:text-2xl font-semibold ">
-              <Link to={href} className="line-clamp-2" title={title}>
+              <Link to={href || '/*'} className="line-clamp-2" title={title}>
                 {title}
               </Link>
             </h2>
@@ -83,7 +83,7 @@ const CardLarge1: FC<CardLarge1Props> = ({
         enterFrom="translate-y-4 scale-105 opacity-0"
         enterTo="translate-y-0 scale-100 opacity-100"
       >
-        <Link to={href}>
+        <Link to={href || '/*'}>
           <NcImage
             containerClassName="aspect-w-16 aspect-h-12 sm:aspect-h-9 md:aspect-h-14 lg:aspect-h-10 2xl:aspect-h-9 relative"
             className="absolute inset-0 object-cover rounded-3xl"

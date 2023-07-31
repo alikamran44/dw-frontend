@@ -8,7 +8,7 @@ import { TaxonomyType } from "data/types";
 export interface WidgetTagsProps {
   className?: string;
   tags: TaxonomyType[];
-  loading: boolean;
+  loading?: boolean;
 }
 
 const WidgetTags: FC<WidgetTagsProps> = ({
@@ -37,7 +37,7 @@ const WidgetTags: FC<WidgetTagsProps> = ({
         modalHandler={modalHandler}
       />
       <div className="flex flex-wrap p-4 xl:p-5">
-        {tags.map((tag) => (
+        {tags.map((tag: TaxonomyType) => (
           <Tag className="mr-2 mb-2" key={tag._id} tag={tag} loading={loading} />
         ))}
       </div>

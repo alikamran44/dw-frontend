@@ -1,7 +1,6 @@
 import React from "react";
-import { selectAlert } from "app/auth/authSlice";
 import { useAppSelector, useAppDispatch } from "app/hooks";
-import { removeAlert, onConfirmAlert } from "app/auth/authSlice";
+import { removeAlert, onConfirmAlert, selectAlert } from "app/auth/auth";
 import { logoutUser } from '../../Actions/AuthAction';
 import NcModal from "components/NcModal/NcModal";
 import ButtonPrimary from "components/Button/ButtonPrimary";

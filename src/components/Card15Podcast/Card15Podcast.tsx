@@ -14,7 +14,7 @@ const Card15Podcast: FC<Card15PodcastProps> = ({
   post,
 }) => {
   const { title, href, featuredImage, postType, date, media, slug } = post; 
-  const fUrl = (media && media?.find((data=> data.fileFolder === 'feature'))?.url) || featuredImage
+  const fUrl = (media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
 
   const IS_AUDIO = postType === "audio";
   const pHref = postType === "audio" ? `/blog-audio/${slug}` : `/blog/${slug}`

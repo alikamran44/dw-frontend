@@ -35,7 +35,7 @@ const Card10V2: FC<Card10V2Props> = ({ className = "h-full", post }) => {
         ></Link>
       </div>
       <div className="absolute top-3 inset-x-3 flex justify-between items-start space-x-4">
-        <CategoryBadgeList categories={categories} postType={post.postType}  />
+        <CategoryBadgeList categories={categories} postType={post.postType || null}  />
         <PostCardSaveAction postData={post} />
       </div>
 

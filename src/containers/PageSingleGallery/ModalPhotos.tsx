@@ -7,7 +7,7 @@ import NcImage from "components/NcImage/NcImage";
 import ncNanoId from "utils/ncNanoId";
 
 export interface ModalPhotosProps {
-  imgs: string[];
+  imgs: any[];
   onClose: () => void;
   isOpen: boolean;
   initFocus?: number;
@@ -62,10 +62,10 @@ const ModalPhotos: FC<ModalPhotosProps> = ({
           data-glide-el="track"
         >
           <ul className="glide__slides h-full">
-            {imgs.map((item, index) => (
+            {imgs.map((item: any, index: any) => (
               <li className="glide__slide h-full relative  " key={index}>
                 <NcImage
-                  src={item.url || item}
+                  src={item?.url || item}
                   containerClassName="w-full h-full "
                   className="absolute object-contain w-full max-h-screen "
                 />

@@ -1,7 +1,6 @@
 
 import React, { FC, useEffect, useRef, useState } from "react";
 import Tag from "components/Tag/Tag";
-import { SinglePageType } from "./PageSingle";
 import SingleAuthor from "./SingleAuthor";
 import SingleCommentForm from "./SingleCommentForm";
 import SingleCommentLists from "./SingleCommentLists";
@@ -10,18 +9,20 @@ import { useLocation } from "react-router";
 import { createComment } from '../../Actions/CommentAction';
 import { getComments } from "../../Actions/CommentAction";
 import { SINGLE } from "data/single";
-import { Link } from "react-scroll";
-import * as Scroll from 'react-scroll';
-let scroll    = Scroll.animateScroll;
+import { PostDataType, TaxonomyType } from "data/types";
+import { CommentType } from "components/CommentCard/CommentCard";
+// import { Link } from "react-scroll";
+// import * as Scroll from 'react-scroll';
+// let scroll    = Scroll.animateScroll;
 
 export interface SingleContentProps {
-  data: SinglePageType;
-  loading: boolean;
+  data: PostDataType;
+  loading?: boolean;
 }
  const fComments = SINGLE.comments
 const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
   const { tags, postedBy, _id } = data;
-  const [comments, setComments] = useState(null)
+  const [comments, setComments] = useState<CommentType[] | null>(null);
   const [commentCount, setTotalComments] = useState(null)
   const commentRef = useRef<HTMLDivElement>(null);
   const author = postedBy
@@ -34,17 +35,17 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
     //
     if (location.hash === "#comment" && commentRef.current) {
       setTimeout(() => {
-        scroll.scrollTo("comment", {
-          duration: 500,
-          smooth: true,
-        });
+        // scroll.scrollTo("comment", {
+        //   duration: 500,
+        //   smooth: true,
+        // });
       }, 500);
     }
   }, [location]);
 
   useEffect(()=>{
     if(data._id){
-      getComments(data._id, 1).then(data => {
+      getComments(data._id, 1).then((data: any) => {
         setComments(data.comments);
         setTotalComments(data.total)
       })
@@ -53,20 +54,21 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
 
   const viewMoreComments = () => {
     if(data._id){
-      getComments(data._id, 1).then(data => {
+      getComments(data._id, 1).then((data: any) => {
         setComments(data.comments);
         setTotalComments(data.total)
       })
     }
   }
 
-  const loginSubmitHandler = (values, resetForm ) => { 
+  const loginSubmitHandler = (values: any, resetForm: any ) => { 
     if(values){
       values.blog_id = _id;
       values.blog_user_id = postedBy._id;
       createComment(values).then((res) => {
         resetForm();
-        setComments([res,...comments])
+        const newComments = Array.isArray(comments) ? comments : [];
+        setComments([res, ...newComments]);
       })
     }
   };
@@ -85,7 +87,7 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
 
       {/* TAGS */}
       <div className="max-w-screen-md mx-auto flex flex-wrap">
-        {tags.map((item) => (
+        {tags?.map((item: any) => (
           <Tag hideCount key={item._id || item.id} tag={item} className="mr-2 mb-2" />
         ))}
       </div>
@@ -97,15 +99,7 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
       </div>
 
       {/* COMMENT FORM */}
-      <Link
-        to="comment"
-        smooth={true}
-        duration={500}
-        offset={-50}
-        spy={true}
-        hashSpy={true}
-        ignoreCancelEvents={true}
-      >
+   
         <div
           id="comment" 
           ref={commentRef}
@@ -122,7 +116,6 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
             onClickCancel={(id) => console.log('_id')}
           />
         </div>
-      </Link>
 
       {/* COMMENTS LIST */}
       <div className="max-w-screen-md mx-auto">

@@ -20,7 +20,7 @@ const Card5: FC<Card5Props> = ({
       data-nc-id="Card5"
       data-nc-post-id={id}
     >
-      <Link to={href} className="absolute inset-0 rounded-lg"></Link>
+      <Link to={href || '/*'} className="absolute inset-0 rounded-lg"></Link>
 
       <div className="flex flex-col">
         <CategoryBadgeList categories={categories} />
@@ -28,7 +28,7 @@ const Card5: FC<Card5Props> = ({
           className="block text-base font-semibold text-neutral-800 dark:text-neutral-300 my-4"
           title={title}
         >
-          <Link to={href} className="line-clamp-2" title={title}>
+          <Link to={href || '/*'} className="line-clamp-2" title={title}>
             {title}
           </Link>
         </h2>

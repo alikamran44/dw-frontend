@@ -11,12 +11,12 @@ import  { setAlert,
           selectConfirmAlert, 
           onRemoveConfirmAlert, 
           removeAlert 
-        } from "app/auth/authSlice";
+        } from "app/auth/auth";
 
 export interface SingleCommentFormProps {
   className?: string;
   commentId?: number;
-  onClickSubmit: (values?: any) => void;
+  onClickSubmit: (values?: any, resetForm?: any) => void;
   onClickCancel: (id?: number) => void;
   textareaRef?: React.MutableRefObject<null>;
   defaultValue?: string;
@@ -31,15 +31,18 @@ const SingleCommentForm: FC<SingleCommentFormProps> = ({
   textareaRef,
   defaultValue = "",
   rows = 4,
-  commentsTemp,
-  setComments,
-  blog_id,
-  blog_user_id
 }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
    const confirmAlert = useAppSelector(selectConfirmAlert);
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null;
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
   const initialValues = { content: defaultValue ? defaultValue : '', email: user ? 
     user.email : '', name: '', userLoggedIn: user ? true : false 
   };

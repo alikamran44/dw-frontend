@@ -7,9 +7,10 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded?: string;
   errors:any;
   touched: any;
-  name: string;
+  values: any;
   categories: any;
   tags: any;
+  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
   categoryLoading: boolean;
   tagLoading: boolean;
 }
@@ -21,8 +22,6 @@ const Page3 = React.forwardRef<HTMLInputElement, InputProps>(
       sizeClass = "h-11 px-4 py-3",
       fontClass = "text-sm font-normal",
       rounded = "rounded-full",
-      children,
-      type = "text",
       errors={},
       touched={},
       categories,

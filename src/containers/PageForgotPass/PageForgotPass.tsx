@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Formik, Form } from 'formik';
-import { selectUser, selectLoading } from "app/auth/authSlice";
+import { selectUser, selectLoading } from "app/auth/auth";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import LayoutPage from "components/LayoutPage/LayoutPage";
 import Input from "components/Input/Input";
@@ -35,7 +35,7 @@ const PageForgotPass: FC<PageForgotPassProps> = ({ className = "" }) => {
       navigationTo();
   }, [user]);
 
-  const sendPasswordLink = (values) => {
+  const sendPasswordLink = (values: any) => {
     history.push("/confirmation-link");
     
   }

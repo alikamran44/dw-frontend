@@ -7,8 +7,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   rounded?: string;
   errors:any;
   touched: any;
-  name: string;
-
+  values: any;
+  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
 }
 
 const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
@@ -18,8 +18,6 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
       sizeClass = "h-11 px-4 py-3",
       fontClass = "text-sm font-normal",
       rounded = "rounded-full",
-      children,
-      type = "text",
       errors={},
       touched={},
       values,
@@ -44,13 +42,13 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
                       easyimage,imagebase,div,divarea,devtools*/}
         <div className='mb-12'>
           <CKEditor 
-            onChange={(event) => setFieldValue('content',event.editor.getData(),'hello')}
+            onChange={(event) => setFieldValue && setFieldValue('content',event.editor.getData()) }
             config={{
               extraPlugins: `colorbutton, emoji, smiley, font, bidi, specialchar, tableresize,
               templates,div,preview, pastefromword, embed, justify, language, forms, 
               mentions, `,
             }}
-            data={values['content'] || ''}
+            // data={values['content'] || ''}
           />
         </div>
       </>

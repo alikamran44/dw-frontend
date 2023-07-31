@@ -14,7 +14,7 @@ export interface SectionMagazine9Props {
   className?: string;
   gapClassName?: string;
   heading?: string;
-  href: string
+  href?: string
 }
 
 const SectionMagazine9: FC<SectionMagazine9Props> = ({

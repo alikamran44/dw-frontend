@@ -14,8 +14,15 @@ export interface MainNav2LoggedProps {}
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const history = useHistory()
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null; 
-  const submitHandler = (values) => {
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
+  const submitHandler = (values: any) => {
     history.push(`/search/${values.search}`)
   }
   return (

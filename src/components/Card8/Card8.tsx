@@ -21,7 +21,7 @@ const Card8: FC<Card8Props> = ({ className = "h-full", post }) => {
     >
       <SocialsShare className="absolute hidden md:grid gap-[5px] right-4 top-4 opacity-0 z-[-1] group-hover:z-10 group-hover:opacity-100 transition-all duration-300" />
       <Link
-        to={href}
+        to={href || '/*'}
         className="block w-full h-0 pt-[100%] sm:pt-[55%] rounded-xl overflow-hidden"
       >
         <NcImage
@@ -37,16 +37,16 @@ const Card8: FC<Card8Props> = ({ className = "h-full", post }) => {
         />
       </Link>
       <Link
-        to={href}
+        to={href || '/*'}
         className="absolute inset-x-0 bottom-0 top-1/3 bg-gradient-to-t from-black opacity-60"
       ></Link>
       <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6 flex flex-col">
-        <Link to={href} className="absolute inset-0" />
+        <Link to={href || '/*'} className="absolute inset-0" />
         <CategoryBadgeList categories={categories} />
         <h2
           className={`mt-3 relative block font-semibold text-neutral-50 text-lg sm:text-2xl`}
         >
-          <Link to={href} className="line-clamp-3" title={title}>
+          <Link to={href || '/*'} className="line-clamp-3" title={title}>
             {title}
           </Link>
         </h2>

@@ -1,7 +1,7 @@
 import Header, { HeaderProps } from "components/Header/Header";
 import React, { FC, useEffect } from "react";
 import { useAppSelector } from "app/hooks";
-import { selectUser } from "app/auth/authSlice";
+import { selectUser } from "app/auth/auth";
 import { selectCurrentPageData } from "app/pages/pages";
 import { useLocation } from "react-router-dom";
 import { LocationStates } from "routers/types";

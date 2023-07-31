@@ -3,7 +3,7 @@ import React, { ComponentType, FC } from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router";
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "app/hooks";
-import { selectProfile,  } from "app/auth/authSlice";
+import { selectProfile,  } from "app/auth/auth";
 import DashboardBillingAddress from "./DashboardBillingAddress";
 import DashboardEditProfile from "./DashboardEditProfile";
 import DashboardPosts from "./DashboardPosts";
@@ -25,11 +25,12 @@ interface DashboardLocationState {
   "/edit-profile"?: {};
   "/information"?: {};
   "/billing-address"?: {};
-  "/submit-post/:id"?: {};
+  "/submit-post/:currentUrl?/:slug?"?: {};
   "/tags"?: {};
   "/categories"?: {};
   "/users"?: {};
   "/account"?: {};
+  "/submit-post/1"?: {};
 }
 
 interface DashboardPage {
@@ -38,7 +39,8 @@ interface DashboardPage {
   component: ComponentType<Object>;
   emoij: string;
   pageName: string;
-  id?: boolean 
+  id?: boolean;
+  isAuth?: any; 
 }
 
 const subPages: DashboardPage[] = [
@@ -90,7 +92,7 @@ const subPages: DashboardPage[] = [
   },
   {
     exact:true,
-    sPath: "/users/",
+    sPath: "/users",
     component: DashboardUsers,
     emoij: "🧑🏻",
     pageName: "Users",
@@ -163,7 +165,7 @@ const subPagesRoutes: DashboardPage[] = [
   },
   {
     exact:true,
-    sPath: "/users/",
+    sPath: "/users",
     component: DashboardUsers,
     emoij: "🧑🏻",
     pageName: "Users",
@@ -190,11 +192,18 @@ const subPagesRoutes: DashboardPage[] = [
 
 const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
   let { path, url } = useRouteMatch();
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null;
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
   
   const filteredSubPages = subPages.filter(({ isAuth }) => {
     if (isAuth) {
-      return isAuth.includes(user.role);
+      return (isAuth || []).includes(user?.role ?? '');
     }
     return true;
   });

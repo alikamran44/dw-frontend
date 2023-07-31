@@ -8,7 +8,7 @@ import WidgetTags from "components/WidgetTags/WidgetTags";
 import { DEMO_AUTHORS } from "data/authors";
 import { DEMO_POSTS } from "data/posts";
 import { DEMO_CATEGORIES, DEMO_TAGS, DEMO_FAKE_CATEGORY_DATA } from "data/taxonomies";
-import { PostDataType } from "data/types";
+import { PostDataType, TaxonomyType } from "data/types";
 import { categoryWithTotalBlogs } from '../../Actions/CategoryAction';
 import { tagWithTotalBlogs } from '../../Actions/TagAction';
 import { allBloggers } from '../../Actions/AuthAction';
@@ -33,27 +33,30 @@ const repeatedTagsArray = Array.from({ length: 20 }, (_, index) =>
   ).flat();
 
 export const Sidebar: FC<SidebarProps> = ({ className = "space-y-6 " }) => {
-  const [categories, setCategories] = useState(null);
-  const [tags, setTags] = useState(null);
-  const [users, setUsers] = useState(null);
-  const [popularBlogs, setPopularBlogs] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
+  const [tags, setTags] = useState<TaxonomyType[] | null>(null);
+  const [users, setUsers] = useState<any[] | null>(null);
+  const [popularBlogs, setPopularBlogs] = useState<PostDataType[] | null>(null);
   const categoryLoading = useAppSelector(selectCategoryLoading)
   const tagLoading = useAppSelector(selectTagLoading)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(categoryWithTotalBlogs({skip: 0, limit: 5})).then((res)=> {
-      setCategories(res)
+    dispatch(categoryWithTotalBlogs({skip: 0, limit: 5})).then((res: TaxonomyType[])=> {
+      if(res)
+        setCategories(res)
     })
-    dispatch(tagWithTotalBlogs({skip: 0, limit: 20})).then((res)=> {
-      setTags(res)
+    dispatch(tagWithTotalBlogs({skip: 0, limit: 20})).then((res: TaxonomyType[])=> {
+      if(res)
+        setTags(res)
     })
     let dataRecent = {skip: 0, limit: 5}
-    dispatch(FetchRecentPosts(dataRecent)).then((res) => {
+    dispatch(FetchRecentPosts()).then((res: PostDataType[]) => {
       setPopularBlogs(res)
     })
-    dispatch(allBloggers({skip: 0, limit: 5})).then((res) => {
-      setUsers(res)
+    dispatch(allBloggers({skip: 0, limit: 5})).then((res: any) => {
+      if(res)
+        setUsers(res)
     })
   }, []);
 

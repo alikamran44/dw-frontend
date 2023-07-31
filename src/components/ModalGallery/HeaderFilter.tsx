@@ -7,7 +7,6 @@ import ButtonSecondary from "components/Button/ButtonSecondary";
 export interface HeaderFilterProps {
   tabActive: string;
   tabs: string[];
-  heading: string;
   onClickTab: (item: string) => void;
 }
 

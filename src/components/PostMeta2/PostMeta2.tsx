@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 export interface PostMeta2Props {
   className?: string;
-  meta: Pick<PostDataType, "date" | "author" | "categories" | "readingTime">;
+  meta: PostDataType;
   hiddenCategories?: boolean;
   size?: "large" | "normal";
   avatarRounded?: string;
@@ -68,7 +68,7 @@ const PostMeta2: FC<PostMeta2Props> = ({
               <div className="ml-0">
                 <span className="text-xs">🏷 </span>
                 {categories.map((cat, index) => (
-                  <Link key={cat.id} to={cat.href} className="font-semibold">
+                  <Link key={cat.id} to={cat.href || '/*'} className="font-semibold">
                     {cat.name}
                     {index < categories.length - 1 && <span>, </span>}
                   </Link>

@@ -13,12 +13,6 @@ export interface PageSingleProps {
   className?: string;
 }
 
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
-}
-
 const PageSingle: FC<PageSingleProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
 

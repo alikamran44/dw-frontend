@@ -12,6 +12,7 @@ const CardAuthor2White: FC<CardAuthor2WhiteProps> = ({
   readingTime,
   date,
 }) => {
+  if(!author) return <></>
   const { displayName, href = "/", avatar } = author;
   return (
     <Link

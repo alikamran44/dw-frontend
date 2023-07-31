@@ -12,7 +12,7 @@ export interface NcModalProps {
   uploadTriggerText?: ReactNode;
   modalTitle?: ReactNode;
   isOpenProp?: boolean;
-  showTriggerButton: boolean;
+  showTriggerButton?: boolean;
   onCloseModal?: () => void;
 }
 

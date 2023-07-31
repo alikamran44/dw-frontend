@@ -5,6 +5,7 @@ import { TaxonomyType } from "data/types";
 
 export interface ModalTagsProps {
   tags: TaxonomyType[];
+  loading?: boolean;
 }
 
 const ModalTags: FC<ModalTagsProps> = ({ tags }) => {

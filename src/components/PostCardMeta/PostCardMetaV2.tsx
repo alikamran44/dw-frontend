@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export interface PostCardMetaV2Props {
   className?: string;
-  meta: Pick<PostDataType, "date" | "author" | "title">;
+  meta: PostDataType;
   hiddenAvatar?: boolean;
   size?: "large" | "normal";
 }

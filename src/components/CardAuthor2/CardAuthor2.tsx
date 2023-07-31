@@ -17,17 +17,19 @@ const CardAuthor2: FC<CardAuthor2Props> = ({
   date,
   hoverReadingTime = true,
 }) => {
-  const { displayName, href = "/", avatar, pic } = author;
   const newDate = new Date(date);
   const formattedDate = newDate.toLocaleString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
-  }) || date; 
-  const fullName = author && `${author.firstName} ${author.lastName}`
+  }) || date;
+
+  if(!author) return <></>
+  const { displayName, href = "/", avatar, pic } = author;
+  const fullName = author && `${author?.firstName} ${author?.lastName}`
   return ( 
     <Link
-      to={href}
+      to={href || '/*'}
       className={`nc-CardAuthor2 relative inline-flex items-center ${className}`}
       data-nc-id="CardAuthor2"
     >

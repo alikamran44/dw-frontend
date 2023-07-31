@@ -11,7 +11,7 @@ const CardTagBox: FC<CardTagBoxProps> = ({ className = "", taxonomy }) => {
   const { count, name, href = "/" } = taxonomy;
   return (
     <Link
-      to={href}
+      to={href || '/*'}
       className={`nc-CardTagBox relative flex items-center p-3 sm:p-6 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ]  ${className}`}
       data-nc-id="CardTagBox"
     >

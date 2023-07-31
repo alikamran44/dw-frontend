@@ -12,18 +12,19 @@ import {
   removeAlert,
   onConfirmAlert,
   onRemoveConfirmAlert
-} from "../app/auth/authSlice";
+} from "../app/auth/auth";
+import { AppDispatch } from "app/store";
 
-export const RegisterBlogger = (values) => (dispatch) => {
+export const RegisterBlogger = (values: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   const formData = new FormData();
   Object.entries(values).forEach(([key, value]) => {
-  if (key === 'pic') {
-    formData.append(key, value, 'image.jpg'); // Assuming 'image.jpg' as the desired file name
-  } else {
-    formData.append(key, value);
-  }
-});
+    if (key === 'pic') {
+      formData.append(key, value as Blob, 'image.jpg'); // Type assertion is necessary for 'value' to be Blob
+    } else {
+      formData.append(key, value as any); // Type assertion is necessary for 'value' to be string
+    }
+  });
   return baseApi.Auth.registerBlogger(formData).then(
     (data) => {
       localStorage.setItem('userInfo', JSON.stringify(data.data));
@@ -46,7 +47,7 @@ export const RegisterBlogger = (values) => (dispatch) => {
     }
   );
 };
-export const RegisterUser = (values) => (dispatch) => {
+export const RegisterUser = (values: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Auth.register(values).then(
     (data) => {
@@ -71,7 +72,7 @@ export const RegisterUser = (values) => (dispatch) => {
   );
 };
 
-export const SignIn = (values) => (dispatch) => {
+export const SignIn = (values: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading());
   return baseApi.Auth.login(values).then(
     (data) => {
@@ -96,7 +97,7 @@ export const SignIn = (values) => (dispatch) => {
   );
 };
 
-export const fetchUserProfile = () => (dispatch) => {
+export const fetchUserProfile = () => (dispatch: AppDispatch) => {
   dispatch(setPageLoading(true));
   return baseApi.Auth.fetchUserProfile().then(
     (data) => {
@@ -124,7 +125,7 @@ export const fetchUserProfile = () => (dispatch) => {
   );
 };
 
-export const allBloggers = (filter) => (dispatch) => {
+export const allBloggers = (filter:any) => (dispatch: AppDispatch) => {
   dispatch(startLoading());
   return baseApi.Auth.allBloggers(filter).then(
     (data) => {
@@ -149,7 +150,7 @@ export const allBloggers = (filter) => (dispatch) => {
   );
 };
 
-export const allUsers = () => (dispatch) => {
+export const allUsers = () => (dispatch: AppDispatch) => {
   dispatch(startLoading());
   return baseApi.Auth.allUsers().then(
     (data) => {
@@ -173,8 +174,8 @@ export const allUsers = () => (dispatch) => {
     }
   );
 };
-export const toatalUserBlogs = (values) => (dispatch) => {
-  dispatch(startLoading(true));
+export const toatalUserBlogs = (values: any) => (dispatch: AppDispatch) => {
+  dispatch(startLoading());
   return baseApi.Auth.toatalUserBlogs(values).then(
     (data) => {
       dispatch(stopLoading())
@@ -199,7 +200,7 @@ export const toatalUserBlogs = (values) => (dispatch) => {
   );
 }; 
 
-export const removeUser = (id)  => (dispatch) => {
+export const removeUser = (id: any)  => (dispatch: AppDispatch) => {
   dispatch(startLoading());
   return baseApi.Auth.removeUser(id).then(
     (data) => {
@@ -222,7 +223,7 @@ export const removeUser = (id)  => (dispatch) => {
   );
 }
 
-export const updateUser = (values, id) => (dispatch) => {
+export const updateUser = (values: any, id: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   const formData = new FormData();
   Object.keys(values).map(key => {
@@ -253,7 +254,7 @@ export const updateUser = (values, id) => (dispatch) => {
   );
 };
 
-export const updateProfile = (values, id) => (dispatch) => {
+export const updateProfile = (values: any, id: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Auth.updateProfile(values, id).then(
     (res) => {
@@ -282,7 +283,7 @@ export const updateProfile = (values, id) => (dispatch) => {
 //     .catch((err) => dispatch({ type: 'GET_USER_ERR', payload: err }));
 // };
 
-export const logoutUser = () => (dispatch) => {
+export const logoutUser = () => (dispatch: AppDispatch) => {
   dispatch(logout())
   dispatch(removeAlert())
   dispatch(onRemoveConfirmAlert())

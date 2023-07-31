@@ -1,13 +1,13 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import SocialsShare from "components/SocialsShare/SocialsShare";
 import Avatar from "components/Avatar/Avatar";
-import { SinglePageType } from "containers/PageSingle/PageSingle";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import PostCardLikeContainer from "containers/PostCardLikeContainer/PostCardLikeContainer";
 import { PageItemType } from "app/pages/pages";
 import MainNav2Logged from "./MainNav2Logged";
 import MainNav2 from "./MainNav2";
 import MainNav1 from "./MainNav1";
+import { PostDataType } from "data/types";
 
 export interface HeaderProps {
   mainNavStyle?: "style1" | "style2" | "style2Logedin";
@@ -106,7 +106,7 @@ const Header: FC<HeaderProps> = ({ mainNavStyle = "style1", currentPage }) => {
 
   const renderSingleHeader = () => {
     if (!isSingleHeaderShowing) return null;
-    const SINGLE = currentPage.data as SinglePageType;
+    const SINGLE = currentPage.data as PostDataType;
     const { title, author, id, bookmark } = SINGLE;
     return (
       <div className="nc-SingleHeaderMenu dark relative py-4 bg-neutral-900 dark:bg-neutral-900">
@@ -114,8 +114,8 @@ const Header: FC<HeaderProps> = ({ mainNavStyle = "style1", currentPage }) => {
           <div className="flex justify-end lg:justify-between">
             <div className="hidden lg:flex items-center mr-3">
               <Avatar
-                imgUrl={author.avatar}
-                userName={author.displayName}
+                imgUrl={author?.avatar || ''}
+                userName={author?.displayName || ''}
                 sizeClass="w-8 h-8 text-lg"
                 radius="rounded-full"
               />
@@ -130,6 +130,7 @@ const Header: FC<HeaderProps> = ({ mainNavStyle = "style1", currentPage }) => {
               <BookmarkContainer
                 initBookmarked={bookmark.isBookmarked}
                 postId={id}
+                bookmark={bookmark}
               />
               <div className="border-l border-neutral-300 dark:border-neutral-700 h-6"></div>
               <SocialsShare

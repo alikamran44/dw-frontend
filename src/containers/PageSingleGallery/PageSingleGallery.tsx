@@ -15,19 +15,15 @@ import { fetchPost } from '../../Actions/PostAction';
 export interface PageSingleGalleryProps {
   className?: string;
 }
-
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+interface RouteParams {
+  slug: string;
 }
-
 const PageSingleGallery: FC<PageSingleGalleryProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch();
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [blogLoading, setBlogLoading] = useState(false)
   const [fetched, setFetched] = useState(true)
-  const [blog, setBlog] = useState(null)
+  const [blog, setBlog] = useState<PostDataType | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [openFocusIndex, setOpenFocusIndex] = useState(0);
@@ -42,7 +38,7 @@ const PageSingleGallery: FC<PageSingleGalleryProps> = ({ className = "" }) => {
     // };
 
     setBlogLoading(true)
-    fetchPost(slug).then((res) => {
+    fetchPost(slug).then((res: any) => {
       setBlogLoading(false)
       if(res && Object.keys(res).length > 0){
         setBlog(res)
@@ -59,9 +55,9 @@ const PageSingleGallery: FC<PageSingleGalleryProps> = ({ className = "" }) => {
   const handleCloseModal = () => setIsOpen(false);
 
   const PHOTOS = SINGLE_GALLERY.galleryImgs || [];
-  const fUrl = (blog ? blog.media?.find((data=> data.fileFolder === 'feature'))?.url : '')
+  const fUrl = (blog ? blog.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url : '')
   
-  const gallerymages = (blog && blog.media ? blog.media.filter((data=> data.fileFolder === 'gallery')) : [])
+  const gallerymages = (blog && blog.media ? blog.media.filter(((data: any)=> data.fileFolder === 'gallery')) : [])
   return (
     <>
       <div
@@ -89,7 +85,7 @@ const PageSingleGallery: FC<PageSingleGalleryProps> = ({ className = "" }) => {
               /> 
               <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
             </div>
-            {gallerymages && gallerymages.filter((_, i) => i >= 1 && i < 5).map((item, index) => (
+            {gallerymages && gallerymages.filter((_: any, i: any) => i >= 1 && i < 5).map((item: any, index: any) => (
               <div
                 key={index}
                 className={`relative rounded-xl overflow-hidden ${

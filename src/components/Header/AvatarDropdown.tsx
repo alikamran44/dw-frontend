@@ -2,18 +2,27 @@
 import { useState, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import { selectUser } from "app/auth/authSlice";
+import { selectUser, selectConfirmAlert } from "app/auth/auth";
 import Avatar from "components/Avatar/Avatar";
-import { setAlert } from "app/auth/authSlice";
+import { setAlert } from "app/auth/auth";
 import { avatarImgs } from "contains/fakeData";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from '../../Actions/AuthAction';
-import { selectConfirmAlert } from "app/auth/authSlice";
 
 export default function AvatarDropdown() {
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectUser);
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    pic: string;
+    firstName: string;
+    lastName: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
   const confirmAlert = useAppSelector(selectConfirmAlert);
   const handleLogout = () => {
      dispatch(setAlert({
@@ -36,6 +45,8 @@ export default function AvatarDropdown() {
       dispatch(logoutUser())
     }
   },[confirmAlert])
+
+  if(!user) return <></>
   return (
     <div className="AvatarDropdown">
       <Popover className="relative">

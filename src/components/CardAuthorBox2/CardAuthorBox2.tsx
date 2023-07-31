@@ -7,13 +7,15 @@ import NcImage from "components/NcImage/NcImage";
 
 export interface CardAuthorBox2Props {
   className?: string;
-  author: PostAuthorType;
+  author?: PostAuthorType; 
 }
 
 const CardAuthorBox2: FC<CardAuthorBox2Props> = ({
   className = "",
   author,
 }) => {
+
+  if(!author) return <></>
   const { displayName, href = "/", avatar, jobName, count, bgImage } = author;
   const fullName = author && `${author.firstName} ${author.lastName}`
   const pic = author ? author.pic : ''

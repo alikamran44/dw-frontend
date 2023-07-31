@@ -14,11 +14,11 @@ import  { setAlert,
           selectConfirmAlert, 
           onRemoveConfirmAlert, 
           removeAlert 
-        } from "app/auth/authSlice";
+        } from "app/auth/auth";
 export type BookmarkContainerProps = Omit<NcBookmarkProps, "isBookmarked"> & {
   initBookmarked: boolean;
   loading?: boolean;
-  bookmark
+  bookmark: any
 };
 
 const BookmarkContainer: React.FC<BookmarkContainerProps> = (props) => {
@@ -28,16 +28,25 @@ const BookmarkContainer: React.FC<BookmarkContainerProps> = (props) => {
   const recentSaveds = useAppSelector(selectRecentSaveds);
   const recentRemoveds = useAppSelector(selectRecentRemoveds);
   const loading = useAppSelector(selectBlogLoading)
-  const user = JSON.parse(localStorage.getItem('userInfo')) || null;
+  interface UserInfo {
+    name: string;
+    email: string;
+    role: string;
+    _id: string;
+  }
+  const userInfoString = localStorage.getItem('userInfo');
+  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
 
   const dispatch = useAppDispatch();
   const isBookmarked = () => {
-    if (user && recentSaveds.includes(postId)) {
-      return true;
-    }
-    if ( (Array.isArray(bookmark) && bookmark?.includes(user?._id)) 
-      && !recentRemoveds.includes(postId)) {
-      return true;
+    if(postId){
+      if (user && recentSaveds.includes(postId)) {
+        return true;
+      }
+      if ( (Array.isArray(bookmark) && bookmark?.includes(user?._id)) 
+        && !recentRemoveds.includes(postId)) {
+        return true;
+      }
     }
 
     return false;
@@ -45,12 +54,14 @@ const BookmarkContainer: React.FC<BookmarkContainerProps> = (props) => {
 
   const handleClickBookmark = () => {
     if(user){
-      bookmarkBlog(postId).then((res) => {
-      })
-      if (isBookmarked()) {
-        dispatch(removeSavedByPostId(postId));
-      } else {
-        dispatch(addNewSavedByPostId(postId));
+      if(postId){
+        bookmarkBlog(postId).then((res) => {
+        })
+        if (isBookmarked()) {
+          dispatch(removeSavedByPostId(postId));
+        } else {
+          dispatch(addNewSavedByPostId(postId));
+        }
       }
     }else{
       dispatch(setAlert({
@@ -78,9 +89,10 @@ const BookmarkContainer: React.FC<BookmarkContainerProps> = (props) => {
   useEffect(()=>{
     if(Array.isArray(bookmark))
       if(bookmark?.includes(user?._id)){
-        if(!recentSaveds.includes(postId)){
-          dispatch(addNewSavedByPostId(postId));
-        }
+        if(postId)
+          if(!recentSaveds.includes(postId)){
+            dispatch(addNewSavedByPostId(postId));
+          }
       }
   },[])
 

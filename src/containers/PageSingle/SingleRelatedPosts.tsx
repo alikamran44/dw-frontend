@@ -8,6 +8,7 @@ import { DEMO_POSTS } from "data/posts";
 import { fetchUserBlogs, relatedBog  } from '../../Actions/PostAction';
 
 export interface SingleRelatedPostsProps {
+  blog?: PostDataType;
   relatedPosts?: PostDataType[];
   moreFromAuthorPosts?: PostDataType[];
 }
@@ -30,22 +31,26 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
   const [authorBlogsLoading, setAuthorBlogsLoading] = useState(true);
   const [relatedBlogs, setRelatedBlogs] = useState(null);
   const [authorBlogs, setAuthorBlogs] = useState(null);
-  const { postedBy, _id, } = blog;
+
+
 
   useEffect(()=>{
-    if(_id && blog.categories){
-      dispatch(relatedBog({skip: 0, limit: 5, _id: _id, categories: blog.categories})).then((res) => {
+    if(_id && blog?.categories){
+      dispatch(relatedBog({skip: 0, limit: 5, _id: blog?._id, categories: blog.categories})).then((res) => {
         setRelatedBlogs(res)
         setRelatedLoading(false)
       }).catch(() => setRelatedLoading(false))
     }
-    if(postedBy?._id !== null && postedBy?._id !== ''){
-      dispatch(fetchUserBlogs(postedBy?._id,{skip: 0, limit: 5})).then((res) => {
+    if(blog?.postedBy?._id !== null && blog?.postedBy?._id !== ''){
+      dispatch(fetchUserBlogs(blog?.postedBy?._id,{skip: 0, limit: 5})).then((res) => {
         setAuthorBlogs(res.blogs)
         setAuthorBlogsLoading(false)
       }).catch(() => setAuthorBlogsLoading(false))
     }
   },[blog])
+
+  if(!blog) return <></>
+  const { postedBy, _id, } = blog;
   return (
     <div className="relative bg-neutral-100 dark:bg-neutral-800 py-16 lg:py-28 mt-16 lg:mt-28">
       {/* RELATED  */}

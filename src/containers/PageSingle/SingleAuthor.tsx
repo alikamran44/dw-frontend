@@ -6,13 +6,14 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 export interface SingleAuthorProps {
   author: PostAuthorType;
+  loading?: boolean;
 }
 
 const SingleAuthor: FC<SingleAuthorProps> = ({ author, loading=false }) => {
   return (
     <div className="nc-SingleAuthor flex">
       <Link to={`/author/${author._id}`}>
-        <Avatar
+        <Avatar 
           imgUrl={author.pic || ''}
           userName={`${author.firstName} ${author.lastName}`}
           sizeClass="h-12 w-12 text-lg sm:text-xl sm:h-24 sm:w-24 "

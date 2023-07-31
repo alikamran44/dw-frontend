@@ -3,7 +3,7 @@ import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PostDataType, TaxonomyType } from "data/types";
 import NcCoverImage from "components/NcImage/NcCoverImage";
-import { SINGLE, FAKE_SINGLE_POST } from "data/single";
+import { SINGLE, FAKE_SINGLE_POST } from "data/single"; 
 import SingleContent from "./SingleContent";
 import { CommentType } from "components/CommentCard/CommentCard";
 import SingleRelatedPosts from "./SingleRelatedPosts";
@@ -15,18 +15,16 @@ import EmptyCard from "components/EmptyCard/EmptyCard";
 
 export interface PageSingleTemp3SidebarProps { 
   className?: string;
+   loading?: boolean;
 }
 
-export interface SinglePageType extends PostDataType {
-  tags: TaxonomyType[];
-  content: string | ReactNode;
-  comments: CommentType[];
+interface RouteParams {
+  slug: string;
 }
-
 const PageSingleTemp3Sidebar: FC<PageSingleTemp3SidebarProps> = ({
   className = "", 
 }) => {
-  const {slug} = useParams()
+  const {slug} = useParams<RouteParams>();
   const [blogLoading, setBlogLoading] = useState(true)
   const [fetched, setFetched] = useState(true)
   const [blog, setBlog] = useState(null)

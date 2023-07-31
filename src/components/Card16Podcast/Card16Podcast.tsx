@@ -22,7 +22,7 @@ const Card16Podcast: FC<Card16PodcastProps> = ({
   const { title, href, categories, desc, featuredImage, postType, media, description, slug } = post;
   const IS_AUDIO = postType === "audio";
 
-  const fImage = media && media?.find((data=> data.fileFolder === 'feature'))?.url || featuredImage
+  const fImage = media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url || featuredImage
   const pHref = postType === "audio" ? `/blog-audio/${slug}` : `/blog/${slug}`
 
   const renderIcon = (state?: "playing" | "loading") => {
@@ -76,7 +76,7 @@ const Card16Podcast: FC<Card16PodcastProps> = ({
       data-nc-id="Card16Podcast"
     >
       <Link
-        to={href}
+        to={href || '/*'}
         className={`block flex-shrink-0 relative w-full rounded-3xl overflow-hidden ${ratio}`}
       >
         <NcImage src={fImage} />

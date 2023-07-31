@@ -37,14 +37,14 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[1];
   const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
-  const [audioBlogs, setAudioBlogs] = useState(null);
+  const [audioBlogs, setAudioBlogs] = useState<PostDataType[] | null>(null);
   const [audioLoading, setAudioLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
   const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'audio'});
   const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 6,});
   const [loadingCategory, setLoadingCategory] = useState(true);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
-  const [categories, setCategories] = useState(null);
+  const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [users, setUsers] = useState(null);
   const [tags, setTags] = useState(null);
   const tagLoading = useAppSelector(selectTagLoading)
@@ -58,37 +58,38 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   ];
 
   useEffect(()=>{
-    TagWithTotalBlogs({skip: 0, limit: 20}).then((res)=> {
+    TagWithTotalBlogs({skip: 0, limit: 20}).then((res:any)=> {
       setTags(res)
     })
     setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'})
     setAudioLoading(true)
-    dispatch(blogsType(filter)).then((res) => {
+    dispatch(blogsType(filter)).then((res: any) => {
       setAudioBlogs(res)
       setAudioLoading(false)
     }).catch(() => setAudioLoading(false))
 
-    dispatch(allBloggers(filter)).then((res) => {
+    dispatch(allBloggers(filter)).then((res: any) => {
       setLoadingCategory(false)
       setUsers(res)
     }).catch(()=> setLoadingCategory(false))
 
     setLoadingCategory(true)
-    CategoryWithTotalBlogs(categoryFilter).then((res)=> {
+    CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
       setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
-      setCategories(res)
+      if(res)
+        setCategories(res)
     })
   },[])
 
   const loadMore = () => {
     setMorePostLoading(true)
     let count = {skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'}
-    dispatch(blogsType(filter)).then((res) => {
+    dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
-      setSize(res.size)
       setMorePostLoading(false)
-      let newArray = blogs.concat(res.blogs)
-      setBlogs(newArray);
+      let newArray = audioBlogs?.concat(res.blogs)
+      if(newArray)
+        setAudioBlogs(newArray);
     }).catch(() => {
       setMorePostLoading(false)
     })
@@ -97,12 +98,13 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const loadMoreCategory = () => {
     setMoreLoadingCategory(true)
     let count = {limit: categoryFilter.limit, skip: categoryFilter.skip + categoryFilter.limit}
-    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res)=> {
+    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
       setMoreLoadingCategory(false)
-      setFilterCategory(count)
+      setCategoryFilter(count)
       if(res.length){
-        let newArray = categories.concat(res)
-        setCategories(newArray)
+        let newArray = categories?.concat(res)
+        if(newArray)
+          setCategories(newArray)
       }
     }).catch(()=> setMoreLoadingCategory(false))
   }
@@ -117,7 +119,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
         {sectionPosts[2] && <Card16Podcast post={sectionPosts[2]} />}
         <div className="md:col-span-2 lg:col-span-3">
           <div className={`grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8`}>
-            {loopPosts.map((p) => (
+            {loopPosts.map((p: any) => (
               <Card15Podcast key={p.id} post={p} />
             ))}
           </div>

@@ -5,6 +5,7 @@ import NcModal from "components/NcModal/NcModal";
 
 export interface ModalCategoriesProps {
   categories: TaxonomyType[];
+  loading?: boolean;
 }
 
 const ModalCategories: FC<ModalCategoriesProps> = ({ categories }) => {
