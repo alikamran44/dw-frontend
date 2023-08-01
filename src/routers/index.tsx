@@ -101,9 +101,9 @@ const Routes = () => {
   return (
     <BrowserRouter
       basename={
-        import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/ncmaz-rtl" : "/ncmaz"
+        import.meta.env.VITE_LRT_OR_RTL === "rtl" ? "/" : "/"
       }
-    >
+    > 
       <ScrollToTop />
       <HeaderContainer />
       <Switch>

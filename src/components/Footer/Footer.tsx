@@ -65,7 +65,7 @@ const Footer: React.FC = () => {
       </div>
     );
   };
-
+  const currentYear = new Date().getFullYear();
   return (
     <div className="nc-Footer relative py-12 lg:py-12 border-t border-neutral-200 dark:border-neutral-700">
       <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
@@ -74,12 +74,15 @@ const Footer: React.FC = () => {
             <Logo />
           </div>
         </div>*/}
+        {widgetMenus.map(renderWidgetMenuItem)}
         <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
            <SocialsList className="mt-2" />
         </div>
-        {widgetMenus.map(renderWidgetMenuItem)}
-          
-
+      </div>
+      <div className="text-center mt-6">
+        <span className="text-neutral-700 dark:text-neutral-200">
+          Copyright © {currentYear}. Daily World Network. All Rights Reserved.
+        </span>
       </div>
     </div>
   );

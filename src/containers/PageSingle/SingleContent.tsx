@@ -29,16 +29,17 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
   const location = useLocation();
   useEffect(() => {
     //  SCROLL TO COMMENT AREA
-    if (location.hash !== "#comment") {
+    if (location.hash !== "#comments") {
       return;
     }
     //
-    if (location.hash === "#comment" && commentRef.current) {
+    if (location.hash === "#comments" && commentRef.current) {
+       const commentElement = document.getElementById("comments");
       setTimeout(() => {
-        // scroll.scrollTo("comment", {
-        //   duration: 500,
-        //   smooth: true,
-        // });
+        console.log(commentElement,'commentElementcommentElement')
+       if (commentElement) {
+          commentElement.scrollIntoView({ behavior: "smooth" });
+        }
       }, 500);
     }
   }, [location]);
@@ -101,7 +102,7 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
       {/* COMMENT FORM */}
    
         <div
-          id="comment" 
+          id="comments" 
           ref={commentRef}
           className="max-w-screen-md mx-auto pt-5"
         >
