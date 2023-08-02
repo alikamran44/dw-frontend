@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import MyRouter from "routers/index";
-// import {AlertBox} from "components/Alert";
+import {AlertBox} from "components/Alert";
 import { useAppDispatch, useAppSelector } from "app/hooks";
 import { selectUser, setPageLoading, selectProfile, selectPageLoading, 
 selectLoading } from "app/auth/auth";
@@ -29,7 +29,7 @@ function App() {
       {
           <div>
             <MyRouter />
-            {/*<AlertBox />*/}
+            <AlertBox />
             <ToastContainer 
               position="bottom-left"
             />

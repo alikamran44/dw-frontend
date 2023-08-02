@@ -34,7 +34,7 @@ const ModalCreate: FC<ModalCreateProps> = ({ loading, uploadButtonText, buttonTe
     }
   },[isOpen])
   const renderModalContent = () => {
-    if(!initialValues.name) return <></>
+    if(!initialValues) return <></>
     return (
       <div>
         <Formik
