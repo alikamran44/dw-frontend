@@ -67,7 +67,7 @@ const DashboardCategories = () => {
     <div className="flex flex-col space-y-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="py-2 align-middle inline-block min-w-full px-1 sm:px-6 lg:px-8">
-          <div className="py-2 align-end inline-block min-w-full">
+          <div className="py-2 right inline-block min-w-full">
             <CreateModal
               uploadButtonText={'Create'}
               buttonText={'Create New Category'}

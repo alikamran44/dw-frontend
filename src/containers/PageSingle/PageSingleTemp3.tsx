@@ -41,7 +41,8 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
       }
     }).catch(() => setBlogLoading(false) )
   }, []);
-
+  const fCover = blog ? blog.media?.find(((data: any)=> data.fileFolder === 'cover'))?.url : ''
+  const fImage = blog ? blog.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url : ''
   return (
     <>
       <div
@@ -57,6 +58,7 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
                 metaActionStyle="style2"
                 pageData={blog || FAKE_SINGLE_POST}
                 loading={blogLoading}
+                fImage={fImage}
               />
             </div>
           </div>
@@ -66,7 +68,7 @@ const PageSingleTemplate3: FC<PageSingleTemplate3Props> = ({
             <div className="hidden md:block absolute top-0 left-0 bottom-0 w-1/5 from-neutral-900 dark:from-black bg-gradient-to-r"></div>
             <img
               className="block w-full h-full object-cover"
-              src={blog ? blog.media?.find(((data: any)=> data.fileFolder === 'cover'))?.url : ''}
+              src={fCover}
               alt=""
             />
           </div>

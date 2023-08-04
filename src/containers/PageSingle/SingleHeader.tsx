@@ -7,7 +7,9 @@ import PostMeta2 from "components/PostMeta2/PostMeta2";
 import SingleMetaAction2 from "./SingleMetaAction2";
 import { Helmet } from "react-helmet";
 import { PostDataType, TaxonomyType } from "data/types";
+import { useLocation } from "react-router-dom";
 
+ const APP_NAME: string = import.meta.env.VITE_APP_NAME;
 export interface SingleHeaderProps {
   pageData: PostDataType;
   hiddenDesc?: boolean;
@@ -15,6 +17,7 @@ export interface SingleHeaderProps {
   titleMainClass?: string;
   className?: string;
   loading?: boolean;
+  fImage?: string;
 }
 
 const SingleHeader: FC<SingleHeaderProps> = ({
@@ -24,36 +27,51 @@ const SingleHeader: FC<SingleHeaderProps> = ({
   className = "",
   loading = false,
   metaActionStyle = "style1",
+  fImage,
 }) => {
-
+  const location = useLocation();
+  const completeUrl = window.location.href;
+  function generateKeywordsString(data: any) {
+    const names = data.map((item: any) => item.name);
+    return names.join(", ");
+  }
+  const keywords = generateKeywordsString(pageData.tags || []);
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-            <title>My React App</title>
-            <meta
-                property='og:description'
-                content={`Best programming blog and tutorials about tag name`}
-            />
-            <meta property='og:type' content='website' />
-            <meta property='og:url' content={`domain tag`} />
-            <meta property='og:site_name' content={'APP_NAME'} />
-            <link rel='canonical' href={`domain name/tags/`} />
-            <meta name="keywords" content="React, helmet, SEO" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <meta http-equiv="X-DNS-Prefetch-Control" content="on" />
-            <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-            {/* <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /> */}
-            <meta name="referrer" content="no-referrer-when-downgrade" />
-            <meta
-                property='og:image'
-                content={`domain/static/images/seoblog.jpeg`}
-            />
-            <meta
-                property='og:image:secure_url'
-                content={`domain/static/images/seoblog.jpeg`}
-            />
-            <meta property='og:image:type' content='image/jpeg' />
+        <title>{pageData.mtitle}</title>
+         <meta name='description' content={pageData.mdesc} />
+        <meta 
+          property='og:description' content={pageData.mdesc || ''}
+        />
+        <meta property='og:title' content={`${pageData.mtitle}`} />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content={completeUrl} />
+        <meta property='og:site_name' content={APP_NAME} />
+        <link rel='canonical' href={completeUrl} />
+        <meta name="keywords" content={keywords} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-DNS-Prefetch-Control" content="on" />
+        <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+        {/* <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /> */}
+        <meta name="referrer" content="no-referrer-when-downgrade" />
+        <meta property='og:image' content={fImage || ''}
+        />
+        <meta property='og:image:secure_url' content={fImage || ''} />
+        <meta property='og:image:type' content='image/jpeg' />
+
+         {/*Twitter*/} 
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={completeUrl} />
+        <meta property="twitter:title" content={`${pageData.mtitle}`} />
+        <meta property="twitter:description" content={pageData.mdesc || ''} />
+        <meta property="twitter:image" content={fImage || ''} />
+         {/*For Facebook Insights */}
+        <meta property="fb:app_id" content="123456789123456" />
+
+        {/*For Twitter Analytics*/}
+        <meta name="twitter:site" content="@twitter-username" />
       </Helmet>
       <div className={`nc-SingleHeader ${className}`}>
         <div className="space-y-5">

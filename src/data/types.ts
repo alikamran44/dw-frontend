@@ -6,7 +6,7 @@ export interface CustomLink {
   allowModal?: boolean;
 }
 
-//  ##########  PostDataType ######## //
+//  ##########  TaxonomyType ######## //
 export interface TaxonomyType {
   id?: string | number;
   _id?: string | number | null;
@@ -82,13 +82,15 @@ export interface PostDataType {
   url?: string;
   thumbnail?: any;
   fileFolder?: any;
-  description?: string;
   isSideBar?: any;
   media?: any;
   postedBy?: any;
   categories: TaxonomyType[];
   tags?: TaxonomyType[];
   title: string;
+  mdesc?: string;
+  mtitle?: string;
+  description?: string;
   featuredImage?: string;
   comments?: any;
   desc?: string;

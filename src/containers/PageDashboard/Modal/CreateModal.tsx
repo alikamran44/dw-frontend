@@ -96,7 +96,7 @@ const ModalCreate: FC<ModalCreateProps> = ({ loading, uploadButtonText, buttonTe
       <NcModal
         contentExtraClass="max-w-screen-md"
         uploadTriggerText={
-          <div className="text-center">
+          <div className="flex justify-end space-x-5 mt-0 mb-5">
            <ButtonPrimary type="button" onClick={toggle} >{buttonText}</ButtonPrimary>
           </div>
         }

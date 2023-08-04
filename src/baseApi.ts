@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-const API_ROOT = 'http://127.0.0.1:5000/api';
-export const APP_NAME = 'Daily World';
+const API_ROOT: string | boolean | undefined = import.meta.env.VITE_BASE_API;
+
 let token;
 
 // axios.interceptors.request.use(
