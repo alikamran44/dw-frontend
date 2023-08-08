@@ -18,7 +18,7 @@ export interface ModalTagsProps {
 const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }) => {
   const [filterData, setFilterData] = useState({skip: 0, limit: 2});
   const [tags, setTags] = useState<TaxonomyType[] | null>(null);
-  const [remainingTags, setRemainingTags] = useState(null);
+  const [remainingTags, setRemainingTags] = useState(0);
   const [loading, setLoading] = useState(false);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
   const loadMore = () => {
     setMoreLoading(true)
     let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
-    dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
+    dispatch(tagWithTotalBlogs(filterData)).then((res: any)=> {
       setMoreLoading(false)
       setFilterData(count)
       if(res){
@@ -44,7 +44,7 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
   useEffect(()=>{
     setLoading(true)
     let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
-    dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
+    dispatch(tagWithTotalBlogs(filterData)).then((res: any)=> {
       setLoading(false)
       setFilterData(count)
       setRemainingTags(res.remainingTags)

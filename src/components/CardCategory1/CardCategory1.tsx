@@ -54,7 +54,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
             } block mt-[2px] text-neutral-500 dark:text-neutral-400`}
           >
             {
-            (!loading && count >= 0) ?
+            (!loading && ((count !== null && count !== undefined) && count >= 0)) ?
               <span>{count} Articles</span>
             :
               <SkeletonTheme baseColor="#d1d1d1" highlightColor="#e1dddd">

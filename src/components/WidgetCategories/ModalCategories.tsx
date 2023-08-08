@@ -17,7 +17,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
   const [filterData, setFilterData] = useState({skip: 0, limit: 2});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [loading, setLoading] = useState(false);
-  const [remainingCategories, setRemainingCategories] = useState(null);
+  const [remainingCategories, setRemainingCategories] = useState(0);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch()
 
@@ -27,7 +27,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
   const loadMore = () => {
     setMoreLoading(true)
     let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
-    dispatch(categoryWithTotalBlogs(filterData)).then((res: TaxonomyType)=> {
+    dispatch(categoryWithTotalBlogs(filterData)).then((res: any)=> {
       setMoreLoading(false)
       setFilterData(count)
       console.log(res)
