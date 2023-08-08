@@ -46,7 +46,7 @@ const PageSingleGallery: FC<PageSingleGalleryProps> = ({ className = "" }) => {
         setFetched(false)
       }
     }).catch(() => setBlogLoading(false) )
-  }, []);
+  }, [slug]);
 
   const handleOpenModal = (index: number) => {
     setIsOpen(true);

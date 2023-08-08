@@ -16,8 +16,9 @@ export interface ModalTagsProps {
 
 
 const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }) => {
-  const [filterData, setFilterData] = useState({skip: 0, limit: 20});
+  const [filterData, setFilterData] = useState({skip: 0, limit: 2});
   const [tags, setTags] = useState<TaxonomyType[] | null>(null);
+  const [remainingTags, setRemainingTags] = useState(null);
   const [loading, setLoading] = useState(false);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch();
@@ -28,12 +29,13 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
 
   const loadMore = () => {
     setMoreLoading(true)
-    let count = {limit: filterData.limit + filterData.limit, skip: filterData.skip + 1}
+    let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
     dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
       setMoreLoading(false)
       setFilterData(count)
-      if(res.length){
-        let newArray = tags?.concat(res)
+      if(res){
+        setRemainingTags(res.remainingTags)
+        let newArray = tags?.concat(res.tags)
         if(newArray)
           setTags(newArray)
       }
@@ -41,12 +43,13 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
   }
   useEffect(()=>{
     setLoading(true)
-    let count = {limit: filterData.limit + filterData.limit, skip: filterData.skip + 1}
+    let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
     dispatch(tagWithTotalBlogs(filterData)).then((res: TaxonomyType[])=> {
       setLoading(false)
       setFilterData(count)
+      setRemainingTags(res.remainingTags)
       if(res)
-        setTags(res)
+        setTags(res.tags)
     }).catch(()=> setLoading(false))
   },[])
   useEffect(()=>{
@@ -69,7 +72,7 @@ const ModalTags: FC<ModalTagsProps> = ({ isOpenProp, onCloseModal, modalTitle  }
           }
         </div>
         {
-          tags &&
+          (tags && remainingTags > 0) &&
           <div className="text-center mx-auto mt-10 md:mt-16">
             <ButtonPrimary onClick={()=> loadMore()}>
               { moreLoading &&

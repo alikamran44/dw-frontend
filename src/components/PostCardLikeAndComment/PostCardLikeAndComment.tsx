@@ -21,7 +21,9 @@ const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
   onClickLike = () => {},
 }) => {
    const pHref = postData.postType === 'audio' ? `/blog-audio/${postData.slug}` :
-              postData.postType === 'video' ? `/blog-video/${postData.slug}` :postData.isSideBar ? `/blog-view/${postData.slug}` : `/blog/${postData.slug}`
+              postData.postType === 'video' ? `/blog-video/${postData.slug}` : postData.isSideBar ? 
+              `/blog-view/${postData.slug}` : postData.postType === 'gallery' ? 
+              `/blog-gallery/${postData.slug}` : `/blog/${postData.slug}`
   return (
     <div
       className={`nc-PostCardLikeAndComment flex items-center space-x-2 ${className}`}

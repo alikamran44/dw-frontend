@@ -68,7 +68,7 @@ const SingleHeader: FC<SingleHeaderProps> = ({
         <meta property="twitter:description" content={pageData.mdesc || ''} />
         <meta property="twitter:image" content={fImage || ''} />
          {/*For Facebook Insights */}
-        <meta property="fb:app_id" content="123456789123456" />
+        <meta property="fb:app_id" content="806413737804011" />
 
         {/*For Twitter Analytics*/}
         <meta name="twitter:site" content="@twitter-username" />

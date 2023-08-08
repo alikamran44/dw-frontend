@@ -104,10 +104,10 @@ const PageHomeDemo6: React.FC = () => {
     }).catch(() => setRecentLoading(false))
 
     dispatch(categoryWithTotalBlogs({skip: 0, limit: 5})).then((res) => {
-      setCategories(res)
+      setCategories(res.categories)
     })
     dispatch(tagWithTotalBlogs({skip: 0, limit: 20})).then((res)=> {
-      setTags(res)
+      setTags(res.tags)
     })
 
     dispatch(allBloggers({skip: 0, limit: 5})).then((res) => {

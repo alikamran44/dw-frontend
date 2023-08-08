@@ -14,9 +14,10 @@ export interface ModalCategoriesProps {
 }
 
 const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, modalTitle }) => {
-  const [filterData, setFilterData] = useState({skip: 0, limit: 20});
+  const [filterData, setFilterData] = useState({skip: 0, limit: 2});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [loading, setLoading] = useState(false);
+  const [remainingCategories, setRemainingCategories] = useState(null);
   const [moreLoading, setMoreLoading] = useState(false);
   const dispatch = useAppDispatch()
 
@@ -25,22 +26,25 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
   ).flat();
   const loadMore = () => {
     setMoreLoading(true)
-    let count = {limit: filterData.limit, skip: filterData.skip + 1}
+    let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
     dispatch(categoryWithTotalBlogs(filterData)).then((res: TaxonomyType)=> {
       setMoreLoading(false)
       setFilterData(count)
-      let newArray = categories?.concat(res)
+      console.log(res)
+      setRemainingCategories(res.remainingCategories)
+      let newArray = categories?.concat(res.categories)
       if(newArray)
         setCategories(newArray)
     }).catch(()=> setMoreLoading(false))
   }
   useEffect(()=>{
     setLoading(true)
-    let count = {limit: filterData.limit, skip: filterData.skip + 1}
+    let count = {limit: filterData.limit, skip: filterData.skip + filterData.limit}
     dispatch(categoryWithTotalBlogs(filterData)).then((res: any)=> {
       setLoading(false)
       setFilterData(count)
-      setCategories(res)
+      setCategories(res.categories)
+       setRemainingCategories(res.remainingCategories)
     }).catch(()=> setLoading(false))
   },[])
   useEffect(()=>{
@@ -62,7 +66,7 @@ const ModalCategories: FC<ModalCategoriesProps> = ({ isOpenProp, onCloseModal, m
           }
         </div>
         {
-          categories &&
+          (categories && remainingCategories > 0) &&
           <div className="text-center mx-auto mt-10 md:mt-16">
             <ButtonPrimary onClick={()=> loadMore()}>
               { moreLoading &&
