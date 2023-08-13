@@ -10,6 +10,7 @@ const HelperBlogs = () => {
   const dispatch = useAppDispatch();
 
   const fetchBlogs = (blogType: string | null | undefined, data: any, slug: any) => {
+    console.log(blogType,'blogTypeblogTypeblogType')
     if(blogType === undefined || blogType === null || blogType === 'default-blog-type')
       return dispatch(fetchPosts(data));
     else if(blogType === 'tag')

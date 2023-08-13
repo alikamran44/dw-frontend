@@ -22,6 +22,7 @@ import { DEMO_AUTHORS } from "data/authors";
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
+import Header from "./Header";
 
 export interface PageArchiveProps {
   className?: string;
@@ -31,20 +32,21 @@ export interface PageArchiveProps {
 const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < 16);
 interface RouteParams {
   slug: string;
-  blogType?: string;
+  blogtype?: string;
 }
 const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const { fetchBlogs, blogBookmark, recentBlogsHelper, CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[0];
-  const {blogType, slug} = useParams<RouteParams>();
+  const {blogtype, slug} = useParams<RouteParams>();
   // const [tabActive, setTabActive] = useState<string>(TABS[0]);
+  const initialFilter = {limit: 2, skip: 0};
   const [filter, setFilter] = useState({limit: 2, skip: 0});
   const [blogs, setBlogs] = useState<PostDataType[] | null>(null);
   const [size, setSize] = useState(null);
   const [postLoading, setPostLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
-
+  const initialFilterCategory = {limit: 20, skip: 0};
   const [filterCategory, setFilterCategory] = useState({limit: 20, skip: 0});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [loadingCategory, setLoadingCategory] = useState(false);
@@ -52,9 +54,10 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const tagLoading = useAppSelector(selectTagLoading)
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
    const [users, setUsers] = useState(null);
+   const [data, setData] = useState(null);
   const repeatedCategoriesArray = Array.from({ length: filterCategory.limit }, (_, index) =>
     DEMO_FAKE_CATEGORY_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
-  ).flat();
+  ).flat(); 
 
   const FILTERS = [
     { name: "Most Recent" },
@@ -69,37 +72,42 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
 
   useEffect(()=>{
      TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
-      setTags(res)
+      setTags(res.tags)
     })
   },[])
 
   useEffect(() => {
     setBlogs(null)
+    setData(null)
     setPostLoading(true)
 
-    let countCategory = {limit: filterCategory.limit, skip: filterCategory.skip + filterCategory.limit}
+    let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
     setLoadingCategory(true)
-    CategoryWithTotalBlogs(filterCategory).then((res: any) => {
+    CategoryWithTotalBlogs(initialFilterCategory).then((res: any) => {
       setFilterCategory(countCategory)
       setLoadingCategory(false)
       if(res)
-        setCategories(res)
+        setCategories(res.categories)
     }).catch(()=> setLoadingCategory(false))
 
     // .......... Fetch Blogs ..................
-    let count = {limit: filter.limit, skip: filter.skip + filter.limit}
-    const filteredBlogType = blogType || 'default-blog-type';
-    fetchBlogs(filteredBlogType!,filter,slug).then((res: any) => {
+    let count = {limit: initialFilter.limit, skip: initialFilter.skip + initialFilter.limit}
+    const filteredBlogType = blogtype || 'default-blog-type';
+    fetchBlogs(filteredBlogType!,initialFilter,slug).then((res: any) => {
       setFilter(count)
       // setSize(res.size) 
       setPostLoading(false)
+      if(res.category)
+        setData(res.category)
+      if(res.tag)
+        setData(res.tag)
       if(res)
         setBlogs(res.blogs) 
     }).catch(() => {
       setPostLoading(false)
     })
 
-     AllBloggers(filter).then((res: any) => {
+     AllBloggers(initialFilter).then((res: any) => {
       setUsers(res)
     })
   }, [slug])
@@ -116,7 +124,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
       setMoreLoadingCategory(false)
       setFilterCategory(count)
       if(res.length){
-        let newArray = categories?.concat(res)
+        let newArray = categories?.concat(res.categories)
         if(newArray)
           setCategories(newArray)
       }
@@ -126,7 +134,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const loadMore = () => {
     setMorePostLoading(true)
     let count = {limit: filter.limit, skip: filter.skip + filter.limit}
-    fetchBlogs(blogType, filter, slug).then((res: any) => {
+    fetchBlogs(blogtype, filter, slug).then((res: any) => {
       setFilter(count)
       setSize(res.size)
       setMorePostLoading(false)
@@ -147,28 +155,14 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
       className={`nc-PageArchive overflow-hidden ${className}`}
       data-nc-id="PageArchive"
     >
-      <Helmet>
-        <title>Archive || Blog Magazine React Template</title>
-      </Helmet>
+     
+     <Header
+          data={data}
+          blogs={blogs}
+     />
 
       {/* HEADER */}
-      <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
-        <div className="rounded-3xl md:rounded-[40px] relative aspect-w-16 aspect-h-13 sm:aspect-h-9 lg:aspect-h-8 xl:aspect-h-5 overflow-hidden ">
-          <NcImage
-            containerClassName="absolute inset-0"
-            src="https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            className="object-cover w-full h-full"
-          />
-          <div className="absolute inset-0 bg-black text-white bg-opacity-30 flex flex-col items-center justify-center">
-            <h2 className="inline-block align-middle text-5xl font-semibold md:text-7xl ">
-              {PAGE_DATA.name}
-            </h2>
-            <span className="block mt-4 text-neutral-300">
-              {(blogs && blogs.length) || PAGE_DATA.count} Articles
-            </span>
-          </div>
-        </div>
-      </div>
+
       {/* ====================== END HEADER ====================== */}
 
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">

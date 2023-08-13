@@ -5,7 +5,7 @@ import { PostDataType } from "data/types";
 import Card11 from "components/Card11/Card11";
 import Card9 from "components/Card9/Card9";
 import { DEMO_POSTS } from "data/posts";
-import { fetchUserBlogs, relatedBog  } from '../../Actions/PostAction';
+import { fetchUserPublicBlogs, relatedBog  } from '../../Actions/PostAction';
 
 export interface SingleRelatedPostsProps {
   blog?: PostDataType;
@@ -41,8 +41,8 @@ const SingleRelatedPosts: FC<SingleRelatedPostsProps> = ({
         setRelatedLoading(false)
       }).catch(() => setRelatedLoading(false))
     }
-    if(blog?.postedBy?._id !== null && blog?.postedBy?._id !== ''){
-      dispatch(fetchUserBlogs(blog?.postedBy?._id,{skip: 0, limit: 5})).then((res) => {
+    if(blog && blog?.postedBy !== undefined && (blog?.postedBy?._id !== null && blog?.postedBy?._id !== '')){
+      dispatch(fetchUserPublicBlogs(blog?.postedBy?._id,{skip: 0, limit: 5})).then((res) => {
         setAuthorBlogs(res.blogs)
         setAuthorBlogsLoading(false)
       }).catch(() => setAuthorBlogsLoading(false))

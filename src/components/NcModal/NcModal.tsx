@@ -56,7 +56,10 @@ const NcModal: FC<NcModalProps> = ({
             renderTrigger(openModal)
           ) : (
             !uploadTriggerText ?
-            <ButtonDropdown onClick={openModal}> {triggerText} </ButtonDropdown>
+            onCloseModal ?
+              <ButtonDropdown onClick={onCloseModal}> {triggerText} </ButtonDropdown>
+            :
+                <ButtonDropdown onClick={openModal}> {triggerText} </ButtonDropdown>
             : <div onClick={openModal}>{uploadTriggerText}</div>
           )}
         </>

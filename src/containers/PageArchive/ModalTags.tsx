@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import NcModal from "components/NcModal/NcModal";
 import Tag from "components/Tag/Tag";
 import { TaxonomyType } from "data/types";
@@ -9,11 +9,15 @@ export interface ModalTagsProps {
 }
 
 const ModalTags: FC<ModalTagsProps> = ({ tags }) => {
+  const [show, setShow] = useState(false)
+  const modalHandler = () => {
+    setShow(!show) 
+  }
   const renderModalContent = () => {
     return (
       <div className="flex flex-wrap dark:text-neutral-200">
         {tags.map((tag) => (
-          <Tag key={tag.id} tag={tag} className="mr-2 mb-2" />
+          <Tag modalHandler={modalHandler} key={tag.id} tag={tag} className="mr-2 mb-2" />
         ))}
       </div>
     );
@@ -22,6 +26,8 @@ const ModalTags: FC<ModalTagsProps> = ({ tags }) => {
   return (
     <div className="nc-ModalTags">
       <NcModal
+        isOpenProp={show}
+        onCloseModal={modalHandler}
         contentExtraClass="max-w-screen-md"
         triggerText={
           <span>

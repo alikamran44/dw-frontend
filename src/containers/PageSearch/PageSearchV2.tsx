@@ -96,17 +96,15 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
     if( tabActive === 'Tags' ){
       setLoading(true)
       dispatch(tagWithTotalBlogs(tagFilter)).then((res: any) => {
-        console.log(res)
         setLoading(false)
-        setTags(res)  
+        setTags(res.tags)  
       }).catch(() => setLoading(false))
     }
     else if( tabActive === 'Categories' ){
       setLoading(true)
       dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any) => {
-        console.log(res)
         setLoading(false)
-        setCategories(res)  
+        setCategories(res.categories)  
       }).catch(()=> setLoading(false))
     }
     else if( tabActive === 'Articles' ){
@@ -135,7 +133,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
         setMoreLoading(false)
         if(res.length > 0){
           setTagFilter({...tagFilter, skip: tagFilter.skip+1})
-          setTags(res)  
+          setTags(res.tags)  
         }
       }).catch(() => setMoreLoading(false))
     }
@@ -146,7 +144,7 @@ const PageSearchV2: FC<PageSearchV2Props> = ({ className = "" }) => {
         setMoreLoading(false)
         if(res.length > 0){
           setCategoryFilter({...categoryFilter, skip: categoryFilter.skip+1})
-          setCategories(res)  
+          setCategories(res.categories)  
         }
       }).catch(()=> setMoreLoading(false))
     }

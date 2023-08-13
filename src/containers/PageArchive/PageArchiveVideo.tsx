@@ -60,7 +60,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
 
   useEffect(()=>{
     TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
-      setTags(res)
+      setTags(res.tags)
     })
     setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'video'})
     setVideoLoading(true)
@@ -79,7 +79,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
       setLoadingCategory(false)
       setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
       if(res)
-        setCategories(res)
+        setCategories(res.categories)
     }).catch(()=> setLoadingCategory(false))
   },[])
 

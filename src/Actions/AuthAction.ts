@@ -236,6 +236,12 @@ export const updateUser = (values: any, id: any) => (dispatch: AppDispatch) => {
       dispatch(stopLoading())
       toast.success("Profile has been successfully updated");
       console.log(res.data,'res.datares.data')
+       // localStorage.setItem('userInfo', JSON.stringify(data.data));
+      const userInfo = localStorage.getItem('userInfo');
+      const user = userInfo && JSON.parse(userInfo);
+
+      console.log(user,'sssssssssssssssss')
+      dispatch(setUserProfile( res.data ))
       dispatch(login( res.data ))
       return Promise.resolve(res.data);
     },

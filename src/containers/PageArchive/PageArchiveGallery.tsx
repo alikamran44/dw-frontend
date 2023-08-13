@@ -65,7 +65,7 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
 
   useEffect(()=>{
     TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
-      setTags(res)
+      setTags(res.tags)
     })
     setGalleryLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
@@ -81,7 +81,7 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
       setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
       if(res)
-        setCategories(res)
+        setCategories(res.categories)
     })
   },[])
 

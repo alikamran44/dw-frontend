@@ -14,7 +14,7 @@ export interface WidgetTagsProps {
 const WidgetTags: FC<WidgetTagsProps> = ({
   className = "bg-neutral-100 dark:bg-neutral-800",
   tags,
-  loading = false, 
+  loading = false,  
 }) => {
   const [show, setShow] = useState(false)
   const modalHandler = () => {

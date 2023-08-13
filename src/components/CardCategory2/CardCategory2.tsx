@@ -25,7 +25,7 @@ const CardCategory2: FC<CardCategory2Props> = ({
 
   return (
     <Link
-      to={slug ? `/blogs/category/${slug}` : '#'}
+      to={slug ? `/blogs/${slug}/category` : '#'}
       className={`nc-CardCategory2 relative flex flex-col items-center justify-center text-center
        px-3 py-5 sm:p-6  [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ]  ${className}`}
       data-nc-id="CardCategory2"
@@ -55,13 +55,13 @@ const CardCategory2: FC<CardCategory2Props> = ({
           }
         </h2>
         {
-          (!loading && count) ?
+          (!loading && name) ?
           <span
             className={`block mt-[2px] text-sm text-neutral-500 dark:text-neutral-400`}
           >
-            {count} Articles
+            {count || 0} Articles
           </span>
-          :
+          : (loading && !name) && 
           <Skeleton
             width={50}
           />

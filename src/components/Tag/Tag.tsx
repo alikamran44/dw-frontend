@@ -9,14 +9,20 @@ export interface TagProps {
   tag: TaxonomyType;
   hideCount?: boolean;
   loading?: boolean;
+  modalHandler?: () => void;
 }
 
-const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, loading = false, }) => { 
+const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, loading = false, modalHandler }) => { 
+  const closeHandler = () => {
+    if(modalHandler){
+      modalHandler()
+    }
+  }
   return (
     <> 
       {
        (!loading && (tag.name !== '' && tag.name !== null)) ? 
-        <Link
+        <Link onClick={closeHandler}
           className={`nc-Tag inline-block bg-white text-sm text-neutral-600 dark:text-neutral-300 py-2 
             px-3 rounded-lg border border-neutral-100 md:py-2.5 md:px-4 dark:bg-neutral-700 
             dark:border-neutral-700 hover:border-neutral-200 dark:hover:border-neutral-6000 ${className}`}

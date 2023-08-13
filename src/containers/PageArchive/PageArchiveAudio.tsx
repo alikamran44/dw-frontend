@@ -59,7 +59,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
 
   useEffect(()=>{
     TagWithTotalBlogs({skip: 0, limit: 20}).then((res:any)=> {
-      setTags(res)
+      setTags(res.tags)
     })
     setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'})
     setAudioLoading(true)
@@ -77,7 +77,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
       setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
       if(res)
-        setCategories(res)
+        setCategories(res.categories)
     })
   },[])
 
