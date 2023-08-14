@@ -60,6 +60,7 @@ export interface LocationStates {
   "/about"?: {};
   "/page404"?: {};
   "/dashboard"?: {};
+  "/setting"?: {};
   "/subscription"?: {};
   //
   "/home-demo-6"?: {};

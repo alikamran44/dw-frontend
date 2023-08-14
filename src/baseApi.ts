@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 const isProduction: boolean = import.meta.env.MODE === 'production';
-const API_ROOT: string = isProduction ? import.meta.env.VITE_PRODUCTION_BASE_API : 
+const API_ROOT: string | boolean | undefined = isProduction ? import.meta.env.VITE_PRODUCTION_BASE_API : 
         import.meta.env.VITE_BASE_API;
 
 let token;

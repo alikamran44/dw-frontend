@@ -85,6 +85,7 @@ export const pages: Page[] = [
   { path: "/terms-and-condition", component: TermsAndCondition, isAuth: false },
   //
   { path: "/dashboard", component: PageDashboard, isAuth : ['blogger', 'admin'] },
+  { path: "/setting", component: PageDashboard, isAuth : ['user'] },
 
 ];
 

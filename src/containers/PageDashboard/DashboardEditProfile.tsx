@@ -24,7 +24,7 @@ const DashboardEditProfile = () => {
     coverPhoto: Blob | null;
     avatar: Blob | null;
     id?: string;
-  }
+  } 
   const [initialValues, setInitialValues] = useState<Profile | null>(null);
   const profile = useAppSelector(selectProfile)
   const { profileSubmitHandler } = helperForm();

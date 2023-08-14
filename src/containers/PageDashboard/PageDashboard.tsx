@@ -1,7 +1,8 @@
 import LayoutPage from "components/LayoutPage/LayoutPage";
 import React, { ComponentType, FC } from "react";
 import { Redirect, Route, Switch, useRouteMatch } from "react-router";
-import { NavLink } from "react-router-dom";
+import { matchPath } from 'react-router';
+import { NavLink, useLocation } from "react-router-dom";
 import { useAppSelector } from "app/hooks";
 import { selectProfile,  } from "app/auth/auth";
 import DashboardBillingAddress from "./DashboardBillingAddress";
@@ -43,153 +44,6 @@ interface DashboardPage {
   isAuth?: any; 
 }
 
-const subPages: DashboardPage[] = [
-  {
-    sPath: "/root",
-    exact: true,
-    component: DashboardRoot,
-    emoij: "🕹",
-    pageName: "Dash board",
-    isAuth : ['blogger', 'admin', 'user']
-  },
-  {
-    exact: true,
-    sPath: "/posts",
-    component: DashboardPosts,
-    emoij: "📕",
-    pageName: "Posts",
-    // isAuth : ['blogger', 'admin']
-  },
-  {
-    exact:true,
-    sPath: "/edit-profile",
-    component: DashboardEditProfile,
-    emoij: "🛠",
-    pageName: "Edit profile",
-    isAuth : ['blogger', 'admin', 'user']
-  },
-  {
-    exact:true,
-    sPath: "/information",
-    component: DashboardSubcription,
-    emoij: "📃",
-    pageName: "Personal Information",
-  },
-  // {
-  //   exact:true,
-  //   sPath: "/billing-address",
-  //   component: DashboardBillingAddress,
-  //   emoij: "✈",
-  //   pageName: "Billing address",
-  // },
-  {
-    exact:true,
-    sPath: "/submit-post/1",
-    component: DashboardSubmitPost,
-    emoij: "✍",
-    pageName: "Submit post",
-    isAuth : ['blogger', 'admin']
-  },
-  {
-    exact:true,
-    sPath: "/users",
-    component: DashboardUsers,
-    emoij: "🧑🏻",
-    pageName: "Users",
-    isAuth : ['admin']
-  },
-  {
-    exact:true,
-    sPath: "/categories",
-    component: DashboardCategories,
-    emoij: "✨",
-    pageName: "Categories",
-    isAuth : ['admin']
-  },
-  {
-    exact:true,
-    sPath: "/tags",
-    component: DashboardTags,
-    emoij: "🏷",
-    pageName: "Tags",
-    isAuth : ['admin'],
-  },
-];
-
-const subPagesRoutes: DashboardPage[] = [
-  {
-    sPath: "/root",
-    exact: true,
-    component: DashboardRoot,
-    emoij: "🕹",
-    pageName: "Dash board",
-    isAuth : ['blogger', 'admin', 'user']
-  },
-  {
-    exact: true,
-    sPath: "/posts",
-    component: DashboardPosts,
-    emoij: "📕",
-    pageName: "Posts",
-    // isAuth : ['blogger', 'admin']
-  },
-  {
-    exact:true,
-    sPath: "/edit-profile",
-    component: DashboardEditProfile,
-    emoij: "🛠",
-    pageName: "Edit profile",
-    isAuth : ['blogger', 'admin', 'user']
-  },
-  {
-    exact:true,
-    sPath: "/information",
-    component: DashboardSubcription,
-    emoij: "📃",
-    pageName: "Personal Information",
-  },
-  // {
-  //   exact:true,
-  //   sPath: "/billing-address",
-  //   component: DashboardBillingAddress,
-  //   emoij: "✈",
-  //   pageName: "Billing address",
-  // },
-  {
-    exact:true,
-    sPath: "/submit-post/:currentUrl?/:slug?",
-    component: DashboardSubmitPost,
-    emoij: "✍",
-    pageName: "Submit post",
-    isAuth : ['blogger', 'admin']
-  },
-  {
-    exact:true,
-    sPath: "/users",
-    component: DashboardUsers,
-    emoij: "🧑🏻",
-    pageName: "Users",
-    isAuth : ['admin']
-  },
-  {
-    exact:true,
-    sPath: "/categories",
-    component: DashboardCategories,
-    emoij: "✨",
-    pageName: "Categories",
-    isAuth : ['admin']
-  },
-  {
-    exact:true,
-    sPath: "/tags",
-    component: DashboardTags,
-    emoij: "🏷",
-    pageName: "Tags",
-    isAuth : ['admin'],
-  },
-];
-
-
 const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
   let { path, url } = useRouteMatch();
   interface UserInfo {
@@ -201,6 +55,157 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
   const userInfoString = localStorage.getItem('userInfo');
   const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
   
+
+  // Get the current URL path
+  const location = useLocation();
+
+ // Use matchPath to check if the current location matches the path
+  const isSettingPage = matchPath(location.pathname, { path: '/setting' });
+  const subPages: DashboardPage[] = [
+    {
+      sPath: "/root",
+      exact: true,
+      component: DashboardRoot,
+      emoij: !isSettingPage ? "🕹" : "⚙",
+      pageName: !isSettingPage ? `Dash board` : `Setting`,
+      isAuth : ['blogger', 'admin', 'user']
+    },
+    {
+      exact: true,
+      sPath: "/posts",
+      component: DashboardPosts,
+      emoij: "📕",
+      pageName: "Posts",
+      isAuth : ['blogger', 'admin']
+    },
+    {
+      exact:true,
+      sPath: "/edit-profile",
+      component: DashboardEditProfile,
+      emoij: "🛠",
+      pageName: "Edit profile",
+      isAuth : ['blogger', 'admin', 'user']
+    },
+    {
+      exact:true,
+      sPath: "/information",
+      component: DashboardSubcription,
+      emoij: "📃",
+      pageName: "Personal Information",
+    },
+    // {
+    //   exact:true,
+    //   sPath: "/billing-address",
+    //   component: DashboardBillingAddress,
+    //   emoij: "✈",
+    //   pageName: "Billing address",
+    // },
+    {
+      exact:true,
+      sPath: "/submit-post/1",
+      component: DashboardSubmitPost,
+      emoij: "✍",
+      pageName: "Submit post",
+      isAuth : ['blogger', 'admin']
+    },
+    {
+      exact:true,
+      sPath: "/users",
+      component: DashboardUsers,
+      emoij: "🧑🏻",
+      pageName: "Users",
+      isAuth : ['admin']
+    },
+    {
+      exact:true,
+      sPath: "/categories",
+      component: DashboardCategories,
+      emoij: "✨",
+      pageName: "Categories",
+      isAuth : ['admin']
+    },
+    {
+      exact:true,
+      sPath: "/tags",
+      component: DashboardTags,
+      emoij: "🏷",
+      pageName: "Tags",
+      isAuth : ['admin'],
+    },
+  ];
+
+  const subPagesRoutes: DashboardPage[] = [
+    {
+      sPath: "/root",
+      exact: true,
+      component: DashboardRoot,
+      emoij: !isSettingPage ? "🕹" : "⚙",
+      pageName: !isSettingPage ? `Dash board` : `Setting`,
+      isAuth : ['blogger', 'admin', 'user']
+    },
+    {
+      exact: true,
+      sPath: "/posts",
+      component: DashboardPosts,
+      emoij: "📕",
+      pageName: "Posts",
+      // isAuth : ['blogger', 'admin']
+    },
+    {
+      exact:true,
+      sPath: "/edit-profile",
+      component: DashboardEditProfile,
+      emoij: "🛠",
+      pageName: "Edit profile",
+      isAuth : ['blogger', 'admin', 'user']
+    },
+    {
+      exact:true,
+      sPath: "/information",
+      component: DashboardSubcription,
+      emoij: "📃",
+      pageName: "Personal Information",
+    },
+    // {
+    //   exact:true,
+    //   sPath: "/billing-address",
+    //   component: DashboardBillingAddress,
+    //   emoij: "✈",
+    //   pageName: "Billing address",
+    // },
+    {
+      exact:true,
+      sPath: "/submit-post/:currentUrl?/:slug?",
+      component: DashboardSubmitPost,
+      emoij: "✍",
+      pageName: "Submit post",
+      isAuth : ['blogger', 'admin']
+    },
+    {
+      exact:true,
+      sPath: "/users",
+      component: DashboardUsers,
+      emoij: "🧑🏻",
+      pageName: "Users",
+      isAuth : ['admin']
+    },
+    {
+      exact:true,
+      sPath: "/categories",
+      component: DashboardCategories,
+      emoij: "✨",
+      pageName: "Categories",
+      isAuth : ['admin']
+    },
+    {
+      exact:true,
+      sPath: "/tags",
+      component: DashboardTags,
+      emoij: "🏷",
+      pageName: "Tags",
+      isAuth : ['admin'],
+    },
+  ];
   const filteredSubPages = subPages.filter(({ isAuth }) => {
     if (isAuth) {
       return (isAuth || []).includes(user?.role ?? '');
@@ -210,12 +215,13 @@ const PageDashboard: FC<PageDashboardProps> = ({ className = "" }) => {
   return (
     <div className={`nc-PageDashboard ${className}`} data-nc-id="PageDashboard">
       <Helmet>
-        <title>Dashboard || Blog Magazine React Template</title>
+        <title>Dashboard || Daily World</title>
       </Helmet>
       <LayoutPage
-        subHeading="View your dashboard, manage your Posts, Personal Information, edit password and profile"
+        subHeading={!isSettingPage ? `View your dashboard, manage your Posts, Personal Information, 
+          edit password and profile` : `View your Basic Information, edit password and profile` }
         headingEmoji="⚙"
-        heading="Dash board"
+        heading={isSettingPage ? `Setting` : `Dash board`}
       >
         <div className="flex flex-col space-y-8 xl:space-y-0 xl:flex-row">
           {/* SIDEBAR */}

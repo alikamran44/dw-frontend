@@ -64,7 +64,7 @@ export interface PostAuthorType {
   bgImage?: string;
   pic?: string;
   email?: string;
-  count?: number;
+  count?: number | null;
   desc?: string;
   jobName: string;
   href?: string;

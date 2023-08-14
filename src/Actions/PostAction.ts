@@ -343,7 +343,6 @@ export const removeBlog = (id: any)  => (dispatch: AppDispatch) => {
 }
 
 export const UploadFile = (values: any) => (dispatch: AppDispatch) => {
-  console.log(values,'valuesvaluesvalues')
   const formData = new FormData();
   // formData.append('fileFolder', values['fileFolder']) 
   // if(values['image']){
