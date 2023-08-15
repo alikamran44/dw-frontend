@@ -79,8 +79,8 @@ const Footer: React.FC = () => {
            <SocialsList className="mt-2" />
         </div>
       </div>
-      <div className="text-center mt-6">
-        <span className="text-neutral-700 dark:text-neutral-200">
+      <div className="text-center mt-12">
+        <span class="text-xs text-neutral-500 dark:text-neutral-100">
           Copyright © {currentYear}. Daily World Network. All Rights Reserved.
         </span>
       </div>

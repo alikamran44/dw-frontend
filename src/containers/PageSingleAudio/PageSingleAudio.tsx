@@ -5,6 +5,7 @@ import { SINGLE_AUDIO } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
 import { Helmet } from "react-helmet";
+import Header from "containers/PageSingle//Header";
 import { changeCurrentPage } from "app/pages/pages";
 import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
@@ -109,9 +110,9 @@ const PageSingleAudio: FC<PageSingleAudioProps> = ({ className = "" }) => {
       >
         {/* Overlay */}
         <div className="bg-primary-50 dark:bg-neutral-800 absolute top-0 inset-x-0 h-60 w-full"></div>
-        <Helmet>
-          <title>Single Audio || Blog Magazine React Template</title>
-        </Helmet>
+        <Header
+          pageData={blog}
+        />
 
         {/* SINGLE_AUDIO HEADER */}
         <header className="relative container ">

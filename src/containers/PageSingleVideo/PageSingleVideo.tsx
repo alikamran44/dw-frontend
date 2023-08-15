@@ -6,6 +6,7 @@ import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
 import { changeCurrentPage } from "app/pages/pages";
 import SingleContent from "containers/PageSingle/SingleContent";
+import Header from "containers/PageSingle//Header";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import ReactPlayer from "react-player";
 import NcPlayIcon from "components/NcPlayIcon/NcPlayIcon";
@@ -83,14 +84,17 @@ const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
     );
   };
   const renderHeader = () => {
-    const { categories, title } = SINGLE_VIDEO;
+    const { categories, title } = blog || SINGLE_VIDEO;
     return (
       <div className={`nc-SingleHeader ${className}`}>
         <div className="space-y-5 dark text-neutral-100">
+          <Header 
+            pageData={blog}
+          />
           <CategoryBadgeList itemClass="!px-3" categories={categories} />
           <SingleTitle
             mainClass="text-neutral-900 font-semibold text-3xl md:!leading-[120%] dark:text-neutral-100"
-            title={blog ? blog.title : ''}
+            title={title}
           />
 
           <div className="w-full border-b border-neutral-100 dark:border-neutral-800"></div>

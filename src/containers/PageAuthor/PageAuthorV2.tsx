@@ -86,7 +86,7 @@ useEffect(() => {
       setLoadingCategory(true)
       dispatch(categoryWithTotalBlogs(filterCategory)).then((res: any) => {
         setFilterCategory(countCategory)
-        setCategories(res)
+        setCategories(res.categories)
         setLoadingCategory(false)
       }).catch(()=> setLoadingCategory(false))
     }
@@ -118,7 +118,7 @@ useEffect(() => {
       setMoreLoadingCategory(false)
       setFilterCategory(count)
       if(res.length){
-        let newArray = categories?.concat(res)
+        let newArray = categories?.concat(res.categories)
         if(newArray)
           setCategories(newArray)
       }

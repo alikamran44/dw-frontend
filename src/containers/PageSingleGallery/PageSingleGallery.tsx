@@ -6,6 +6,7 @@ import { SINGLE_GALLERY } from "data/single";
 import { CommentType } from "components/CommentCard/CommentCard";
 import { useAppDispatch } from "app/hooks";
 import { changeCurrentPage } from "app/pages/pages";
+import Header from "containers/PageSingle//Header";
 import SingleContent from "containers/PageSingle/SingleContent";
 import SingleRelatedPosts from "containers/PageSingle/SingleRelatedPosts";
 import SingleHeader from "containers/PageSingle/SingleHeader";

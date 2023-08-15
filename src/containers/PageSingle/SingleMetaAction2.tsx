@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, Fragment } from "react";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import PostActionDropdown from "components/PostActionDropdown/PostActionDropdown";
@@ -7,6 +7,12 @@ import { SOCIALS_DATA } from "components/SocialsShare/SocialsShare";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import { PostDataType } from "data/types";
 import NcDropDown from "components/NcDropDown/NcDropDown";
+import {
+  EmailShareButton,FacebookShareButton,LinkedinShareButton, TwitterShareButton,WhatsappShareButton,
+} from "react-share";
+import { Menu, Transition } from "@headlessui/react";
+import twFocusClass from "utils/twFocusClass";
+import { DotsHorizontalIcon } from "@heroicons/react/solid";
 
 export interface SingleMetaAction2Props {
   className?: string;
@@ -18,9 +24,42 @@ const SingleMetaAction2: FC<SingleMetaAction2Props> = ({
   meta,
 }) => {
   const { id, bookmark, _id } = meta;
-
+  const socialClickHandler = (item) => {
+    if(item.id === 'Facebook'){
+       return (
+        <FacebookShareButton url={completeUrl} quote={'shareTitle'}>
+          Share on Facebook
+        </FacebookShareButton>
+      );
+    }
+    else if(item.id === 'Mail'){
+      return (
+        <EmailShareButton url={completeUrl} title={'shareText'}>
+          Share on Twitter
+        </EmailShareButton>
+      );
+    }
+    else if(item.id === 'Linkedin'){
+      return (
+        <LinkedinShareButton url={completeUrl}>Share on LinkedIn</LinkedinShareButton>
+      );
+    }
+    else if(item.id === 'Twitter'){
+      return (
+        <TwitterShareButton url={completeUrl} title={'shareText'}>
+          Share on Twitter
+        </TwitterShareButton>
+      );
+    }
+    else if(item.id === 'Whatsapp'){
+      return (
+        <WhatsappShareButton url={completeUrl}>Share on WhatsApp</WhatsappShareButton>
+      );
+    }
+  }
+  
   return (
-    <div className={`nc-SingleMetaAction2 ${className}`}>
+    <div className={`nc-SingleMetaAction2 `}>
       <div className="flex flex-row space-x-2.5 items-center">
         <PostCardLikeAndComment
           itemClass="px-4 h-9 text-sm"
@@ -57,8 +96,9 @@ const SingleMetaAction2: FC<SingleMetaAction2Props> = ({
               />
             </svg>
           )}
-          onClick={() => {}}
+          onClick={(item) => socialClickHandler(item)}
           data={SOCIALS_DATA}
+          isRenderShareItem ={true}
         />
         <PostActionDropdown
           containerClassName="h-9 w-9 bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700"

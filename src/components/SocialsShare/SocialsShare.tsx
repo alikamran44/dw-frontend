@@ -16,8 +16,10 @@ const socials: SocialType[] = [
   { id: "Facebook", name: "Facebook", icon: "lab la-facebook-f", href: "#" },
   { id: "Twitter", name: "Twitter", icon: "lab la-twitter", href: "#" },
   { id: "Linkedin", name: "Linkedin", icon: "lab la-linkedin-in", href: "#" },
-  { id: "Instagram", name: "Instagram", icon: "lab la-instagram", href: "#" },
-];
+  { id: "Whatsapp", name: "Whatsapp", icon: "lab la-whatsapp", href: "#" },
+  { id: "Reddit", name: "Reddit", icon: "lab la-reddit", href: "#" },
+  { id: "Mail", name: "Mail", icon: "la la-envelope", href: "#" },
+]; 
 
 export const SOCIALS_DATA = socials;
 

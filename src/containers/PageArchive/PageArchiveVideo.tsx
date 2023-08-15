@@ -90,7 +90,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
       setMoreLoadingCategory(false)
       setCategoryFilter(count)
       if(res.length){
-        let newArray = categories?.concat(res)
+        let newArray = categories?.concat(res.categories)
         if(newArray)
           setCategories(newArray)
       }
@@ -103,14 +103,13 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
     dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
       setMorePostLoading(false)
-      let newArray = videoBlogs?.concat(res.blogs)
+      let newArray = videoBlogs?.concat(res)
       if(newArray)
       setVideoBlogs(newArray);
     }).catch(() => {
       setMorePostLoading(false)
     })
   }
-
   return (
     <div
       className={`nc-PageArchiveVideo overflow-hidden ${className}`}

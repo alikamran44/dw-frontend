@@ -2,6 +2,10 @@ import { DotsHorizontalIcon } from "@heroicons/react/solid";
 import React, { FC, Fragment, ReactNode } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import twFocusClass from "utils/twFocusClass";
+import {
+  EmailShareButton,FacebookShareButton,LinkedinShareButton, TwitterShareButton,
+  WhatsappShareButton, RedditShareButton
+} from "react-share";
 
 export interface NcDropDownItem {
   id: string;
@@ -18,6 +22,7 @@ export interface NcDropDownProps {
   renderItem?: (item: NcDropDownItem) => ReactNode;
   title?: string;
   onClick: (item: NcDropDownItem) => void;
+  isRenderShareItem?: boolean;
 }
 
 const NcDropDown: FC<NcDropDownProps> = ({
@@ -29,7 +34,115 @@ const NcDropDown: FC<NcDropDownProps> = ({
   renderItem,
   data,
   onClick,
+  isRenderShareItem=false,
 }) => {
+  const renderShareItem = (item) => {
+    const completeUrl = "https://dw-frontend.connectvirtue.com/blog-view/cjkgcfjffffffffffffffffffffffffffffffffffffffffff";
+    if(item.id === 'Facebook'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <FacebookShareButton url={completeUrl} quote={item.name}>
+              {!!item.icon && (
+                <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+              )}
+              <span className="truncate">{item.name}</span>
+          </FacebookShareButton>
+        </button>
+      );
+    }
+    else if(item.id === 'Mail'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <EmailShareButton url={completeUrl} title={item.name}  subject={'title'}
+            body="body"
+          >
+            {!!item.icon && (
+              <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+            )}
+            <span className="truncate">{item.name}</span>
+          </EmailShareButton>
+        </button>
+      );
+    }
+    else if(item.id === 'Linkedin'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <LinkedinShareButton url={completeUrl} title={item.name}>
+            {!!item.icon && (
+              <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+            )}
+            <span className="truncate">{item.name}</span>
+          </LinkedinShareButton>
+        </button>
+      );
+    }
+    else if(item.id === 'Twitter'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <TwitterShareButton url={completeUrl} title={item.name}>
+            {!!item.icon && (
+              <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+            )}
+            <span className="truncate">{item.name}</span>
+          </TwitterShareButton>
+        </button>
+      );
+    }
+    else if(item.id === 'Whatsapp'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <WhatsappShareButton url={completeUrl}>
+            {!!item.icon && (
+              <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+            )}
+            <span className="truncate">{item.name}</span>
+          </WhatsappShareButton>
+        </button>
+      );
+    }
+    else if(item.id === 'Reddit'){
+      return (
+        <button
+          className={
+            "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
+            twFocusClass()
+          }
+        >
+          <RedditShareButton url={completeUrl}>
+            {!!item.icon && (
+              <i className={`${item.icon} mr-1 w-7 text-base`}></i>
+            )}
+            <span className="truncate">{item.name}</span>
+          </RedditShareButton>
+        </button>
+      );
+    }
+  }
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Menu.Button className={className} title={title}>
@@ -66,7 +179,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
                 {() =>
                   renderItem && typeof renderItem(item) !== "undefined" ? (
                     renderItem(item)
-                  ) : (
+                  ) : isRenderShareItem ? renderShareItem(item) : (
                     <button
                       className={
                         "flex items-center rounded-md w-full px-3 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-800 hover:text-neutral-900 dark:hover:text-neutral-100 truncate " +
