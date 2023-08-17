@@ -7,12 +7,6 @@ import { SOCIALS_DATA } from "components/SocialsShare/SocialsShare";
 import BookmarkContainer from "containers/BookmarkContainer/BookmarkContainer";
 import { PostDataType } from "data/types";
 import NcDropDown from "components/NcDropDown/NcDropDown";
-import {
-  EmailShareButton,FacebookShareButton,LinkedinShareButton, TwitterShareButton,WhatsappShareButton,
-} from "react-share";
-import { Menu, Transition } from "@headlessui/react";
-import twFocusClass from "utils/twFocusClass";
-import { DotsHorizontalIcon } from "@heroicons/react/solid";
 
 export interface SingleMetaAction2Props {
   className?: string;
@@ -24,39 +18,6 @@ const SingleMetaAction2: FC<SingleMetaAction2Props> = ({
   meta,
 }) => {
   const { id, bookmark, _id } = meta;
-  const socialClickHandler = (item) => {
-    if(item.id === 'Facebook'){
-       return (
-        <FacebookShareButton url={completeUrl} quote={'shareTitle'}>
-          Share on Facebook
-        </FacebookShareButton>
-      );
-    }
-    else if(item.id === 'Mail'){
-      return (
-        <EmailShareButton url={completeUrl} title={'shareText'}>
-          Share on Twitter
-        </EmailShareButton>
-      );
-    }
-    else if(item.id === 'Linkedin'){
-      return (
-        <LinkedinShareButton url={completeUrl}>Share on LinkedIn</LinkedinShareButton>
-      );
-    }
-    else if(item.id === 'Twitter'){
-      return (
-        <TwitterShareButton url={completeUrl} title={'shareText'}>
-          Share on Twitter
-        </TwitterShareButton>
-      );
-    }
-    else if(item.id === 'Whatsapp'){
-      return (
-        <WhatsappShareButton url={completeUrl}>Share on WhatsApp</WhatsappShareButton>
-      );
-    }
-  }
   
   return (
     <div className={`nc-SingleMetaAction2 `}>
@@ -96,7 +57,8 @@ const SingleMetaAction2: FC<SingleMetaAction2Props> = ({
               />
             </svg>
           )}
-          onClick={(item) => socialClickHandler(item)}
+          onClick={(item) => {}}
+          meta={meta}
           data={SOCIALS_DATA}
           isRenderShareItem ={true}
         />

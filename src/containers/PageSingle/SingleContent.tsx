@@ -23,7 +23,11 @@ export interface SingleContentProps {
 const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
   const { tags, postedBy, _id } = data;
   const [comments, setComments] = useState<CommentType[] | null>(null);
-  const [commentCount, setTotalComments] = useState(null)
+  const initialCommentFilter = {skip: 1, limit: 4};
+  const [commentFilter, setCommentFilter] = useState({skip: 1, limit: 4});
+  const [commentCount, setTotalComments] = useState(null);
+  const [remainingCommentCount, setRemainingCommentCount] = useState(0);
+  const [commentMoreLoading, setCommentMoreLoading] = useState(false);
   const commentRef = useRef<HTMLDivElement>(null);
   const author = postedBy
   const location = useLocation();
@@ -36,7 +40,6 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
     if (location.hash === "#comments" && commentRef.current) {
        const commentElement = document.getElementById("comments");
       setTimeout(() => {
-        console.log(commentElement,'commentElementcommentElement')
        if (commentElement) {
           commentElement.scrollIntoView({ behavior: "smooth" });
         }
@@ -44,21 +47,33 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
     }
   }, [location]);
 
-  useEffect(()=>{
+  useEffect(()=>{ 
     if(data._id){
-      getComments(data._id, 1).then((data: any) => {
+      getComments(data._id, initialCommentFilter.skip, initialCommentFilter.limit).then((data: any) => {
+        setCommentFilter({limit: initialCommentFilter.limit,skip: initialCommentFilter.skip + 1})
         setComments(data.comments);
-        setTotalComments(data.total)
+        setTotalComments(data.comments?.length)
+        setRemainingCommentCount(data.remainingCount)
       })
     }
   },[data])
 
   const viewMoreComments = () => {
     if(data._id){
-      getComments(data._id, 1).then((data: any) => {
-        setComments(data.comments);
-        setTotalComments(data.total)
-      })
+      setCommentMoreLoading(true)
+      getComments(data._id, commentFilter.skip, remainingCommentCount).then((data: any) => {
+        setCommentMoreLoading(false)
+        setCommentFilter({...commentFilter, skip: commentFilter.skip + 1})
+        if(data.comments?.length > 0){
+          setTotalComments(data.comments?.length)
+          setRemainingCommentCount(data.remainingCount)
+          const concatArray = comments?.concat(data.comments)
+          if(concatArray)
+            setComments(concatArray);
+        }
+      }).catch((err) => {
+        setCommentMoreLoading(false);
+      });
     }
   }
 
@@ -107,7 +122,7 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
           className="max-w-screen-md mx-auto pt-5"
         >
           {
-          commentCount &&  
+          commentCount > 0 &&  
             <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
               Responses ({commentCount})
             </h3>
@@ -127,6 +142,9 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
           blog_id = {_id}
           totalComments={commentCount}
           blog_user_id = {postedBy._id}
+          viewMoreComments={viewMoreComments}
+          commentMoreLoading={commentMoreLoading}
+          remainingCommentCount={remainingCommentCount}
         />
       </div>
     </div>

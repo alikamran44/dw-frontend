@@ -7,12 +7,16 @@ export interface SingleCommentListsProps {
   blog_id: any;
   blog_user_id: any;
   setComments: (data: any) => void;
+  viewMoreComments?: () => void;
   totalComments: String | null;
-  loading?: boolean;
+  loading?: boolean; 
+  commentMoreLoading?: boolean;
+  remainingCommentCount?: number;
 }
 
 const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, blog_id,
-  blog_user_id, setComments, totalComments }) => {
+  blog_user_id, setComments, totalComments, commentMoreLoading, viewMoreComments,
+  remainingCommentCount }) => {
   let cmtLv1 = comments ? comments.filter((item: CommentType) => !item.parentId) : [];
 
   const renderCommentItemChild = (comment: CommentType, parentCommentId: any) => {
@@ -49,9 +53,12 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, bl
   return (
     <ul className="nc-SingleCommentLists space-y-5">
       {cmtLv1.map(renderCommentItem)}
-      <ButtonPrimary className="dark:bg-primary-700 w-full">
-        View full comments {totalComments && <span>(+{totalComments} comments)</span>}
-      </ButtonPrimary>
+      {
+        remainingCommentCount ? (remainingCommentCount > 0 &&
+                <ButtonPrimary onClick={viewMoreComments} className="dark:bg-primary-700 w-full">
+                  View full comments {remainingCommentCount && <span>(+{remainingCommentCount} comments)</span>}
+                </ButtonPrimary>) : ''
+      }
     </ul>
   );
 };

@@ -42,6 +42,8 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[2];
    const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
+  const [totalBlogsCount, setTotalBlogsCount] = useState(0);
+  const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [galleryBlogs, setGalleryBlogs] = useState<PostDataType[] | null>(null);
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [filter, setFilter] = useState({skip: 0, limit: 6, postType: 'gallery'});
@@ -70,7 +72,9 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     setGalleryLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
       setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'gallery'})
-      setGalleryBlogs(res)
+      setGalleryBlogs(res.blogs)
+      setTotalBlogsCount(res.size)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
       setGalleryLoading(false)
     }).catch(() => setGalleryLoading(false))
 
@@ -91,6 +95,8 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
       setMorePostLoading(false)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
+      setTotalBlogsCount(res.size)
       let newArray = galleryBlogs?.concat(res.blogs)
       if(newArray)
         setGalleryBlogs(newArray);
@@ -111,11 +117,8 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
       <div className="bg-neutral-100 dark:bg-black dark:bg-opacity-20">
         <div className="container py-16 lg:py-28 ">
           {/* HEADER */}
-          <h2 className="inline-block align-middle text-5xl font-semibold md:text-6xl ">
-            {PAGE_DATA.name}
-          </h2>
           <span className="block mt-4 text-neutral-900">
-            {(galleryBlogs && galleryBlogs.length) || PAGE_DATA.count} Gallery
+            {(totalBlogsCount && totalBlogsCount) || PAGE_DATA.count} Gallery
           </span>
           {/* ====================== END HEADER ====================== */}
           <div className="mt-16 flex flex-col sm:items-center sm:justify-between sm:flex-row">
@@ -139,7 +142,7 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
           </div>
 
           {/* PAGINATIONS */}
-         { !galleryLoading &&
+         { (!galleryLoading && totalRemainingBlogsCount > 0) &&
              <div className="text-center mx-auto mt-10 md:mt-16">
                <ButtonPrimary onClick={()=> loadMore()}>
                  { morePostLoading &&

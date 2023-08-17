@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
         </div>
       </div>
       <div className="text-center mt-12">
-        <span class="text-xs text-neutral-500 dark:text-neutral-100">
+        <span className="text-xs text-neutral-500 dark:text-neutral-100">
           Copyright © {currentYear}. Daily World Network. All Rights Reserved.
         </span>
       </div>

@@ -38,6 +38,8 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
   const [audioBlogs, setAudioBlogs] = useState<PostDataType[] | null>(null);
+  const [totalBlogsCount, setTotalBlogsCount] = useState(0);
+  const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [audioLoading, setAudioLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
   const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'audio'});
@@ -64,8 +66,10 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'})
     setAudioLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
-      setAudioBlogs(res)
+      setAudioBlogs(res.blogs)
       setAudioLoading(false)
+      setTotalBlogsCount(res.size)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
     }).catch(() => setAudioLoading(false))
 
     dispatch(allBloggers(filter)).then((res: any) => {
@@ -87,6 +91,8 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
       setMorePostLoading(false)
+      setTotalBlogsCount(res.size)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
       let newArray = audioBlogs?.concat(res.blogs)
       if(newArray)
         setAudioBlogs(newArray);
@@ -150,7 +156,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
               {PAGE_DATA.name}
             </h2>
             <span className="block mt-4 text-neutral-300">
-              {PAGE_DATA.count} Audio articles
+              {totalBlogsCount} Audio articles
             </span>
           </div>
         </div>
@@ -174,7 +180,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
           {renderSection((audioBlogs || posts).filter((_, i) => i < 19))}
 
           {/* PAGINATIONS */}
-          { !audioLoading &&
+          { (!audioLoading && totalRemainingBlogsCount > 0) &&
            <div className="text-center mx-auto mt-10 md:mt-16">
              <ButtonPrimary onClick={()=> loadMore()}>
                { morePostLoading &&

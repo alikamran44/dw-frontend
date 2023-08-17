@@ -20,9 +20,8 @@ export const createComment = (data: any) => {
     );
 }
 
-export const getComments = ( id: any, num: any ) =>  
+export const getComments = ( id: any, num: any, limit: any ) =>  
 {
-    let limit = 4;
     return baseApi.Comment.fetchComments(id, num, limit).then(
         (res) => {
             return Promise.resolve(res)

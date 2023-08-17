@@ -6,8 +6,9 @@ const APP_NAME: string = import.meta.env.VITE_APP_NAME;
 interface HeaderProps {
   data: any;
   blogs: any;
+  blogsTotalCount: number
 }
-const Header: React.FC<HeaderProps> = ({ data, blogs }) => {
+const Header: React.FC<HeaderProps> = ({ data, blogs, blogsTotalCount=0 }) => {
   const completeUrl = window.location.href;
   const fCover = data ? data.media?.url : ''
   return (
@@ -75,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({ data, blogs }) => {
                 {data.name ? data.name.charAt(0).toUpperCase() + data.name.slice(1) : ''}
               </h2>
               <span className="block mt-4 text-neutral-300">
-                {(blogs && `${blogs.length} Articles`)}
+                {(blogs && `${blogsTotalCount > 0 && blogsTotalCount} Articles`)}
               </span>
             </div>
           </div>
@@ -85,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ data, blogs }) => {
           <div className=" relative aspect-w-16  py-8 lg:py-24 overflow-hidden ">
             <div className="absolute inset-0  text-white bg-opacity-30 flex flex-col items-center justify-center">
               <span className="block mt-4 text-neutral-600">
-                {(blogs && `${blogs.length} Articles`)}
+                {(blogs && `${blogsTotalCount > 0 && blogsTotalCount} Articles`)}
               </span>
             </div>
           </div>

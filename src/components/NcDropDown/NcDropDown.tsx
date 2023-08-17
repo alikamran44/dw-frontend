@@ -1,11 +1,12 @@
 import { DotsHorizontalIcon } from "@heroicons/react/solid";
 import React, { FC, Fragment, ReactNode } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import twFocusClass from "utils/twFocusClass";
 import {
   EmailShareButton,FacebookShareButton,LinkedinShareButton, TwitterShareButton,
   WhatsappShareButton, RedditShareButton
 } from "react-share";
+import { PostDataType } from "data/types";
+import twFocusClass from "utils/twFocusClass";
 
 export interface NcDropDownItem {
   id: string;
@@ -21,6 +22,7 @@ export interface NcDropDownProps {
   renderTrigger?: () => ReactNode;
   renderItem?: (item: NcDropDownItem) => ReactNode;
   title?: string;
+  meta?: PostDataType;
   onClick: (item: NcDropDownItem) => void;
   isRenderShareItem?: boolean;
 }
@@ -35,8 +37,9 @@ const NcDropDown: FC<NcDropDownProps> = ({
   data,
   onClick,
   isRenderShareItem=false,
+  meta = {},
 }) => {
-  const renderShareItem = (item) => {
+  const renderShareItem = (item: any) => {
     const completeUrl = "https://dw-frontend.connectvirtue.com/blog-view/cjkgcfjffffffffffffffffffffffffffffffffffffffffff";
     if(item.id === 'Facebook'){
       return (
@@ -46,7 +49,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <FacebookShareButton url={completeUrl} quote={item.name}>
+          <FacebookShareButton url={completeUrl} quote={meta.title}>
               {!!item.icon && (
                 <i className={`${item.icon} mr-1 w-7 text-base`}></i>
               )}
@@ -63,8 +66,8 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <EmailShareButton url={completeUrl} title={item.name}  subject={'title'}
-            body="body"
+          <EmailShareButton url={completeUrl} title={meta.title}  subject={meta.title}
+            body={meta.description}
           >
             {!!item.icon && (
               <i className={`${item.icon} mr-1 w-7 text-base`}></i>
@@ -82,7 +85,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <LinkedinShareButton url={completeUrl} title={item.name}>
+          <LinkedinShareButton url={completeUrl} title={meta.title}>
             {!!item.icon && (
               <i className={`${item.icon} mr-1 w-7 text-base`}></i>
             )}
@@ -99,7 +102,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <TwitterShareButton url={completeUrl} title={item.name}>
+          <TwitterShareButton url={completeUrl} title={meta.title}>
             {!!item.icon && (
               <i className={`${item.icon} mr-1 w-7 text-base`}></i>
             )}
@@ -116,7 +119,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <WhatsappShareButton url={completeUrl}>
+          <WhatsappShareButton url={completeUrl} title={meta.title} separator=":: ">
             {!!item.icon && (
               <i className={`${item.icon} mr-1 w-7 text-base`}></i>
             )}
@@ -133,7 +136,9 @@ const NcDropDown: FC<NcDropDownProps> = ({
             twFocusClass()
           }
         >
-          <RedditShareButton url={completeUrl}>
+          <RedditShareButton url={completeUrl} windowWidth={660}
+            windowHeight={460} title={meta.title}
+          >
             {!!item.icon && (
               <i className={`${item.icon} mr-1 w-7 text-base`}></i>
             )}

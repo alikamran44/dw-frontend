@@ -35,6 +35,8 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[2];
+  const [totalBlogsCount, setTotalBlogsCount] = useState(0);
+  const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [videoBlogs, setVideoBlogs] = useState<PostDataType[] | null>(null);
   const [videoLoading, setVideoLoading] = useState(true);
   const [filter, setFilter] = useState({skip: 0, limit: 1, postType: 'video'});
@@ -66,8 +68,10 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
     setVideoLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
       setVideoLoading(false)
+      setTotalBlogsCount(res.size)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
       if(res)
-        setVideoBlogs(res)
+        setVideoBlogs(res.blogs)
     }).catch(() => setVideoLoading(false))
 
     dispatch(allBloggers(filter)).then((res: any) => {
@@ -103,7 +107,9 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
     dispatch(blogsType(filter)).then((res: any) => {
       setFilter(count)
       setMorePostLoading(false)
-      let newArray = videoBlogs?.concat(res)
+      setTotalBlogsCount(res.size)
+      setTotalRemainingBlogsCount(res.remainingBlogs)
+      let newArray = videoBlogs?.concat(res.blogs)
       if(newArray)
       setVideoBlogs(newArray);
     }).catch(() => {
@@ -122,11 +128,8 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
       <div className="bg-neutral-100 dark:bg-black dark:bg-opacity-20">
         <div className="container py-16 lg:py-28 ">
           {/* HEADER */}
-          <h2 className="inline-block align-middle text-5xl font-semibold md:text-6xl ">
-            {PAGE_DATA.name}
-          </h2>
           <span className="block mt-4 text-neutral-900">
-            {(videoBlogs && videoBlogs.length) || PAGE_DATA.count} Videos
+            {(totalBlogsCount && totalBlogsCount) || PAGE_DATA.count} Videos
           </span>
           {/* ====================== END HEADER ====================== */}
           <div className="mt-16 flex flex-col sm:items-center sm:justify-between sm:flex-row">
@@ -148,7 +151,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
           </div>
 
           {/* PAGINATIONS */}
-         { !videoLoading &&
+         { (!videoLoading && totalRemainingBlogsCount > 0) &&
            <div className="text-center mx-auto mt-10 md:mt-16">
              <ButtonPrimary onClick={()=> loadMore()}>
                { morePostLoading &&

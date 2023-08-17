@@ -43,6 +43,8 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const initialFilter = {limit: 2, skip: 0};
   const [filter, setFilter] = useState({limit: 2, skip: 0});
   const [blogs, setBlogs] = useState<PostDataType[] | null>(null);
+  const [blogsRemainingCount, setBlogsRemainingCount] = useState(0);
+  const [blogsTotalCount, setBlogsTotalCount] = useState(0);
   const [size, setSize] = useState(null);
   const [postLoading, setPostLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
@@ -97,6 +99,8 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
       setFilter(count)
       // setSize(res.size) 
       setPostLoading(false)
+      setBlogsRemainingCount(res.remainingBlogs)
+      setBlogsTotalCount(res.size)
       if(res.category)
         setData(res.category)
       if(res.tag)
@@ -133,10 +137,12 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
 
   const loadMore = () => {
     setMorePostLoading(true)
-    let count = {limit: filter.limit, skip: filter.skip + filter.limit}
     fetchBlogs(blogtype, filter, slug).then((res: any) => {
+    let count = {limit: res.remainingBlogs < filter.limit ? 
+      res.remainingBlogs : filter.limit, skip: filter.skip + filter.limit}
       setFilter(count)
       setSize(res.size)
+      setBlogsRemainingCount(res.remainingBlogs)
       setMorePostLoading(false)
       if(res){
         let newArray = blogs?.concat(res.blogs)
@@ -159,6 +165,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
      <Header
           data={data}
           blogs={blogs}
+          blogsTotalCount={blogsTotalCount}
      />
 
       {/* HEADER */}
@@ -202,7 +209,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
 
           {/* PAGINATIONS */}
           {
-            !postLoading &&
+            (!postLoading && blogsRemainingCount > 0) &&
             <div className="text-center mx-auto mt-10 md:mt-16">
               <ButtonPrimary onClick={()=> loadMore()}>
                 { morePostLoading &&
