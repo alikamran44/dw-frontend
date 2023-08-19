@@ -22,6 +22,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
+import CommonHeader from "./CommonHeader";
 
 export interface PageArchiveVideoProps {
   className?: string;
@@ -121,9 +122,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
       className={`nc-PageArchiveVideo overflow-hidden ${className}`}
       data-nc-id="PageArchiveVideo"
     >
-      <Helmet>
-        <title>Archive || Blog Magazine React Template</title>
-      </Helmet>
+      <CommonHeader blogs={videoBlogs} />
 
       <div className="bg-neutral-100 dark:bg-black dark:bg-opacity-20">
         <div className="container py-16 lg:py-28 ">

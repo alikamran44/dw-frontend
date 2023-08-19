@@ -122,10 +122,11 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
           className="max-w-screen-md mx-auto pt-5"
         >
           {
-          commentCount > 0 &&  
+            commentCount ? commentCount > 0 &&  
             <h3 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">
               Responses ({commentCount})
             </h3>
+            : ''
           } 
           <SingleCommentForm
             onClickSubmit={loginSubmitHandler}

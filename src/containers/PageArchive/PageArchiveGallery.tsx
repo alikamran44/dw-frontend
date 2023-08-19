@@ -23,6 +23,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
+import CommonHeader from "./CommonHeader";
 
 export interface PageArchiveGalleryProps {
   className?: string;
@@ -30,12 +31,6 @@ export interface PageArchiveGalleryProps {
 
 // Tag and category have same data type - we will use one demo data
 const posts: PostDataType[] = DEMO_POSTS_VIDEO.filter((_, i) => i < 12);
-
-// Gallery have same data type - we will use one demo data
-const postsDemo: PostDataType[] = DEMO_POSTS_GALLERY.filter(
-  (_, i) => i > 7 && i < 17
-);
-
 
 const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch()
@@ -46,9 +41,12 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
   const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [galleryBlogs, setGalleryBlogs] = useState<PostDataType[] | null>(null);
   const [galleryLoading, setGalleryLoading] = useState(true);
-  const [filter, setFilter] = useState({skip: 0, limit: 6, postType: 'gallery'});
-  const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 6,});
+  const initialFilter = {limit: 2, skip: 0};
+  const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'gallery'});
+  const initialFilterCategory = {limit: 2, skip: 0};
+  const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 2,});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
+  const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
   const [loadingCategory, setLoadingCategory] = useState(true);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
   const [users, setUsers] = useState(null);
@@ -63,6 +61,10 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     { name: "Most Discussed" },
     { name: "Most Viewed" },
   ];
+  // Gallery have same data type - we will use one demo data
+  const postsDemo: PostDataType[] = DEMO_POSTS_GALLERY.filter(
+    (_, i) => i < filter.limit
+  );
 
 
   useEffect(()=>{
@@ -71,7 +73,7 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     })
     setGalleryLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
-      setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'gallery'})
+      setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit, postType: 'gallery'})
       setGalleryBlogs(res.blogs)
       setTotalBlogsCount(res.size)
       setTotalRemainingBlogsCount(res.remainingBlogs)
@@ -83,7 +85,9 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
     })
 
     CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
-      setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
+      let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
+      setCategoryFilter(countCategory)
+      setRemainingCategoryCount(res.remainingCategories)
       if(res)
         setCategories(res.categories)
     })
@@ -104,15 +108,27 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
       setMorePostLoading(false)
     })
   }
+  const loadMoreCategory = () => {
+    setMoreLoadingCategory(true)
+    let count = {limit: categoryFilter.limit, skip: categoryFilter.skip + categoryFilter.limit}
+    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
+      setMoreLoadingCategory(false)
+      setCategoryFilter(count)
+      setRemainingCategoryCount(res.remainingCategories)
+      if(res){
+        let newArray = categories?.concat(res.categories)
+        if(newArray)
+          setCategories(newArray)
+      }
+    }).catch(()=> setMoreLoadingCategory(false))
+  }
 
   return (
     <div
       className={`nc-PageArchiveGallery overflow-hidden ${className}`}
       data-nc-id="PageArchiveGallery"
     >
-      <Helmet>
-        <title>Archive || Blog Magazine React Template</title>
-      </Helmet>
+      <CommonHeader blogs={galleryBlogs} />
  
       <div className="bg-neutral-100 dark:bg-black dark:bg-opacity-20">
         <div className="container py-16 lg:py-28 ">
@@ -170,9 +186,17 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
           <SectionGridCategoryBox
             categories={categories || DEMO_CATEGORIES.filter((_, i) => i < 10)}
           />
-          <div className="text-center mx-auto mt-10 md:mt-16">
-            <ButtonSecondary>Show me more</ButtonSecondary>
-          </div>
+          {
+            remainingCategoryCount > 0 &&
+            <div className="text-center mx-auto mt-10 md:mt-16">
+              <ButtonSecondary onClick={loadMoreCategory}>
+                { moreLoadingCategory &&
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                }
+                Show me more
+              </ButtonSecondary>
+            </div>
+          }
         </div>
 
         {/* SUBCRIBES */}

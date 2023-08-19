@@ -72,10 +72,14 @@ const SingleHeader: FC<SingleHeaderProps> = ({
 
         {/*For Twitter Analytics*/}
         <meta name="twitter:site" content="@twitter-username" />
-      </Helmet>
+      </Helmet> 
       <div className={`nc-SingleHeader ${className}`}>
         <div className="space-y-5">
-          <CategoryBadgeList itemClass="!px-3" categories={pageData.categories} />
+          <CategoryBadgeList 
+            itemClass="!px-3" 
+            categories={pageData.categories}
+            postType={pageData.postType} 
+          />
           <SingleTitle loading={loading} mainClass={titleMainClass} title={pageData?.title} />
           {!!pageData.description ? (!hiddenDesc && (
               <span className="block text-base text-neutral-500 md:text-lg dark:text-neutral-400 pb-1">

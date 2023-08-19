@@ -16,6 +16,7 @@ export interface SectionGridCategoryBoxProps {
   className?: string;
   loading?: boolean;
   moreLoading?: boolean;
+  categoryCount?: any;
 }
 
 const DATA = DEMO_CATEGORIES.filter((_, i) => i < 10);
@@ -27,7 +28,8 @@ const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({
   headingCenter = true,
   className = "",
   loading = false,
-  moreLoading = false
+  moreLoading = false,
+  categoryCount
 }) => {
   let CardComponentName = CardCategory2;
   switch (categoryCardType) {
@@ -53,7 +55,7 @@ const SectionGridCategoryBox: React.FC<SectionGridCategoryBoxProps> = ({
 
   return (
     <div className={`nc-SectionGridCategoryBox relative ${className}`}>
-      <Heading desc="Discover over 100 topics" isCenter={headingCenter}>
+      <Heading desc={`Discover over ${categoryCount} topics`} isCenter={headingCenter}>
         Top trending topics
       </Heading>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 md:gap-8">

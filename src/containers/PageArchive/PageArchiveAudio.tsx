@@ -24,13 +24,13 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
+import CommonHeader from "./CommonHeader";
 
 export interface PageArchiveAudioProps {
   className?: string;
 }
 
 // Tag and category have same data type - we will use one demo data
-const posts: PostDataType[] = DEMO_POSTS_AUDIO.filter((_, i) => i < 12);
 
 const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch()
@@ -42,15 +42,19 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [audioLoading, setAudioLoading] = useState(false);
   const [morePostLoading, setMorePostLoading] = useState(false);
+  const initialFilter = {limit: 2, skip: 0};
   const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'audio'});
-  const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 6,});
+  const initialFilterCategory = {limit: 2, skip: 0};
+  const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 2,});
   const [loadingCategory, setLoadingCategory] = useState(true);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
+  const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [users, setUsers] = useState(null);
   const [tags, setTags] = useState(null);
   const tagLoading = useAppSelector(selectTagLoading)
-
+  const posts: PostDataType[] = DEMO_POSTS_AUDIO.filter((_, i) => i < filter.limit);
   const FILTERS = [
     { name: "Most Recent" },
     { name: "Curated by Admin" },
@@ -63,7 +67,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     TagWithTotalBlogs({skip: 0, limit: 20}).then((res:any)=> {
       setTags(res.tags)
     })
-    setFilter({skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'})
+    setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit, postType: 'audio'})
     setAudioLoading(true)
     dispatch(blogsType(filter)).then((res: any) => {
       setAudioBlogs(res.blogs)
@@ -78,8 +82,11 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     }).catch(()=> setLoadingCategory(false))
 
     setLoadingCategory(true)
-    CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
-      setCategoryFilter({skip: categoryFilter.skip + 6, limit: categoryFilter.limit})
+    CategoryWithTotalBlogs(initialFilterCategory).then((res: any)=> {
+      let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
+      setRemainingCategoryCount(res.remainingCategories)
+      setCategoryCount(res.totalCategories)
+      setCategoryFilter(countCategory)
       if(res)
         setCategories(res.categories)
     })
@@ -107,8 +114,9 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
       setMoreLoadingCategory(false)
       setCategoryFilter(count)
-      if(res.length){
-        let newArray = categories?.concat(res)
+      setRemainingCategoryCount(res.remainingCategories)
+      if(res){
+        let newArray = categories?.concat(res.categories)
         if(newArray)
           setCategories(newArray)
       }
@@ -117,7 +125,6 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
 
   const renderSection = (sectionPosts: PostDataType[]) => {
     const loopPosts = sectionPosts.filter((_, i) => i > 2);
-    console.log(loopPosts,'loopPostsloopPosts')
     return (
       <div className="mt-8 lg:mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {sectionPosts[0] && <Card16Podcast post={sectionPosts[0]} />}
@@ -139,9 +146,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
       className={`nc-PageArchiveAudio overflow-hidden ${className}`}
       data-nc-id="PageArchiveAudio"
     >
-      <Helmet>
-        <title>Archive || Blog Magazine React Template</title>
-      </Helmet>
+      <CommonHeader blogs={audioBlogs} />
 
       {/* HEADER */}
       <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
@@ -153,7 +158,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
           />
           <div className="absolute inset-0 bg-black text-white bg-opacity-30 flex flex-col items-center justify-center">
             <h2 className="inline-block align-middle ml-3 text-5xl font-semibold md:text-7xl ">
-              {PAGE_DATA.name}
+              Audio
             </h2>
             <span className="block mt-4 text-neutral-300">
               {totalBlogsCount} Audio articles
@@ -177,7 +182,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
           </div>
 
           {/* LOOP ITEMS */}
-          {renderSection((audioBlogs || posts).filter((_, i) => i < 19))}
+          {renderSection(audioBlogs || posts)}
 
           {/* PAGINATIONS */}
           { (!audioLoading && totalRemainingBlogsCount > 0) &&
@@ -197,15 +202,19 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
           <BackgroundSection />
           <SectionGridCategoryBox
             categories={categories || DEMO_CATEGORIES.filter((_, i) => i < 10)}
+            categoryCount={categoryCount}
           />
-          <div className="text-center mx-auto mt-10 md:mt-16">
-            <ButtonSecondary onClick={loadMoreCategory}>
-              { moreLoadingCategory &&
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-              }
-              Show me more
-            </ButtonSecondary>
-          </div>
+          {
+            remainingCategoryCount > 0 &&
+              <div className="text-center mx-auto mt-10 md:mt-16">
+                <ButtonSecondary onClick={loadMoreCategory}>
+                  { moreLoadingCategory &&
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  }
+                  Show me more
+                </ButtonSecondary>
+              </div>
+          }
         </div>
 
         {/* === SECTION 5 === */}

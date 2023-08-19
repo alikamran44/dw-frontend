@@ -91,7 +91,7 @@ const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
           <Header 
             pageData={blog}
           />
-          <CategoryBadgeList itemClass="!px-3" categories={categories} />
+          <CategoryBadgeList postType={blog?.postType}  itemClass="!px-3" categories={categories} />
           <SingleTitle
             mainClass="text-neutral-900 font-semibold text-3xl md:!leading-[120%] dark:text-neutral-100"
             title={title}

@@ -70,28 +70,28 @@ const PageHomeDemo6: React.FC = () => {
     let dataMain = {skip: 0, limit: 4}
     setMainLoading(true)
     dispatch(blogsType(dataMain)).then((res) => {
-      setMainBlogs(res)
+      setMainBlogs(res.blogs)
       setMainLoading(false)
     }).catch(() => setMainLoading(false))
 
     let dataAudio = {skip: 0, limit: 9, postType: 'audio'}
     setAudioLoading(true)
     dispatch(blogsType(dataAudio)).then((res) => {
-      setAudioBlogs(res)
+      setAudioBlogs(res.blogs)
       setAudioLoading(false)
     }).catch(() => setAudioLoading(false))
 
     let dataVideo = {skip: 0, limit: 6, postType: 'video'}
     setVideoLoading(true)
     dispatch(blogsType(dataVideo)).then((res) => {
-      setVideoBlogs(res)
+      setVideoBlogs(res.blogs)
       setVideoLoading(false)
     }).catch(() => setVideoLoading(false))
 
     let dataGallery = {skip: 0, limit: 6, postType: 'gallery'}
     setGalleryLoading(true)
     dispatch(blogsType(dataGallery)).then((res) => {
-      setGalleryBlogs(res)
+      setGalleryBlogs(res.blogs)
       setGalleryLoading(false)
     }).catch(() => setGalleryLoading(false))
 
