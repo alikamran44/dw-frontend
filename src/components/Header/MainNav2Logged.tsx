@@ -10,18 +10,12 @@ import { NAVIGATION_SHORT_DEMO } from "data/navigation";
 import React, { FC } from "react";
 import AvatarDropdown from "./AvatarDropdown";
 import NotifyDropdown from "./NotifyDropdown";
+import useUserDetail from "hooks/useUserDetail";
 export interface MainNav2LoggedProps {}
 
 const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
   const history = useHistory()
-  interface UserInfo {
-    name: string;
-    email: string;
-    role: string;
-    _id: string;
-  }
-  const userInfoString = localStorage.getItem('userInfo');
-  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
+  const user = useUserDetail();
   const submitHandler = (values: any) => {
     history.push(`/search/${values.search}`)
   }

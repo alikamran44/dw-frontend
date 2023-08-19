@@ -423,6 +423,28 @@ export const FetchMedia = (id: any) => (dispatch: AppDispatch) => {
   );
 };
 
+export const relatedBog = (data: any) => (dispatch: AppDispatch) => {
+  dispatch(startLoading())
+  return baseApi.Post.relatedBog(data).then(
+    (data) => {
+      dispatch(stopLoading())
+      return data;
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+          error.response.data.msg ||
+          error.message ||
+          error.toString();
+      dispatch(stopLoading())
+      toast.error(message); 
+      return Promise.reject();
+    }
+  );
+};
+
 export const fetchUserBlogs = (id: any,data: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())
   return baseApi.Post.fetchUserBlogs(id,data).then(
@@ -445,27 +467,6 @@ export const fetchUserBlogs = (id: any,data: any) => (dispatch: AppDispatch) => 
   );
 };
 
-export const relatedBog = (data: any) => (dispatch: AppDispatch) => {
-  dispatch(startLoading())
-  return baseApi.Post.relatedBog(data).then(
-    (data) => {
-      dispatch(stopLoading())
-      return data;
-    },
-    (error) => {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-          error.response.data.msg ||
-          error.message ||
-          error.toString();
-      dispatch(stopLoading())
-      toast.error(message); 
-      return Promise.reject();
-    }
-  );
-};
 
 export const fetchUserPublicBlogs = (id: any, filter: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading())

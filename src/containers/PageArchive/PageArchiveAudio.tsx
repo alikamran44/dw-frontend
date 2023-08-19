@@ -84,9 +84,9 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     setLoadingCategory(true)
     CategoryWithTotalBlogs(initialFilterCategory).then((res: any)=> {
       let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
+      setCategoryFilter(countCategory)
       setRemainingCategoryCount(res.remainingCategories)
       setCategoryCount(res.totalCategories)
-      setCategoryFilter(countCategory)
       if(res)
         setCategories(res.categories)
     })

@@ -9,60 +9,36 @@ import Pagination from "components/Pagination/Pagination";
 const people = [
   {
     id: 1,
-    title: "Tokyo Fashion Week Is Making Itself Great Again",
+    title: "",
     image:
-      "https://images.unsplash.com/photo-1617059063772-34532796cdb5?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
+      "",
     liveStatus: true,
-    payment: "Not Applicable",
+    payment: "",
   },
   {
     id: 2,
-    title: "Traveling Tends to Magnify All Human Emotions",
+    title: "",
     image:
-      "https://images.unsplash.com/photo-1622987437805-5c6f7c2609d7?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw1fHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
+      "",
     liveStatus: true,
-    payment: "Not Applicable",
+    payment: "",
   },
   {
     id: 3,
-    title: "Interior Design: Hexagon is the New Circle in 2018",
+    title: "",
     image:
-      "https://images.unsplash.com/photo-1617201277988-f0efcc14e626?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
+      "",
     liveStatus: true,
-    payment: "Not Applicable",
+    payment: "",
   },
-  {
-    id: 4,
-    title: "Heritage Museums & Gardens to Open with New Landscape",
-    image:
-      "https://images.unsplash.com/photo-1622960748096-1983e5f17824?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
-    liveStatus: true,
-    payment: "Not Applicable",
-  },
-  {
-    id: 5,
-    title:
-      "Man agrees to complete $5,000 Hereford Inlet Lighthouse painting job",
-    image:
-      "https://images.unsplash.com/photo-1617202227468-7597afc7046d?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyNHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
-    liveStatus: false,
-    payment: "Not Applicable",
-  },
-  {
-    id: 6,
-    title:
-      "Denton Corker Marshall the mysterious black box is biennale pavilion",
-    image:
-      "https://images.unsplash.com/photo-1622978147823-33d5e241e976?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzM3x8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=60",
-    liveStatus: true,
-    payment: "Not Applicable",
-  },
+
 ];
 
 
 const DashboardPosts = () => {
   const history = useHistory()
   const [blogs, setBlogs] = useState<any[] | null>(null);
+  const [selectedPage, setSelectedPage] = useState(0)
   const dispatch = useAppDispatch()
   const deleteHandler = (id: any) => {
     let data = {skip: 0, limit: 3}
@@ -108,7 +84,7 @@ const DashboardPosts = () => {
                       <div className="flex items-center w-96 lg:w-auto max-w-md overflow-hidden">
                         <NcImage
                           containerClassName="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden lg:h-14 lg:w-14"
-                          src={`${item.media.find(((data: any)=> data.fileFolder === 'cover'))?.url}`}
+                          src={`${item.media.find(((data: any)=> data.fileFolder === 'feature'))?.url}`}
                         />
                         <div className="ml-4 flex-grow">
                           <h2 className="inline-flex line-clamp-2 text-sm font-semibold  dark:text-neutral-300">
@@ -152,7 +128,10 @@ const DashboardPosts = () => {
         </div>
       </div>
 
-      <Pagination />
+      <Pagination 
+        selectedPage={selectedPage}
+        setSelectedPage={setSelectedPage}
+      />
     </div>
   );
 };

@@ -20,8 +20,9 @@ export interface LocationStates {
   "/blog-video/:slug"?: {};
   "/blogs-video"?: {};
   "/blogs-video/:slug/:blogtype"?: {};
-  //
   "/blog/:slug"?: {};
+  //
+  "/profile"?: {};
   "/author/:id"?: {};
   //
   "/contact"?: {};

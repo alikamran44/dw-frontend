@@ -40,10 +40,8 @@ import PageSingleTemp4Sidebar from "containers/PageSingle/PageSingleTemp4Sidebar
 import Cookies from "containers/OtherPages/Cookies";
 import PrivacyPage from "containers/OtherPages/PrivacyPage";
 import TermsAndCondition from "containers/OtherPages/TermsAndCondition";
-import { Formik, Form } from 'formik';
-import { toast } from 'react-toastify';
 import axios from 'axios';
-import {CKEditor} from 'ckeditor4-react';
+import useUserDetail from "hooks/useUserDetail";
 
 export const pages: Page[] = [
   { path: "/", exact: true, component: PageHomeDemo6, isAuth: false },
@@ -65,6 +63,7 @@ export const pages: Page[] = [
   { path: "/blog-video/:slug", component: PageSingleVideo, isAuth: false },
   //
   { path: "/author/:id", component: PageAuthorV2, isAuth: false },
+  { path: "/profile", component: PageAuthorV2, isAuth : ['blogger', 'admin', 'user'] },
   //
   { path: "/blogs-gallery", exact: true, component: PageArchiveGallery, isAuth: false },
   { path: "/blogs-gallery/:slug/:blogtype", exact: true, component: PageArchiveGallery, isAuth: false },
@@ -91,14 +90,7 @@ export const pages: Page[] = [
 
 
 const Routes = () => {
-  interface UserInfo {
-    name: string;
-    email: string;
-    role: string;
-    _id: string;
-  }
-  const userInfoString = localStorage.getItem('userInfo');
-  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
+  const user = useUserDetail();
   return (
     <BrowserRouter
       basename={

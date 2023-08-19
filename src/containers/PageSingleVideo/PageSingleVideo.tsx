@@ -34,11 +34,6 @@ const PageSingleVideo: FC<PageSingleVideoProps> = ({ className = "" }) => {
   const [isPlay, setIsPlay] = useState(false);
 
   useEffect(() => {
-    // UPDATE CURRENTPAGE DATA IN PAGE-REDUCERS
-    // dispatch(changeCurrentPage({ type: "/single/:slug", data: SINGLE_VIDEO }));
-    // return () => {
-    //   dispatch(changeCurrentPage({ type: "/", data: {} }));
-    // };
     setBlogLoading(true)
     fetchPost(slug).then((res: any) => {
       setBlogLoading(false)

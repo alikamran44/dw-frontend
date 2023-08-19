@@ -9,21 +9,11 @@ import { avatarImgs } from "contains/fakeData";
 import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { logoutUser } from '../../Actions/AuthAction';
+import useUserDetail from "hooks/useUserDetail";
 
 export default function AvatarDropdown() {
   const dispatch = useAppDispatch();
-  interface UserInfo {
-    name: string;
-    email: string;
-    role: string;
-    pic: string;
-    firstName: string;
-    lastName: string;
-    jobName: string;
-    _id: string;
-  }
-  const userInfoString = localStorage.getItem('userInfo');
-  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
+  const user = useUserDetail();
   const confirmAlert = useAppSelector(selectConfirmAlert);
   const handleLogout = () => {
      dispatch(setAlert({
@@ -97,7 +87,7 @@ export default function AvatarDropdown() {
 
                     {/* ------------------ 1 --------------------- */}
                     <Link
-                      to={`/author/${user._id}`} onClick={() => close()}
+                      to={`/profile`} onClick={() => close()}
                       className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                     >
                       <div className="flex items-center justify-center flex-shrink-0 text-neutral-500 dark:text-neutral-300">

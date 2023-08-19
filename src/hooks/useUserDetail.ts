@@ -1,4 +1,4 @@
-function useUserDetail(date: any) {
+function useUserDetail() {
   interface UserInfo {
     name: string;
     email: string;
@@ -11,7 +11,6 @@ function useUserDetail(date: any) {
   } 
   const userInfoString = localStorage.getItem('userInfo');
   const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
-
   return user;
 }
 

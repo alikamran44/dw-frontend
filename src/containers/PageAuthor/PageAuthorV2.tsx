@@ -22,10 +22,11 @@ import SectionGridCategoryBox from "components/SectionGridCategoryBox/SectionGri
 import { DEMO_CATEGORIES, DEMO_FAKE_POST_DATA, DEMO_FAKE_CATEGORY_DATA } from "data/taxonomies";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import SectionSliderNewAuthors from "components/SectionSliderNewAthors/SectionSliderNewAuthors";
-import { fetchUserPublicBlogs } from '../../Actions/PostAction';
+import { fetchUserPublicBlogs, fetchUserBlogs } from '../../Actions/PostAction';
 import { selectBlogLoading } from "app/blog/blogSlice";
 import { categoryWithTotalBlogs } from '../../Actions/CategoryAction';
 import { allBloggers } from '../../Actions/AuthAction';
+import useUserDetail from "hooks/useUserDetail";
 
 export interface PageAuthorV2Props {
   className?: string;
@@ -41,25 +42,32 @@ const FILTERS = [
   { name: "Most Discussed" },
   { name: "Most Viewed" },
 ];
-const TABS = ["Articles", "Favorites", "Saved"];
 interface RouteParams {
   id: string;
 }
 const PageAuthorV2: FC<PageAuthorV2Props> = ({ className = "" }) => {
-  const [tabActive, setTabActive] = useState<string>(TABS[0]);
+  const {id} = useParams<RouteParams>();
+  const TABS = ["Articles", !id && "Favorites", !id && "Saved"].filter(Boolean);;
+  const [tabActive, setTabActive] = useState<any>(TABS[0]);
   const [users, setUsers] = useState(null);
   const dispatch = useAppDispatch()
   const loading = useAppSelector(selectBlogLoading)
-  const [filter, setFilter] = useState({limit: 20, skip: 0});
+  const [filter, setFilter] = useState({limit: 2, skip: 0});
+  const initialFilter = {limit: 2, skip: 0};
   const [blogs, setBlogs] = useState<PostDataType[] | null>(null);
+  const [totalBlogsCount, setTotalBlogsCount] = useState(0);
+  const [totalRemainingBlogsCount, setTotalRemainingBlogsCount] = useState(0);
   const [user, setUser] = useState<PostAuthorType | null>(null);
   const [morePostLoading, setMorePostLoading] = useState(false);
-  const [filterCategory, setFilterCategory] = useState({limit: 20, skip: 0});
+  const [filterCategory, setFilterCategory] = useState({limit: 2, skip: 0});
+   const initialFilterCategory = {limit: 2, skip: 0};
   const [categories, setCategories] =useState<TaxonomyType[] | null>(null);
+  const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
   const [loadingCategory, setLoadingCategory] = useState(false);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
-  const {id} = useParams<RouteParams>();
- 
+  const profile = useUserDetail();
+  const profileId = profile ? profile._id : {};
+
   const fakePosts = Array.from({ length: filter.limit }, (_, index) =>
     DEMO_FAKE_POST_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
@@ -68,7 +76,7 @@ const PageAuthorV2: FC<PageAuthorV2Props> = ({ className = "" }) => {
     DEMO_FAKE_CATEGORY_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
 
-  const handleClickTab = (item: string) => {
+  const handleClickTab = (item: any) => {
     if (item === tabActive) {
       return;
     }
@@ -76,48 +84,96 @@ const PageAuthorV2: FC<PageAuthorV2Props> = ({ className = "" }) => {
   };
 
 useEffect(() => {
+  setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit})
     if( tabActive === 'Articles' ){
-      dispatch(fetchUserPublicBlogs(id, filter)).then((res: any) => {
-        const {user, blogs} = res
-        setUser(user)
-        setBlogs(blogs)  
-      })
-      let countCategory = {limit: filterCategory.limit, skip: filterCategory.skip + 1}
-      setLoadingCategory(true)
-      dispatch(categoryWithTotalBlogs(filterCategory)).then((res: any) => {
-        setFilterCategory(countCategory)
-        setCategories(res.categories)
-        setLoadingCategory(false)
-      }).catch(()=> setLoadingCategory(false))
+      {
+        id ?
+          dispatch(fetchUserPublicBlogs(id, initialFilter)).then((res: any) => {
+            setTotalBlogsCount(res.total)
+            setTotalRemainingBlogsCount(res.remainingBlogs)
+            const {user, blogs} = res
+            setUser(user)
+            setBlogs(blogs)  
+          })
+        : profileId &&
+          dispatch(fetchUserBlogs(profileId, initialFilter)).then((res: any) => {
+            setTotalBlogsCount(res.total)
+            setTotalRemainingBlogsCount(res.remainingBlogs)
+            const {user, blogs} = res
+            setUser(profile)
+            setBlogs(blogs)  
+          })
+      }
     }
-    else if( tabActive === 'Articles' ){
+    else if( tabActive === 'Favorites' ){
+      const profileFilter = {...initialFilter, blogType: tabActive}
+      profileId &&
+        dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
+          setTotalBlogsCount(res.total)
+          setTotalRemainingBlogsCount(res.remainingBlogs)
+          const {user, blogs} = res
+          setUser(profile)
+          setBlogs(blogs)  
+        })
     }
-    else if( tabActive === 'Authors' ){
-      console.log('helllooo')
+    else if( tabActive === 'Saved' ){
+      const profileFilter = {...initialFilter, blogType: tabActive}
+      profileId &&
+        dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
+          setTotalBlogsCount(res.total)
+          setTotalRemainingBlogsCount(res.remainingBlogs)
+          const {user, blogs} = res
+          setUser(profile)
+          setBlogs(blogs)  
+        })
     }
-  }, [tabActive, id])
+  }, [tabActive, id, profileId])
 
   const loadMore = () => {
     setMorePostLoading(true)
-    let count = {limit: filter.limit, skip: filter.skip + 1}
-    dispatch(fetchUserPublicBlogs( id,filter )).then((res: any) => {
-      setFilter(count)
-      setMorePostLoading(false)
-      let newArray = blogs?.concat(res.blogs)
-      if(newArray)
-        setBlogs(newArray);
-    }).catch(() => {
-      setMorePostLoading(false)
-    })
+    let profileFilter: any = filter
+    if( tabActive === 'Saved' || tabActive === 'Favorites' )
+    {
+       profileFilter = {...filter, blogType: tabActive}
+    }
+    let count = {limit: filter.limit, skip: filter.skip + filter.limit}
+    {
+        id ?
+          dispatch(fetchUserPublicBlogs( id,filter )).then((res: any) => {
+            setFilter(count)
+            setTotalBlogsCount(res.total)
+            setTotalRemainingBlogsCount(res.remainingBlogs)
+            setMorePostLoading(false)
+            let newArray = blogs?.concat(res.blogs)
+            if(newArray)
+              setBlogs(newArray);
+          }).catch(() => {
+            setMorePostLoading(false)
+          })
+        : profileId &&
+        dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
+          setMorePostLoading(false)
+          setTotalBlogsCount(res.total)
+          setTotalRemainingBlogsCount(res.remainingBlogs)
+          setFilter(count)
+          let newArray = blogs?.concat(res.blogs)
+            if(newArray)
+              setBlogs(newArray);  
+        }).catch(() => {
+          setMorePostLoading(false)
+        })
+    }
   }
 
   const loadMoreCategory = () => {
     setMoreLoadingCategory(true)
-    let count = {limit: filterCategory.limit, skip: filterCategory.skip + 1}
+    let count = {limit: filterCategory.limit, skip: filterCategory.skip + filterCategory.limit}
     dispatch(categoryWithTotalBlogs(filterCategory)).then((res: any)=> {
-      setMoreLoadingCategory(false)
       setFilterCategory(count)
-      if(res.length){
+      setMoreLoadingCategory(false)
+      setRemainingCategoryCount(res.remainingCategories)
+      setFilterCategory(count)
+      if(res){
         let newArray = categories?.concat(res.categories)
         if(newArray)
           setCategories(newArray)
@@ -134,6 +190,18 @@ useEffect(() => {
     }
   },[])
 
+  useEffect(()=>{
+    if(!categories){
+      setLoadingCategory(true)
+      let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
+      dispatch(categoryWithTotalBlogs(initialFilterCategory)).then((res: any) => {
+        setFilterCategory(countCategory)
+        setRemainingCategoryCount(res.remainingCategories)
+        setLoadingCategory(false)
+        setCategories(res.categories)
+      }).catch(()=> setLoadingCategory(false))
+    }
+  },[categories])
   return (
     <div className={`nc-PageAuthorV2  ${className}`} data-nc-id="PageAuthorV2">
       <Helmet>
@@ -163,9 +231,9 @@ useEffect(() => {
               </h2>
             }
             {
-              user.about ?
+              (user.about || profile && (profile.jobName)) ?
               <span className="mt-2 block text-sm text-neutral-6000 dark:text-neutral-300 md:text-base">
-                {user.about}
+                {user.about || (profile ? profile.jobName : '')}
               </span>
               : loading &&
               <span className="mt-2 block text-sm text-neutral-6000 dark:text-neutral-300 md:text-base">
@@ -184,7 +252,7 @@ useEffect(() => {
         <main>
           {/* TABS FILTER */}
           {
-            blogs &&
+            
             <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">
               <Nav className="sm:space-x-2">
                 {TABS.map((item, index) => (
@@ -213,7 +281,7 @@ useEffect(() => {
 
           {/* PAGINATION */}
           {
-            !loading &&
+            ( totalRemainingBlogsCount > 0) &&
             <div className="text-center mx-auto mt-10 md:mt-16">
               <ButtonPrimary onClick={()=> loadMore()}>
                 { morePostLoading &&
@@ -230,7 +298,6 @@ useEffect(() => {
         <div className="relative py-16">
           <BackgroundSection />
           {
-            categories &&
             <SectionGridCategoryBox
               categories={categories || repeatedCategoriesArray}
               loading={loadingCategory}
@@ -238,14 +305,17 @@ useEffect(() => {
               fakeCategories={repeatedCategoriesArray}
             />
           }
-          <div className="text-center mx-auto mt-10 md:mt-16">
-              <ButtonSecondary onClick={loadMoreCategory}>
-                { moreLoadingCategory &&
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                }
-                Show me more
-              </ButtonSecondary>
-            </div>
+          {
+            remainingCategoryCount > 0 &&
+              <div className="text-center mx-auto mt-10 md:mt-16">
+                <ButtonSecondary onClick={loadMoreCategory}>
+                  { moreLoadingCategory &&
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  }
+                  Show me more
+                </ButtonSecondary>
+              </div>
+          }
         </div>
 
         {/* === SECTION 5 === */}
