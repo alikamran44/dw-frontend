@@ -12,6 +12,9 @@ const DashboardCategories = () => {
   const dispatch = useAppDispatch()
   const history = useHistory()
   const { createCategory } = helperForm();
+  const [pages, setPages] = useState(0)
+  const [selectedPage, setSelectedPage] = useState(0)
+  const [filter, setFilter] = useState({skip: 0, limit: 3})
   const loading = useAppSelector(selectCategoryLoading)
   const [categories, setCategories] = useState<any[]>([]);
   const [selectedDeleteLoading, setSelectedDeleteLoading] = useState(null);
@@ -57,17 +60,25 @@ const DashboardCategories = () => {
     setIsOpen(!isOpen)
   }
   useEffect(() => {
-    let data = {skip: 0, limit: 3}
-    dispatch(FetchCategories()).then((res: any)=> {
-      setCategories(res)
+    let data = {skip: 0, limit: filter.limit}
+    dispatch(FetchCategories(data)).then((res: any)=> {
+      setPages(res.total)
+      setCategories(res.categories)
     })
   },[])
-
+  const loadMore = (index: any) => {
+    setSelectedPage(index)
+    let data = {skip: index + 1, limit: filter.limit}
+    setFilter(data)
+    dispatch(FetchCategories(data)).then((res: any)=> {
+      setCategories(res.categories)
+    })
+  }
   return (
     <div className="flex flex-col space-y-8">
       <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div className="py-2 align-middle inline-block min-w-full px-1 sm:px-6 lg:px-8">
-          <div className="py-2 right inline-block min-w-full">
+        <div className="align-middle inline-block min-w-full sm:px-6 ">
+          <div className="right inline-block min-w-full">
             <CreateModal
               uploadButtonText={'Create'}
               buttonText={'Create New Category'}
@@ -174,7 +185,12 @@ const DashboardCategories = () => {
         </div>
       </div>
 
-      <Pagination />
+      <Pagination 
+        selectedPage={selectedPage}
+        setSelectedPage={loadMore}
+        pages={pages}
+        limit={filter.limit}
+      />
     </div>
   );
 };

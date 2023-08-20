@@ -3,15 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Formik, Form, Field } from 'formik';
 import { useHistory, useParams  } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "app/hooks";
-import CardCategory3 from "components/CardCategory3/CardCategory3";
 import ButtonPrimary from "components/Button/ButtonPrimary";
-import ModalGallery from "components/ModalGallery/ModalGallery";
-import Input from "components/Input/Input";
-import Select from "components/Select/Select";
-import Textarea from "components/Textarea/Textarea";
-import { fetchPost } from '../../Actions/PostAction';  
-import TagInputs from "components/Tag/Input";
-import Label from "components/Label/Label"; 
+import { fetchPost } from '../../Actions/PostAction'; 
 import helperForm from './Helper'
 import FormSchema from './Schema' 
 import { FetchCategories } from '../../Actions/CategoryAction';
@@ -39,6 +32,7 @@ interface InitialValues {
   categories: any;
   media: any;
   cover: any;
+  published: any;
 }
 const DashboardSubmitPost = () => {
   const history = useHistory();
@@ -49,6 +43,8 @@ const DashboardSubmitPost = () => {
   const [categoryLoading, setCategoryLoading] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<InitialValues | null>(null);
   const [categories, setCategories] = useState(null);
+  const [initialCategories, setInitialCategories] = useState([]);
+  const [initialTags, setInitialTags] = useState([]);
   const [tags, setTags] = useState(null);
   const [feature, setFeature] = useState({url: '', name: 'media', selected: null, 
     title: 'Upload or Select Feature Image', fileFolder: 'feature', text: 'Feature Image'
@@ -59,37 +55,53 @@ const DashboardSubmitPost = () => {
 
   const { createPostHandler, fetchMediaFiles, uploadFile } = helperForm();
 
-  const tool = 'custom';
-  const tool_custom = [
-      { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-      { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Scayt' ] },
-      { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-      { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
-      { name: 'tools', items: [ 'Maximize' ] },
-      { name: 'document', groups: [ 'mode', 'document', 'doctools' ], items: [ 'Source' ] },
-      { name: 'others', items: [ '-' ] },
-      '/',
-      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
-      { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
-      { name: 'styles', items: [ 'Styles', 'Format' ] },
-      { name: 'about', items: [ 'About' ] },
-      { name : 'new_group', items: ['jsplus_image_editor'] }
-  ];
+  const fetchGalleryData = (result: any, postType: string, categ: any, ta: any) => {
+    const newCategories = categ.map((item: any) => ({
+      value: item._id,
+      label: item.name,
+    }));
+    setInitialCategories(newCategories)
+    const newTags = ta.map((item: any) => ({
+      value: item._id,
+      label: item.name,
+    }));
+    setInitialTags(newTags)
+    const m = result?.find((res: any) => res.fileFolder === 'feature')
+    const c = result?.find((res: any) => res.fileFolder === 'cover')
+    const ga = result?.filter((res: any) => res.fileFolder === 'gallery')
+    setFeature({
+      url: m?.url, name: 'media', selected: m?._id, fileFolder: 'feature',
+      title: 'Upload or Select Feature Image', text: 'Feature Image'
+    })
 
-  
+    if(!ga){
+      setCover({url: c.url, name: 'cover', selected: c._id, fileFolder: 'cover',
+        title: 'Upload or Select Cover Photo', text: 'Cover Photo'
+      })
+    }
+    else{
+      const se = ga.map((item: any) => item._id);
+      const ur = ga.map((item: any) => item.url);
+      setCover({url: ur, name: 'cover', selected: se, fileFolder: 'gallery',
+        title: 'Upload or Select Cover Photo', text: 'Cover Photo'
+      })
+    }
+    
+  }
   useEffect(() => {
       setCategoryLoading(true)
       setTagLoading(true)
-      dispatch(FetchCategories()).then((res: any)=> {
+      const filter = {skip: 0,limit: 50};
+      dispatch(FetchCategories(filter)).then((res: any)=> {
         setCategoryLoading(false)
-        const newArray = res.map((item: any) => ({
+        const newArray = res.categories.map((item: any) => ({
           value: item._id,
           label: item.name,
         }));
         setCategories(newArray)
       }).catch(() => setCategoryLoading(false))
-      dispatch(FetchTags()).then((res: any)=> {
-        const newArray = res.map((item: any) => ({
+      dispatch(FetchTags(filter)).then((res: any)=> {
+        const newArray = res.tags.map((item: any) => ({
           value: item._id,
           label: item.name,
         }));
@@ -100,12 +112,14 @@ const DashboardSubmitPost = () => {
       setPostLoading(true)
       fetchPost(slug).then((res: any) => {
         setInitialValues({id: res._id, isSideBar: res.isSideBar, title: res.title, description: res.description, 
-          content: res.content, 
-          tags: res.tags.map((tag: any) => tag._id), isBrakingNews: res.isBrakingNews, 
-          postType: res.postType, categories: res.categories.map((category: any) => category._id), 
+          content: res.content, published: res.published,
+          tags: res.tags.map((tag: any) => tag._id), 
+          categories: res.categories.map((category: any) => category._id), 
+          isBrakingNews: res.isBrakingNews, postType: res.postType, 
           media: res.media?.find((res: any) => res.fileFolder === 'feature')?._id, 
           cover: res.media?.find((res: any) => res.fileFolder === 'cover')?._id}
         )
+        fetchGalleryData(res.media, res.postType, res.categories, res.tags)
         setPostLoading(false)
       }).catch(() => setPostLoading(false))
     }else{
@@ -121,6 +135,7 @@ const DashboardSubmitPost = () => {
         media: '',
         cover: '',
         postType: '',
+        published: 'Public'
       });
     }
   },[slug])
@@ -168,7 +183,9 @@ const DashboardSubmitPost = () => {
                   <Page3
                     categories={categories} tags={tags} categoryLoading={categoryLoading}
                     values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
-                    tagLoading={tagLoading}
+                    tagLoading={tagLoading} initialCategories={initialCategories}
+                    initialTags={initialTags} setInitialCategories={setInitialCategories}
+                    setInitialTags={setInitialTags}
                   />
                   : currentPage === 4 &&
                   <Page4
@@ -192,7 +209,7 @@ const DashboardSubmitPost = () => {
                   </button>
                 }
                 {
-                  currentPage < 4 ?
+                  currentPage < 4 &&
                     <button onClick={()=> history.push(nextPageUrl)}
                       type='button' className={`nc-Button relative h-auto inline-flex items-center justify-center 
                       rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 
@@ -202,8 +219,10 @@ const DashboardSubmitPost = () => {
                     >
                       Continue post
                     </button>
-                  :
-                  <button type='submit' className={`nc-Button relative h-auto inline-flex items-center justify-center 
+                  }
+                  {
+                  currentPage === 4 &&
+                  <button type={currentPage === 4 ? 'submit' : 'button'} className={`nc-Button relative h-auto inline-flex items-center justify-center 
                     rounded-full transition-colors text-sm sm:text-base font-medium px-4 py-3 
                     sm:px-6  ttnc-ButtonPrimary disabled:bg-opacity-70 bg-primary-6000 
                     hover:bg-primary-700 text-neutral-50  focus:outline-none focus:ring-2 

@@ -40,7 +40,6 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-   
     return (
       <>
         <div>
@@ -106,7 +105,9 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
             <p className="text-neutral-500 dark:text-neutral-400  text-xs">Do you want's to publish this Post to Public?
             </p>
           </div>
-          <button onClick={()=> setFieldValue('isSideBar', !values['isSideBar'])} className={`${values['isSideBar'] ? 'bg-teal-700' : 'bg-neutral-400 dark:bg-neutral-6000'}
+          <button onClick={()=> setFieldValue('published', 
+              values['published'] === 'Public' ? 'Private' : 'Public'
+            )} className={`${values['published'] === 'Public' ? 'bg-teal-700' : 'bg-neutral-400 dark:bg-neutral-6000'}
             relative inline-flex flex-shrink-0 h-8 w-[68px] border-2 
             border-transparent rounded-full cursor-pointer transition-colors 
             ease-in-out duration-200 focus:outline-none focus-visible:ring-2  
@@ -115,7 +116,7 @@ const Page2 = React.forwardRef<HTMLInputElement, InputProps>(
             aria-checked="false" data-headlessui-state=""
           >
             <span className="sr-only">Show Sidebar</span>
-            <span aria-hidden="true" className={`${values['isSideBar'] ? 'translate-x-9' : 'translate-x-0'}
+            <span aria-hidden="true" className={`${values['published'] === 'Public' ? 'translate-x-9' : 'translate-x-0'}
               pointer-events-none inline-block h-7 w-7 rounded-full bg-white 
               shadow-lg transform ring-0 transition ease-in-out duration-200`}
             ></span>

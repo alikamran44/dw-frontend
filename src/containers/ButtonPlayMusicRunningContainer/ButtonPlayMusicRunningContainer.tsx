@@ -83,7 +83,7 @@ const ButtonPlayMusicRunningContainer: FC<ButtonPlayMusicRunningContainerProps> 
       }
 
       // IF MEDIA RUNNING AND CLICK OTHER POST
-      if (currentMediaRunning.postData.id !== post.id) {
+      if (currentMediaRunning.postData._id !== post._id) {
         return handleClickNewAudioWhenMediaRunning();
       }
 
@@ -112,7 +112,7 @@ const ButtonPlayMusicRunningContainer: FC<ButtonPlayMusicRunningContainerProps> 
 
     const _renderLoadingBtn = () => {
       // RENDER DEFAULT IF IT NOT CURRENT
-      if (currentMediaRunning.postData?.id !== post.id) {
+      if (currentMediaRunning.postData?._id !== post._id) {
         return _renderDefaultBtn();
       }
 
@@ -125,7 +125,7 @@ const ButtonPlayMusicRunningContainer: FC<ButtonPlayMusicRunningContainerProps> 
 
     const _renderPlayingBtn = () => {
       // RENDER DEFAULT IF IT NOT CURRENT
-      if (currentMediaRunning.postData?.id !== post.id) {
+      if (currentMediaRunning.postData?._id !== post._id) {
         return _renderDefaultBtn();
       }
 
@@ -149,7 +149,7 @@ const ButtonPlayMusicRunningContainer: FC<ButtonPlayMusicRunningContainerProps> 
       >
         {renderChildren ? (
           renderChildren(
-            currentMediaRunning.postData?.id === post.id,
+            currentMediaRunning.postData?._id === post._id,
             mediaState
           )
         ) : (

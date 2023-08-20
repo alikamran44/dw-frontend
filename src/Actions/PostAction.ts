@@ -47,12 +47,10 @@ export const  UpdatePost = (values: any) => (dispatch: AppDispatch) => {
   dispatch(startLoading());
   return baseApi.Post.updatePost(values).then(
    
-    (data) => {
-      Promise.resolve(dispatch(FetchPost( data ))).then(
-        () => {
-          dispatch(stopLoading())
-          toast.success("Blog has been successfully updated"); 
-        });
+    (res) => { 
+      dispatch(stopLoading())
+      toast.success("Blog has been successfully updated");
+      return Promise.resolve(res);
     },
     (error) => {
       const message =

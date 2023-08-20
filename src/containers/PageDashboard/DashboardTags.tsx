@@ -17,6 +17,9 @@ const DashboardTags: React.FC<DashboardTagsProps> = ({ }) => {
   const history = useHistory() 
   const loading = useAppSelector(selectTagLoading)
   const { createTag } = helperForm();
+  const [selectedPage, setSelectedPage] = useState(0)
+  const [pages, setPages] = useState(0)
+  const [filter, setFilter] = useState({skip: 0, limit: 3})
   const [tags, setTags] = useState<any[]>([]);
   const [selectedDeleteLoading, setSelectedDeleteLoading] = useState(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,9 +51,10 @@ const DashboardTags: React.FC<DashboardTagsProps> = ({ }) => {
     })
   }
   useEffect(() => {
-    let data = {skip: 0, limit: 3}
-    dispatch(FetchTags()).then((res: any)=> {
-      setTags(res)
+    let data = {skip: 0, limit: filter.limit}
+    dispatch(FetchTags(data)).then((res: any)=> {
+      setPages(res.total)
+      setTags(res.tags)
     })
   },[])
   const submitHandler = (values: any) => {
@@ -64,6 +68,14 @@ const DashboardTags: React.FC<DashboardTagsProps> = ({ }) => {
         }
         setIsOpen(!isOpen)
       })
+  }
+  const loadMore = (index: any) => {
+    setSelectedPage(index)
+    let data = {skip: index + 1, limit: filter.limit}
+    dispatch(FetchTags(data)).then((res: any)=> {
+      setTags(res.tags)
+    })
+
   }
   if(!tags) return <></>
   return (
@@ -176,7 +188,12 @@ const DashboardTags: React.FC<DashboardTagsProps> = ({ }) => {
         </div>
       </div>
 
-      <Pagination />
+      <Pagination 
+        selectedPage={selectedPage}
+        setSelectedPage={loadMore}
+        pages={pages}
+        limit={filter.limit}
+      />
     </div>
   );
 };

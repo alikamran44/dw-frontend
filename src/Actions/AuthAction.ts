@@ -150,9 +150,10 @@ export const allBloggers = (filter:any) => (dispatch: AppDispatch) => {
   );
 };
 
-export const allUsers = () => (dispatch: AppDispatch) => {
+export const allUsers = (filter: any) => (dispatch: AppDispatch) => {
+  const {skip, limit} = filter
   dispatch(startLoading());
-  return baseApi.Auth.allUsers().then(
+  return baseApi.Auth.allUsers(skip, limit).then(
     (data) => {
       dispatch(stopLoading());
       return Promise.resolve(data)

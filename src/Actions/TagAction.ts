@@ -38,9 +38,11 @@ export const CreateTag = (values: any) => (dispatch: AppDispatch): Promise<any> 
   );
 };
 
-export const FetchTags = () => (dispatch: AppDispatch) => {
+export const FetchTags = (filter: any) => (dispatch: AppDispatch) => {
+    const {skip, limit} = filter
+    console.log(filter,'lllllllllllll')
     dispatch(startLoading())
-    return baseApi.Tag.fetchTags().then(
+    return baseApi.Tag.fetchTags(skip, limit).then(
       (data) => {
         dispatch(stopLoading())
         return Promise.resolve(data)

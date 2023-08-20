@@ -35,7 +35,7 @@ const GallerySlider: FC<GallerySliderProps> = ({
         <ul className="glide__slides h-full">
           {galleryImgs.map((item, index): any => (
             <li className="glide__slide h-full" key={index}>
-              <NcImage src={item.url || ''} containerClassName="w-full h-full" />
+              <NcImage src={item.url || item || ''} containerClassName="w-full h-full" />
             </li>
           ))}
         </ul>

@@ -61,12 +61,13 @@ export const updateCategory = (values: any, id: any) => (dispatch: AppDispatch) 
   );
 };
 
-export const FetchCategories = () => (dispatch: AppDispatch) => {
+export const FetchCategories = (filter: any) => (dispatch: AppDispatch) => {
+    const {skip, limit} = filter
     dispatch(startLoading())
-    return baseApi.Category.fetchCategories().then(
+    return baseApi.Category.fetchCategories(skip, limit).then(
       (data) => {
         dispatch(stopLoading())
-        return Promise.resolve(data.categories)
+        return Promise.resolve(data)
       },
       (error) => {
         const message =

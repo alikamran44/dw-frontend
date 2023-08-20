@@ -86,8 +86,8 @@ const getMediaConfig = () => {
 const Auth = {
   allBloggers: (values: any) =>
     requests.post('/user/all/blogger', values),
-  allUsers: () => 
-    requests.get('/user'),
+  allUsers: (num: number, limit: number) => 
+    requests.get(`/user?page=${num}&limit=${limit}`),
   login: (values: any) =>
     requests.post('/user/login', values),
   toatalUserBlogs: (values: any) =>
@@ -158,8 +158,8 @@ const Post = {
 };
 
 const Category = {
-  fetchCategories: () => 
-    requests.get('/category'),
+  fetchCategories: (num: number, limit: number) => 
+    requests.get(`/category?page=${num}&limit=${limit}`),
   viewCategory: (id: any) => 
     requests.get(`/category/${id}`),
   fetchCategory: (slug: any, data: any) => 
@@ -177,8 +177,8 @@ const Category = {
 };
 
 const Tag = {
-  fetchTags: () => 
-    requests.get('/tags'),
+  fetchTags: (num: number, limit: number) => 
+    requests.get(`/tags?page=${num}&limit=${limit}`),
   fetchTag: (slug: any, data: any) => 
     requests.post(`/tag/fetch/${slug}`, data), 
   viewtag: (id: any) => 

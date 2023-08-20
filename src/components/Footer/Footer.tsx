@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
               <Link
                 key={index}
                 className="text-neutral-6000 dark:text-neutral-300 hover:text-black dark:hover:text-white"
-                to={item.href}
+                to={item.href || '/#'}
               >
                 {item.label}
               </Link>

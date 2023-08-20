@@ -2,16 +2,18 @@ import { useAppDispatch } from "app/hooks";
 import { CreateCategory, updateCategory } from '../../Actions/CategoryAction';
 import { updateUser } from '../../Actions/AuthAction';
 import { CreateTag, UpdateTag } from '../../Actions/TagAction';
-import { CreatePost, UploadFile, UpdatePost, FetchMediaFiles, FetchMedia } from '../../Actions/PostAction';
+import { CreatePost, UploadFile, UpdatePost, FetchMediaFiles, 
+  FetchMedia,
+} from '../../Actions/PostAction';
 
 const HelperAutFoamh = () => {
   const dispatch = useAppDispatch();
 
   const createPostHandler = (values: any) => {
     if(values.id)
-      dispatch(UpdatePost(values))
+      return dispatch(UpdatePost(values))
     else
-      dispatch(CreatePost(values))
+      return dispatch(CreatePost(values))
   };
 
   const createCategory = (values: any) => {
@@ -52,7 +54,7 @@ const HelperAutFoamh = () => {
   }
 
   const profileSubmitHandler = (values: any) => {
-    dispatch(updateUser(values, values.id))
+     return dispatch(updateUser(values, values.id))
   }
 
   return { createPostHandler,  createCategory, createTag, uploadFile, editHandler, deleteHandler,

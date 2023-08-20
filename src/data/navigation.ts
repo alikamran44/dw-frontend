@@ -6,9 +6,7 @@ import ncNanoId from "utils/ncNanoId";
 import __megamenu from "./jsons/__megamenu.json";
 import baseApi from '../baseApi';
 
-
-
-baseApi.Category.fetchCategories().then(
+baseApi.Category.fetchCategories(0,50).then(
   (data) => {
     console.log('ho,mmenpag nav',data)
   }

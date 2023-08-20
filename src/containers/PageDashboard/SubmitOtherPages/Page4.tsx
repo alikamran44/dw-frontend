@@ -26,7 +26,7 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-   
+   console.log(values['content'],'valuessssssssssssssssssssllllllllll')
     return (
       <>        
        <div className='mb-8'>
@@ -46,8 +46,11 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
             config={{
               extraPlugins: `colorbutton, emoji, smiley, font, bidi, specialchar, tableresize,
               templates,div,preview, pastefromword, embed, justify, language, forms, 
-              mentions, `,
+              mentions,easyimage, `,
+              autoGrow_minHeight: 400, // Set the minimum height
+              autoGrow_maxHeight: 500,
             }}
+            initData={values['content'] || ''}
             // data={values['content'] || ''}
           />
         </div>

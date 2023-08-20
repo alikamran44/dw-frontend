@@ -10,9 +10,13 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   values: any;
   categories: any;
   tags: any;
+  initialCategories: any;
+  initialTags: any;
   setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
   categoryLoading: boolean;
   tagLoading: boolean;
+  setInitialCategories: (field: any, value?: any, shouldValidate?: any) => void;
+  setInitialTags: (field: any, value?: any, shouldValidate?: any) => void;
 }
 
 const Page3 = React.forwardRef<HTMLInputElement, InputProps>(
@@ -30,6 +34,10 @@ const Page3 = React.forwardRef<HTMLInputElement, InputProps>(
       setFieldValue,
       categoryLoading,
       tagLoading,
+      initialCategories,
+      initialTags,
+      setInitialCategories,
+      setInitialTags,
       ...args
     },
     ref
@@ -47,16 +55,17 @@ const Page3 = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="mt-8 grid md:grid-cols-2 gap-6 mb-12">
           <label className="block">
             <Label>Category</Label>
-
-            <TagInputs className="mt-1" name='categories' errors={errors} touched={touched} 
-              values={values['categories']}  setFieldValue={setFieldValue} options={categories}
-              loading={categoryLoading}
+            <TagInputs className="mt-1" name='categories'  touched={touched} 
+              values={values['categories']}  setFieldValue={setFieldValue} 
+              options={categories} loading={categoryLoading} errors={errors}
+              initialVal={initialCategories} setInit={setInitialCategories}
             />
           </label>
           <label className="block"> 
             <Label>Tags</Label>
             <TagInputs className="mt-1" name='tags' errors={errors} touched={touched} 
-              values={values['tags']}  setFieldValue={setFieldValue} options={tags} loading={tagLoading}
+              values={values['tags']}  setFieldValue={setFieldValue} options={tags} 
+              initialVal={initialTags} loading={tagLoading} setInit={setInitialTags}
             />
           </label>
         </div>

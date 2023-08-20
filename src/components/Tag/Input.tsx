@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Select, { Props } from "react-select";
 
 interface SelectProps extends Props {
@@ -11,9 +11,11 @@ interface SelectProps extends Props {
   name: string;
   suggestedValues?: any;
   values: any;
-  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
+  setFieldValue?: (field: any, value?: any, shouldValidate?: boolean) => void;
   options: any;
-  loading: boolean
+  loading: boolean;
+  initialVal?: any;
+  setInit: (field: any, value?: any, shouldValidate?: boolean) => void;
 }
 
 const CustomTagsInput: React.FC<SelectProps> = (
@@ -32,6 +34,8 @@ const CustomTagsInput: React.FC<SelectProps> = (
       setFieldValue,
       loading,
       options,
+      initialVal,
+      setInit,
       ...args
     },
   ) => {
@@ -43,6 +47,12 @@ const CustomTagsInput: React.FC<SelectProps> = (
           ${className} ${rounded} ${fontClass} ${sizeClass}`,
     };
 
+    useEffect(()=>{
+      if(initialVal && initialVal.length > 0)
+      {
+        setSelectedValues(initialVal)
+      }
+    },[initialVal])
     return (
       <>
         <Select
@@ -53,6 +63,7 @@ const CustomTagsInput: React.FC<SelectProps> = (
           value={selectedValues}
           isLoading={loading}
           onChange={(selectedOptions: any) => {
+            setInit(selectedOptions)
             const newArray = selectedOptions.map((item: any) => item.value);
             if(setFieldValue){
               setSelectedValues(selectedOptions);
