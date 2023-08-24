@@ -1,3 +1,4 @@
+import { FormikHelpers } from 'formik';
 import { useAppDispatch } from "app/hooks";
 import { CreateCategory, updateCategory } from '../../Actions/CategoryAction';
 import { updateUser } from '../../Actions/AuthAction';
@@ -9,11 +10,14 @@ import { CreatePost, UploadFile, UpdatePost, FetchMediaFiles,
 const HelperAutFoamh = () => {
   const dispatch = useAppDispatch();
 
-  const createPostHandler = (values: any) => {
-    if(values.id)
-      return dispatch(UpdatePost(values))
-    else
-      return dispatch(CreatePost(values))
+  const createPostHandler = async(values: any) => {
+      console.log('hellllsddddddddddddddddddddddddddddddd')
+    // Validate the form
+      if(values.id)
+        return dispatch(UpdatePost(values))
+      else
+        return dispatch(CreatePost(values))
+    
   };
 
   const createCategory = (values: any) => {

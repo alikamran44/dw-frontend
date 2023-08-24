@@ -162,34 +162,33 @@ const DashboardSubmitPost = () => {
           initialValues={initialValues}
           validationSchema={FormSchema.createPostSchema}
           onSubmit={createPostHandler}
-          validateOnChange={true}
-          validateOnBlur={true}
-
+          validateOnChange={false}
+          validateOnBlur={false}
         >
-          {({ values, errors, touched, setFieldValue }) => (
-            <Form>
+          {({ values, errors, touched, setFieldValue, handleSubmit }) => (
+            <Form onSubmit={handleSubmit}>
               {
                 currentPage === 1 ?
                   <Page1 setCover={setCover}
-                    values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+                    values={values} setFieldValue={setFieldValue} errors={errors} touched={false}
                   />
                 : currentPage === 2 ?
                   <Page2
                     feature={feature} setFeature={setFeature} cover={cover} setCover={setCover}
-                    values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+                    values={values} setFieldValue={setFieldValue} errors={errors} touched={false}
                     fetchMediaFiles={fetchMediaFiles} uploadFile={uploadFile}
                   />
                 : currentPage === 3 ?
                   <Page3
                     categories={categories} tags={tags} categoryLoading={categoryLoading}
-                    values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+                    values={values} setFieldValue={setFieldValue} errors={errors} touched={false}
                     tagLoading={tagLoading} initialCategories={initialCategories}
                     initialTags={initialTags} setInitialCategories={setInitialCategories}
                     setInitialTags={setInitialTags}
                   />
                   : currentPage === 4 &&
                   <Page4
-                    values={values} setFieldValue={setFieldValue} errors={errors} touched={touched}
+                    values={values} setFieldValue={setFieldValue} errors={errors} touched={false}
                   />
               }
               <div className="flex justify-end space-x-5 mt-5">

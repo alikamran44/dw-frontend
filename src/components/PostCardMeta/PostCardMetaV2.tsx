@@ -1,8 +1,10 @@
 import React, { FC } from "react";
+import { Link } from "react-router-dom";
 import Avatar from "components/Avatar/Avatar";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 import { PostDataType } from "data/types";
 import dateFormat from "hooks/useDateFormat";
-import { Link } from "react-router-dom";
 
 export interface PostCardMetaV2Props {
   className?: string;
@@ -36,7 +38,7 @@ const PostCardMetaV2: FC<PostCardMetaV2Props> = ({
             sizeClass={
               size === "normal" ? "h-9 w-9 text-base" : "h-10 w-10 text-xl"
             }
-            imgUrl={pic || author?.avatar}
+            imgUrl={pic || ''}
             userName={fullName || author?.displayName}
           />
         )}
@@ -50,15 +52,29 @@ const PostCardMetaV2: FC<PostCardMetaV2Props> = ({
           </h2>
 
           <div className="flex mt-1.5">
-            <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
-              {fullName || author?.displayName}
-            </span>
+            {
+              fullName ?
+                <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
+                  {fullName}
+                </span>
+              :
+                <span className="block text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium">
+                  <Skeleton width={50} />
+                </span>
+            }
             <span className="text-neutral-500 dark:text-neutral-400 mx-[6px] font-medium">
               ·
             </span>
-            <span className="text-neutral-500 dark:text-neutral-400 font-normal">
-              {dateFormat(date)}
-            </span>
+            {
+              fullName ?
+                <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+                  {dateFormat(date)}
+                </span>
+              :
+                <span className="text-neutral-500 dark:text-neutral-400 font-normal">
+                  <Skeleton width={ 54 } />
+                </span> 
+            }
           </div>
         </div>
       </Link>

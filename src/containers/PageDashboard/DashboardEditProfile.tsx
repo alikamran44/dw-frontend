@@ -68,10 +68,9 @@ const DashboardEditProfile = () => {
                   <span className="mt-1 text-xs">Change Cover Photo</span>
                 </div>
                 <input
-                  name="coverPhoto"
+                  name="coverPhoto" accept='.png, .jpg, .jpeg'
                   onChange={(e) => e.target.files && setFieldValue(e.target.name, e.target.files[0])}
-                  type="file"
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  type="file" className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
 
@@ -90,8 +89,13 @@ const DashboardEditProfile = () => {
                       </path>
                     </svg>
                     <span className="mt-1 text-xs">Change Image</span>
-                  </div>
-                  <input name='avatar' onChange={(e) => e.target.files && setFieldValue(e.target.name, e.target.files[0])} type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
+                  </div> 
+                  <input accept='.png, .jpg, .jpeg' name='avatar' 
+                    onChange={(e) => e.target.files && 
+                    setFieldValue(e.target.name, e.target.files[0])} 
+                    type="file" 
+                    className="absolute inset-0 opacity-0 cursor-pointer" 
+                  />
                 </div>
               </div>
               </div>

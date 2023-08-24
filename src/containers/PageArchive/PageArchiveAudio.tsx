@@ -1,11 +1,11 @@
 import React, { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAppDispatch } from "app/hooks";
 import ModalCategories from "./ModalCategories";
 import ModalTags from "./ModalTags";
 import { DEMO_POSTS_AUDIO } from "data/posts";
 import { PostDataType, TaxonomyType } from "data/types";
 import { DEMO_CATEGORIES, DEMO_TAGS } from "data/taxonomies";
-import Pagination from "components/Pagination/Pagination";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import ArchiveFilterListBox from "components/ArchiveFilterListBox/ArchiveFilterListBox";
 import { Helmet } from "react-helmet";
@@ -31,9 +31,13 @@ export interface PageArchiveAudioProps {
 }
 
 // Tag and category have same data type - we will use one demo data
-
+interface RouteParams {
+  slug: string;
+  blogtype?: string;
+}
 const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const dispatch = useAppDispatch()
+  const {blogtype, slug} = useParams<RouteParams>();
   const PAGE_DATA: TaxonomyType = DEMO_CATEGORIES[1];
   const { CategoryWithTotalBlogs, AllBloggers, 
   TagWithTotalBlogs } = BlogsHelper()
@@ -114,6 +118,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
       setMoreLoadingCategory(false)
       setCategoryFilter(count)
+      setCategoryCount(res.totalCategories)
       setRemainingCategoryCount(res.remainingCategories)
       if(res){
         let newArray = categories?.concat(res.categories)
@@ -150,7 +155,9 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
 
       {/* HEADER */}
       <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
-        <div className="rounded-3xl relative aspect-w-16 aspect-h-12 sm:aspect-h-7 lg:aspect-h-6 xl:aspect-h-5 2xl:aspect-h-4 overflow-hidden ">
+        <div className="rounded-3xl relative aspect-w-16 aspect-h-12 sm:aspect-h-7 
+          lg:aspect-h-6 xl:aspect-h-5 2xl:aspect-h-4 overflow-hidden"
+        >
           <NcImage
             containerClassName="absolute inset-0"
             src="https://images.pexels.com/photos/144429/pexels-photo-144429.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -176,9 +183,11 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
               <ModalTags tags={tags || DEMO_TAGS} loading={tagLoading} />
             </div>
             <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
-            <div className="flex justify-end">
+            
+            {/*Note: Do it Later*/}
+            {/*<div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
-            </div>
+            </div>*/}
           </div>
 
           {/* LOOP ITEMS */}

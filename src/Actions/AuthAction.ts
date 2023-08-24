@@ -282,6 +282,29 @@ export const updateProfile = (values: any, id: any) => (dispatch: AppDispatch) =
     }
   );
 };
+
+export const subscribe = (values: any) => (dispatch: AppDispatch) => {
+  dispatch(startLoading())
+  return baseApi.Auth.subscribe(values).then(
+    (res) => {
+      dispatch(stopLoading())
+      toast.success("Profile has been successfully updated");
+      return Promise.resolve(res.data);
+    },
+    (error) => {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+          error.response.data.msg ||
+        error.message ||
+        error.toString();
+      dispatch(stopLoading())
+      toast.error(message); 
+      return Promise.reject();
+    }
+  );
+};
 // export const getUser = () => (dispatch) => {
 //   axios
 //     .get('../fakedata/userList.json')

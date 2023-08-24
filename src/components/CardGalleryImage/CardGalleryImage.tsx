@@ -30,7 +30,6 @@ const CardGalleryImage: FC<CardCategory3Props> = ({
        className={`block group rounded-3xl flex-shrink-0 relative w-full aspect-w-16 aspect-h-12 sm:aspect-h-9 overflow-hidden`}
         
       >
-      {console.log('.............................',url, name)}
         <div>
           {
             (Array.isArray(url) && url.length > 0) ? 

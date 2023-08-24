@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 const dashboardSchema = {
     createPostSchema: Yup.object().shape({
       title: Yup.string()
+      .min(10, 'Too Short!')
+      .max(70, 'Too Long!')
         .required('Title is required'),
       description: Yup.string()
       .min(50, 'Too Short!')
@@ -9,6 +11,9 @@ const dashboardSchema = {
       .required('Required'),
       content: Yup.string().required('Required'),
       tags: Yup.array().min(1, 'At least one tag is required'),
+      categories: Yup.array().min(1, 'At least one tag is required'),
+      media: Yup.string().required('Title is required'),
+      cover: Yup.string().required('Title is required'),
     }),
     Category: Yup.object().shape({
       category: Yup.string()
@@ -23,7 +28,7 @@ const dashboardSchema = {
         .required('Background Image is required'),
     }),
     profileSchema: Yup.object().shape({
-        firstName: Yup.string()
+        firstName: Yup.string() 
         .min(2, 'Too Short!')
         .max(50, 'Too Long!')
         .required('Required'),

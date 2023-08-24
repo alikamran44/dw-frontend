@@ -1,7 +1,10 @@
 import React, { FC } from "react";
-import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
+import { PostDataType } from "data/types";
 import Avatar from "components/Avatar/Avatar";
+import dateFormat from "hooks/useDateFormat";
 
 export interface CardAuthor2Props
   extends Pick<PostDataType, "date" | "author"> {
@@ -9,7 +12,7 @@ export interface CardAuthor2Props
   readingTime?: PostDataType["readingTime"];
   hoverReadingTime?: boolean;
 }
-
+ 
 const CardAuthor2: FC<CardAuthor2Props> = ({
   className = "",
   author,
@@ -25,8 +28,8 @@ const CardAuthor2: FC<CardAuthor2Props> = ({
   }) || date;
 
   if(!author) return <></>
-  const { displayName, href = "/", avatar, pic } = author;
-  const fullName = author && `${author?.firstName} ${author?.lastName}`
+  const { displayName, href = "/", avatar, pic=null } = author;
+  const fullName = author.firstName ? `${author?.firstName} ${author?.lastName}` : displayName
   return ( 
     <Link
       to={href || '/*'}
@@ -37,19 +40,35 @@ const CardAuthor2: FC<CardAuthor2Props> = ({
         sizeClass="h-10 w-10 text-base"
         containerClassName="flex-shrink-0 mr-3"
         radius="rounded-full"
-        imgUrl={pic || avatar}
-        userName={fullName || displayName}
+        imgUrl={pic || ''}
+        userName={fullName}
       />
       <div>
-        <h2
-          className={`text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium`}
-        >
-          {fullName || displayName}
-        </h2>
+        {
+          author?.firstName ? 
+            <h2
+              className={`text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium`}
+            >
+              {fullName || displayName}
+            </h2>
+          :
+            <h2
+              className={`text-sm text-neutral-700 hover:text-black dark:text-neutral-300 dark:hover:text-white font-medium`}
+            >
+              <Skeleton width={50} />
+            </h2>
+        }
         <span
           className={`flex items-center mt-1 text-xs text-neutral-500 dark:text-neutral-400`}
         >
-          <span>{formattedDate}</span>
+          {
+            date ?
+              <span>{dateFormat(date)}</span>
+            :
+              <Skeleton 
+                width={ 54 }
+              />
+          }
           {readingTime && (
             <>
               <span

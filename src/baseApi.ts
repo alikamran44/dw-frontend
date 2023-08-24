@@ -90,6 +90,8 @@ const Auth = {
     requests.get(`/user?page=${num}&limit=${limit}`),
   login: (values: any) =>
     requests.post('/user/login', values),
+  subscribe: (values: any) =>
+    requests.post('/user/subscribe', values),
   toatalUserBlogs: (values: any) =>
     requests.post('/user/total/blogs', values),
   register: (values: any) =>

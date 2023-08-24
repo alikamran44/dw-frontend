@@ -30,11 +30,12 @@ const Card7: FC<Card7Props> = ({
     readingTime,
     postType,
   } = post;
-    const pHref = post.slug ? `/blog/${post.slug}` : ''
+    const pHref = post.slug ? `/blog/${post.slug}` : '/#'
     const fUrl = (post.media && post.media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
   return (
     <div
-      className={`nc-Card7 relative flex flex-col group rounded-3xl overflow-hidden ${hoverClass} ${className}`}
+      className={`nc-Card7 relative flex flex-col group rounded-3xl 
+      overflow-hidden ${hoverClass} ${className}`}
       data-nc-id="Card7"
     >
       <div className="absolute inset-x-0 top-0 p-3  flex items-center justify-between transition-all opacity-0 z-[-1] group-hover:opacity-100 group-hover:z-10 duration-300">
@@ -52,7 +53,7 @@ const Card7: FC<Card7Props> = ({
           postType={postType}
           wrapSize="w-7 h-7"
           iconSize="w-4 h-4"
-        />
+        /> 
         <span className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
       </Link>
 

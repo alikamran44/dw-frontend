@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ModalCategories from "./ModalCategories";
 import ModalTags from "./ModalTags";
 import { DEMO_POSTS } from "data/posts";
 import { PostDataType, TaxonomyType } from "data/types";
 import { DEMO_CATEGORIES, DEMO_TAGS, DEMO_FAKE_POST_DATA, DEMO_FAKE_CATEGORY_DATA } from "data/taxonomies";
-import { useParams } from "react-router-dom";
 import Pagination from "components/Pagination/Pagination";
 import Skeleton from "components/Skeleton/Skeleton";
 import ButtonPrimary from "components/Button/ButtonPrimary";
@@ -29,7 +29,6 @@ export interface PageArchiveProps {
 }
 
 // Tag and category have same data type - we will use one demo data
-const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < 16);
 interface RouteParams {
   slug: string;
   blogtype?: string;
@@ -63,6 +62,7 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
     DEMO_FAKE_CATEGORY_DATA.map((item: any) => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat(); 
 
+  const posts: PostDataType[] = DEMO_POSTS.filter((_, i) => i < filter.limit);
   const FILTERS = [
     { name: "Most Recent" },
     { name: "Curated by Admin" },
@@ -184,9 +184,11 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
               <ModalTags tags={tags || DEMO_TAGS} />
             </div>
             <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
-            <div className="flex justify-end">
+            
+            {/*Note: Do it Later*/}
+            {/*<div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />
-            </div>
+            </div>*/}
           </div>
 
           {/* LOOP ITEMS */}

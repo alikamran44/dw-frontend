@@ -5,7 +5,6 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import { useParams } from "react-router-dom";
 import { DEMO_POSTS } from "data/posts";
 import { PostAuthorType, PostDataType, FakeAuthorType, TaxonomyType } from "data/types";
-import Pagination from "components/Pagination/Pagination";
 import ButtonPrimary from "components/Button/ButtonPrimary";
 import { DEMO_AUTHORS, DEMO_FAKE_SKELETON_USERS } from "data/authors";
 import Nav from "components/Nav/Nav";
@@ -27,6 +26,7 @@ import { selectBlogLoading } from "app/blog/blogSlice";
 import { categoryWithTotalBlogs } from '../../Actions/CategoryAction';
 import { allBloggers } from '../../Actions/AuthAction';
 import useUserDetail from "hooks/useUserDetail";
+const APP_NAME: string = import.meta.env.VITE_APP_NAME;
 
 export interface PageAuthorV2Props {
   className?: string;
@@ -46,6 +46,7 @@ interface RouteParams {
   id: string;
 }
 const PageAuthorV2: FC<PageAuthorV2Props> = ({ className = "" }) => {
+  const completeUrl = window.location.href;
   const {id} = useParams<RouteParams>();
   const TABS = ["Articles", !id && "Favorites", !id && "Saved"].filter(Boolean);;
   const [tabActive, setTabActive] = useState<any>(TABS[0]);
@@ -83,20 +84,32 @@ const PageAuthorV2: FC<PageAuthorV2Props> = ({ className = "" }) => {
     setTabActive(item);
   };
 
-useEffect(() => {
-  setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit})
-    if( tabActive === 'Articles' ){
-      {
-        id ?
-          dispatch(fetchUserPublicBlogs(id, initialFilter)).then((res: any) => {
-            setTotalBlogsCount(res.total)
-            setTotalRemainingBlogsCount(res.remainingBlogs)
-            const {user, blogs} = res
-            setUser(user)
-            setBlogs(blogs)  
-          })
-        : profileId &&
-          dispatch(fetchUserBlogs(profileId, initialFilter)).then((res: any) => {
+  useEffect(() => {
+    setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit})
+      if( tabActive === 'Articles' ){
+        {
+          id ?
+            dispatch(fetchUserPublicBlogs(id, initialFilter)).then((res: any) => {
+              setTotalBlogsCount(res.total)
+              setTotalRemainingBlogsCount(res.remainingBlogs)
+              const {user, blogs} = res
+              setUser(user)
+              setBlogs(blogs)  
+            })
+          : profileId &&
+            dispatch(fetchUserBlogs(profileId, initialFilter)).then((res: any) => {
+              setTotalBlogsCount(res.total)
+              setTotalRemainingBlogsCount(res.remainingBlogs)
+              const {user, blogs} = res
+              setUser(profile)
+              setBlogs(blogs)  
+            })
+        }
+      }
+      else if( tabActive === 'Favorites' ){
+        const profileFilter = {...initialFilter, blogType: tabActive}
+        profileId &&
+          dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
             setTotalBlogsCount(res.total)
             setTotalRemainingBlogsCount(res.remainingBlogs)
             const {user, blogs} = res
@@ -104,30 +117,18 @@ useEffect(() => {
             setBlogs(blogs)  
           })
       }
-    }
-    else if( tabActive === 'Favorites' ){
-      const profileFilter = {...initialFilter, blogType: tabActive}
-      profileId &&
-        dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
-          setTotalBlogsCount(res.total)
-          setTotalRemainingBlogsCount(res.remainingBlogs)
-          const {user, blogs} = res
-          setUser(profile)
-          setBlogs(blogs)  
-        })
-    }
-    else if( tabActive === 'Saved' ){
-      const profileFilter = {...initialFilter, blogType: tabActive}
-      profileId &&
-        dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
-          setTotalBlogsCount(res.total)
-          setTotalRemainingBlogsCount(res.remainingBlogs)
-          const {user, blogs} = res
-          setUser(profile)
-          setBlogs(blogs)  
-        })
-    }
-  }, [tabActive, id, profileId])
+      else if( tabActive === 'Saved' ){
+        const profileFilter = {...initialFilter, blogType: tabActive}
+        profileId &&
+          dispatch(fetchUserBlogs(profileId, profileFilter)).then((res: any) => {
+            setTotalBlogsCount(res.total)
+            setTotalRemainingBlogsCount(res.remainingBlogs)
+            const {user, blogs} = res
+            setUser(profile)
+            setBlogs(blogs)  
+          })
+      }
+    }, [tabActive, id, profileId])
 
   const loadMore = () => {
     setMorePostLoading(true)
@@ -205,7 +206,20 @@ useEffect(() => {
   return (
     <div className={`nc-PageAuthorV2  ${className}`} data-nc-id="PageAuthorV2">
       <Helmet>
-        <title>Author</title>
+        <title>{APP_NAME} News</title>
+        <meta property='og:title' content={`${APP_NAME} News`} />
+        <meta property='og:type' content='website' />
+        <meta property='og:url' content={completeUrl} />
+        <meta property='og:site_name' content={APP_NAME} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-DNS-Prefetch-Control" content="on" />
+        <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+        <meta name="referrer" content="no-referrer-when-downgrade" />
+        {/*Twitter*/} 
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={completeUrl} />
+        <meta property="twitter:title" content={`${APP_NAME}`} />
+        <meta property="fb:app_id" content="806413737804011" /> 
       </Helmet>
       <HeadBackgroundCommon className="h-24 2xl:h-28" />
       {

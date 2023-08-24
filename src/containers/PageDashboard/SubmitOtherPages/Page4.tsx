@@ -26,7 +26,6 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-   console.log(values['content'],'valuessssssssssssssssssssllllllllll')
     return (
       <>        
        <div className='mb-8'>
@@ -36,10 +35,10 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
           </span>
         </div>
         {/*colorbutton,codesnippet,emoji,magicline,language,
-                      preview,mentions,templates,smiley,tableselection,tableresize,tabletools,
-                      table, specialchar,pastefromword,justify,docprops,codesnippetgeshi,embed,
-                      font,forms,stylesheetparser,pagebreak,bidi,copyformatting,autolink,
-                      easyimage,imagebase,div,divarea,devtools*/}
+        preview,mentions,templates,smiley,tableselection,tableresize,tabletools,
+        table, specialchar,pastefromword,justify,docprops,codesnippetgeshi,embed,
+        font,forms,stylesheetparser,pagebreak,bidi,copyformatting,autolink,
+        easyimage,imagebase,div,divarea,devtools*/}
         <div className='mb-12'>
           <CKEditor 
             onChange={(event) => setFieldValue && setFieldValue('content',event.editor.getData()) }
@@ -47,11 +46,11 @@ const Page4 = React.forwardRef<HTMLInputElement, InputProps>(
               extraPlugins: `colorbutton, emoji, smiley, font, bidi, specialchar, tableresize,
               templates,div,preview, pastefromword, embed, justify, language, forms, 
               mentions,easyimage, `,
-              autoGrow_minHeight: 400, // Set the minimum height
+              autoGrow_minHeight: 400,
               autoGrow_maxHeight: 500,
             }}
+            
             initData={values['content'] || ''}
-            // data={values['content'] || ''}
           />
         </div>
       </>

@@ -1,4 +1,5 @@
 import React, { FC, SelectHTMLAttributes } from "react";
+import { ErrorMessage } from 'formik';
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   sizeClass?: string;
@@ -37,7 +38,18 @@ const Select: FC<SelectProps> = ({
       >
         {children}
       </select>
-      {(name && (errors[name] || touched[name])) ? <div className="invalid-feedback">{errors[name]}</div> : null}
+      {
+        name && (errors[name] || touched[name] ?
+          <ErrorMessage name={name}>{msg => 
+              <div 
+                style={{color: 'red',fontSize: '11px'}}
+              >
+                {msg}
+              </div>
+            }
+          </ErrorMessage>
+          : null
+        )}
     </>
   );
 };

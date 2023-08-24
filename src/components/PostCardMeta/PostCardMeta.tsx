@@ -69,9 +69,7 @@ const PostCardMeta: FC<PostCardMetaProps> = ({
             {dateFormat(date)}
           </span>
           :
-          <Skeleton 
-            width={ 54 }
-          />
+          <Skeleton width={ 54 } />
         }
       </>
     </div>

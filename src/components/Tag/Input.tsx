@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import Select, { Props } from "react-select";
+import { ErrorMessage } from 'formik';
 
 interface SelectProps extends Props {
-   sizeClass?: string;
-   className?: string;
+  sizeClass?: string;
+  className?: string;
   fontClass?: string;
   rounded?: string;
   errors:any;
@@ -75,9 +76,18 @@ const CustomTagsInput: React.FC<SelectProps> = (
           {...args}
         />
 
-        {(name && (errors[name] || touched[name])) ? (
-          <div className="invalid-feedback" style={{marginTop:'3px'}}>{errors[name]}</div>
-        ) : null}
+        {
+          name && (errors[name] || touched[name] ?
+          <ErrorMessage name={name}>{msg => 
+              <div 
+                style={{color: 'red',fontSize: '11px'}}
+              >
+                {msg}
+              </div>
+            }
+          </ErrorMessage>
+          : null
+        )}
       </>
     );
   }

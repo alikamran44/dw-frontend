@@ -7,11 +7,9 @@ import ButtonPrimary from "components/Button/ButtonPrimary";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import Textarea from "components/Textarea/Textarea";
 import { createComment } from '../../Actions/CommentAction';
-import  { setAlert, 
-          selectConfirmAlert, 
-          onRemoveConfirmAlert, 
-          removeAlert 
-        } from "app/auth/auth";
+import useUserDetail from "hooks/useUserDetail";
+import  { setAlert, selectConfirmAlert,  onRemoveConfirmAlert, removeAlert 
+  } from "app/auth/auth";
 
 export interface SingleCommentFormProps {
   className?: string;
@@ -34,15 +32,8 @@ const SingleCommentForm: FC<SingleCommentFormProps> = ({
 }) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-   const confirmAlert = useAppSelector(selectConfirmAlert);
-  interface UserInfo {
-    name: string;
-    email: string;
-    role: string;
-    _id: string;
-  }
-  const userInfoString = localStorage.getItem('userInfo');
-  const user: UserInfo | null = (userInfoString && JSON.parse(userInfoString)) || null;
+  const confirmAlert = useAppSelector(selectConfirmAlert);
+  const user = useUserDetail();
   const initialValues = { content: defaultValue ? defaultValue : '', email: user ? 
     user.email : '', name: '', userLoggedIn: user ? true : false 
   };

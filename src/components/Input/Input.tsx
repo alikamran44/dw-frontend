@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, useState } from "react";
+import { ErrorMessage } from 'formik';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   sizeClass?: string;
@@ -55,9 +56,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ${rounded} ${fontClass} ${sizeClass} ${className}`}
           {...args}
         />
-          {
-            name && (errors[name] || touched[name] ? <div className="invalid-feedback">{errors[name]
-          }</div> : null)}
+        {
+          name && (errors[name] || touched[name] ?
+            <ErrorMessage name={name}>{msg => 
+                <div 
+                  style={{color: 'red',fontSize: '11px'}}
+                >
+                  {msg}
+                </div>
+              }
+            </ErrorMessage>
+            : null
+          )}
       </>
     );
   }

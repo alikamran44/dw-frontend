@@ -97,10 +97,9 @@ const PageBloggerSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                   <span className="mt-1 text-xs">Change Cover Photo</span>
                 </div>
                 <input
-                  name="bgImage"
+                  name="bgImage" accept='.png, .jpg, .jpeg'
                   onChange={(e: any) => setFieldValue(e.target.name, e.target.files[0])}
-                  type="file"
-                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  type="file" className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
 
@@ -120,7 +119,8 @@ const PageBloggerSignUp: FC<PageSignUpProps> = ({ className = "" }) => {
                     </svg>
                     <span className="mt-1 text-xs">Change Image</span>
                   </div>
-                  <input name='pic' onChange={(e: any) => setFieldValue(e.target.name, e.target.files[0])} type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
+                  <input name='pic' accept='.png, .jpg, .jpeg'
+                    onChange={(e: any) => setFieldValue(e.target.name, e.target.files[0])} type="file" className="absolute inset-0 opacity-0 cursor-pointer" />
                 </div>
               </div>
               </div>
