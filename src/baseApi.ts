@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 // const isProduction: boolean = import.meta.env.MODE === 'production';
-const API_ROOT: string | boolean | undefined = 
+const API_ROOT: string  = 
         'https://dw-backend.connectvirtue.com/api';
 console.log('isProductionisProduction',API_ROOT)
 let token; 
