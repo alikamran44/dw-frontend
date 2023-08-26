@@ -32,6 +32,7 @@ const ModalTags: FC<ModalTagsProps> = ({
       setShow(!show) 
     }
     console.log('chhhhhhh')
+    console.log('chhhhhhh')
     const renderModalContent = () => {
       const loadMoreTag = () => {
         setMoreLoadingTag(true)
