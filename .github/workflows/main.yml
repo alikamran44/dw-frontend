@@ -1,0 +1,25 @@
+name: CI Pipeline
+on:
+  push:
+    branches:
+      - main
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Changes Detected
+        run: |
+          echo "Changes have been detected on the develop branch"
+          echo "The most recent commit message is: ${GITHUB_SHA}"
+      - uses: actions/checkout@v3
+      - name: Getting Changes
+        id: ssh
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          host: ${{ secrets.SERVER_IP }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            cd /var/www/html/Daily-World/bash/
+            bash dw-frontend.sh
