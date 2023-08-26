@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-const isProduction: boolean = import.meta.env.MODE === 'production';
+// const isProduction: boolean = import.meta.env.MODE === 'production';
 const API_ROOT: string | boolean | undefined = 
         'https://dw-backend.connectvirtue.com/api';
-console.log(isProduction,'isProductionisProduction',API_ROOT)
+console.log('isProductionisProduction',API_ROOT)
 let token; 
 
 // axios.interceptors.request.use(
