@@ -5,5 +5,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
-  base: "https://dw-frontend.connectvirtue.com/",
+  base: "https://dw-backend.connectvirtue.com/api/",
 });
+ 

@@ -3,7 +3,7 @@ const isProduction: boolean = import.meta.env.MODE === 'production';
 const API_ROOT: string | boolean | undefined = isProduction ? import.meta.env.VITE_PRODUCTION_BASE_API : 
         import.meta.env.VITE_BASE_API;
 
-let token;
+let token; 
 
 // axios.interceptors.request.use(
 //   config => {
