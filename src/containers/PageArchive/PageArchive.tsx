@@ -48,13 +48,20 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   const [postLoading, setPostLoading] = useState(true);
   const [morePostLoading, setMorePostLoading] = useState(false);
   const initialFilterCategory = {limit: 2, skip: 0};
+
+  const initialFilterTags = {limit: 2, skip: 0};
+  const [tagFilter, setTagFilter] = useState({skip: 0, limit: 2,});
+  const [moreLoadingTag, setMoreLoadingTag] = useState(false);
+  const [remainingTagCount, setRemainingTagCount] = useState(0);
+  const [tagCount, setTagCount] = useState(0);
+  const [tags, setTags] = useState(null);
+  const tagLoading = useAppSelector(selectTagLoading)
+
   const [filterCategory, setFilterCategory] = useState({limit: 2, skip: 0});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
   const [categoryCount, setCategoryCount] = useState(0);
   const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
   const [loadingCategory, setLoadingCategory] = useState(false);
-  const [tags, setTags] = useState(null);
-  const tagLoading = useAppSelector(selectTagLoading)
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
    const [users, setUsers] = useState(null);
    const [data, setData] = useState(null);
@@ -75,7 +82,11 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
   ).flat();
 
   useEffect(()=>{
-     TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
+     TagWithTotalBlogs({skip: 0, limit: 3}).then((res: any)=> {
+      let countTag = {limit: initialFilterTags.limit, skip: initialFilterTags.skip + initialFilterTags.limit}
+      setTagFilter(countTag)
+      setRemainingTagCount(res.remainingTags)
+      setTagCount(res.totalTags)
       setTags(res.tags)
     })
   },[])
@@ -165,11 +176,10 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
       className={`nc-PageArchive overflow-hidden ${className}`}
       data-nc-id="PageArchive"
     >
-     
      <Header
-          data={data}
-          blogs={blogs}
-          blogsTotalCount={blogsTotalCount}
+        data={data}
+        blogs={blogs}
+        blogsTotalCount={blogsTotalCount}
      />
 
       {/* HEADER */}
@@ -180,8 +190,25 @@ const PageArchive: FC<PageArchiveProps> = ({ className = "" }) => {
         <div>
           <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">
             <div className="flex space-x-2.5">
-              <ModalCategories categories={categories || DEMO_CATEGORIES} loading={loadingCategory} />
-              <ModalTags tags={tags || DEMO_TAGS} />
+              <ModalCategories categories={categories || DEMO_CATEGORIES} 
+                loading={loadingCategory} 
+                loadMoreCategory={loadMoreCategory}
+                remainingCategoryCount={remainingCategoryCount}
+                moreLoadingCategory={moreLoadingCategory}
+              />
+              <ModalTags 
+                tags={tags || DEMO_TAGS} 
+                loading={tagLoading} 
+                setTagFilter={setTagFilter}
+                setRemainingTagCount={setRemainingTagCount}
+                setTagCount={setTagCount}
+                setTags={setTags}
+                setMoreLoadingTag={setMoreLoadingTag}
+                tagFilter={tagFilter}
+                moreLoadingTag={moreLoadingTag}
+                remainingTagCount={remainingTagCount}
+                tagCount={tagCount}
+              />
             </div>
             <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
             

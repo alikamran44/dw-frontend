@@ -23,7 +23,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
-import CommonHeader from "./CommonHeader";
+import Header from "./Header";
 
 export interface PageArchiveVideoProps {
   className?: string;
@@ -45,17 +45,25 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   const [videoLoading, setVideoLoading] = useState(true);
   const initialFilter = {limit: 1, skip: 0};
   const [filter, setFilter] = useState({skip: 0, limit: 1, postType: 'video'});
+  const [users, setUsers] = useState(null);
+  const [morePostLoading, setMorePostLoading] = useState(false);
+  const [data, setData] = useState(null);
+
+  const initialFilterTags = {limit: 2, skip: 0};
+  const [tagFilter, setTagFilter] = useState({skip: 0, limit: 2,});
+  const [moreLoadingTag, setMoreLoadingTag] = useState(false);
+  const [remainingTagCount, setRemainingTagCount] = useState(0);
+  const [tagCount, setTagCount] = useState(0);
+  const [tags, setTags] = useState(null);
+  const tagLoading = useAppSelector(selectTagLoading)
+
   const initialFilterCategory = {limit: 2, skip: 0};
   const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 2,});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
-  const [users, setUsers] = useState(null);
-  const [morePostLoading, setMorePostLoading] = useState(false);
-  const [tags, setTags] = useState(null);
-  const tagLoading = useAppSelector(selectTagLoading)
   const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
   const [loadingCategory, setLoadingCategory] = useState(true);
-   const [categoryCount, setCategoryCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
   const repeatedCategoriesArray = Array.from({ length: categoryFilter.limit }, (_, index) =>
     DEMO_FAKE_CATEGORY_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
   ).flat();
@@ -70,25 +78,32 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
   ];
 
   useEffect(()=>{
-    TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
-      setTags(res.tags)
-    })
     let count = {limit: initialFilter.limit, skip: initialFilter.skip + initialFilter.limit, postType: 'video'}
     setVideoLoading(true)
-    const newFilter = {...initialFilter,blogtype: blogtype,slug: slug}
+    const newFilter = {...initialFilter,blogtype: blogtype,slug: slug, postType: 'video'}
     dispatch(blogsType(newFilter)).then((res: any) => {
       setFilter(count)
       setVideoLoading(false)
       setTotalBlogsCount(res.size)
       setTotalRemainingBlogsCount(res.remainingBlogs)
-      if(res)
+      if(res){
+        setData(res.data)
         setVideoBlogs(res.blogs)
+      }
     }).catch(() => setVideoLoading(false))
+  },[blogtype,slug])
 
+  useEffect(()=>{
     dispatch(allBloggers(filter)).then((res: any) => {
       setUsers(res)
     })
-
+    TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
+      let countTag = {limit: initialFilterTags.limit, skip: initialFilterTags.skip + initialFilterTags.limit}
+      setTagFilter(countTag)
+      setRemainingTagCount(res.remainingTags)
+      setTagCount(res.totalTags)
+      setTags(res.tags)
+    })
     setLoadingCategory(true)
     let countCategory = {limit: initialFilterCategory.limit, skip: initialFilterCategory.skip + initialFilterCategory.limit}
     CategoryWithTotalBlogs(initialFilterCategory).then((res: any)=> {
@@ -137,25 +152,37 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
       className={`nc-PageArchiveVideo overflow-hidden ${className}`}
       data-nc-id="PageArchiveVideo"
     >
-      <CommonHeader blogs={videoBlogs} />
+      {/* HEADER */}
+      <Header
+        data={data}
+        blogs={videoBlogs}
+        blogsTotalCount={totalBlogsCount}
+        postType={'video'}
+      />
+      
+      {/* ====================== END HEADER ====================== */}
       <div className="container">
-        {/* HEADER */}
-        <div className="w-full xl:max-w-screen-2xl mx-auto">
-          <div className=" relative aspect-w-16 lg:pt-28 overflow-hidden ">
-            <div className="absolute inset-0  text-white bg-opacity-30 flex flex-col 
-              items-center justify-center"
-            >
-              <span className="block text-neutral-600">
-                {(totalBlogsCount && totalBlogsCount) || PAGE_DATA.count} Videos
-              </span>
-            </div>
-          </div>
-        </div>
-        {/* ====================== END HEADER ====================== */}
         <div className="mt-16 flex flex-col sm:items-center sm:justify-between sm:flex-row">
           <div className="flex space-x-2.5">
-            <ModalCategories categories={categories || DEMO_CATEGORIES} loading={loadingCategory} />
-            <ModalTags tags={tags || DEMO_TAGS} loading={tagLoading} />
+            <ModalCategories categories={categories || DEMO_CATEGORIES} 
+              loading={loadingCategory} postType={'video'}
+              loadMoreCategory={loadMoreCategory}
+              remainingCategoryCount={remainingCategoryCount}
+              moreLoadingCategory={moreLoadingCategory}
+            />
+            <ModalTags  
+              tags={tags || DEMO_TAGS} 
+              loading={tagLoading} 
+              setTagFilter={setTagFilter}
+              setRemainingTagCount={setRemainingTagCount}
+              setTagCount={setTagCount}
+              setTags={setTags}
+              setMoreLoadingTag={setMoreLoadingTag}
+              tagFilter={tagFilter}
+              moreLoadingTag={moreLoadingTag}
+              remainingTagCount={remainingTagCount}
+              tagCount={tagCount}
+            />
           </div>
           <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
           

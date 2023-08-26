@@ -24,7 +24,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
-import CommonHeader from "./CommonHeader";
+import Header from "./Header";
 
 export interface PageArchiveAudioProps {
   className?: string;
@@ -48,6 +48,9 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const [morePostLoading, setMorePostLoading] = useState(false);
   const initialFilter = {limit: 2, skip: 0};
   const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'audio'});
+  const [users, setUsers] = useState(null);
+  const [data, setData] = useState(null);
+  
   const initialFilterCategory = {limit: 2, skip: 0};
   const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 2,});
   const [loadingCategory, setLoadingCategory] = useState(true);
@@ -55,9 +58,15 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const [remainingCategoryCount, setRemainingCategoryCount] = useState(0);
   const [categoryCount, setCategoryCount] = useState(0);
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
-  const [users, setUsers] = useState(null);
+
+  const initialFilterTags = {limit: 2, skip: 0};
+  const [tagFilter, setTagFilter] = useState({skip: 0, limit: 2,});
+  const [moreLoadingTag, setMoreLoadingTag] = useState(false);
+  const [remainingTagCount, setRemainingTagCount] = useState(0);
+  const [tagCount, setTagCount] = useState(0);
   const [tags, setTags] = useState(null);
   const tagLoading = useAppSelector(selectTagLoading)
+
   const posts: PostDataType[] = DEMO_POSTS_AUDIO.filter((_, i) => i < filter.limit);
   const FILTERS = [
     { name: "Most Recent" },
@@ -66,24 +75,27 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
     { name: "Most Discussed" },
     { name: "Most Viewed" },
   ];
-
   useEffect(()=>{
-    TagWithTotalBlogs({skip: 0, limit: 20}).then((res:any)=> {
-      setTags(res.tags)
-    })
     setFilter({skip: initialFilter.limit+ initialFilter.skip, limit: initialFilter.limit, postType: 'audio'})
+    const newFilter = {...initialFilter,blogtype: blogtype,slug: slug, postType: 'audio'}
     setAudioLoading(true)
-    dispatch(blogsType(filter)).then((res: any) => {
+    dispatch(blogsType(newFilter)).then((res: any) => {
       setAudioBlogs(res.blogs)
       setAudioLoading(false)
       setTotalBlogsCount(res.size)
       setTotalRemainingBlogsCount(res.remainingBlogs)
+      setData(res.data)
     }).catch(() => setAudioLoading(false))
+  },[blogtype,slug])
 
-    dispatch(allBloggers(filter)).then((res: any) => {
-      setLoadingCategory(false)
-      setUsers(res)
-    }).catch(()=> setLoadingCategory(false))
+  useEffect(()=>{
+    TagWithTotalBlogs(initialFilterTags).then((res:any)=> {
+      let countTag = {limit: initialFilterTags.limit, skip: initialFilterTags.skip + initialFilterTags.limit}
+      setTagFilter(countTag)
+      setRemainingTagCount(res.remainingTags)
+      setTagCount(res.totalTags)
+      setTags(res.tags)
+    })
 
     setLoadingCategory(true)
     CategoryWithTotalBlogs(initialFilterCategory).then((res: any)=> {
@@ -94,12 +106,18 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
       if(res)
         setCategories(res.categories)
     })
+
+    dispatch(allBloggers(filter)).then((res: any) => {
+      setLoadingCategory(false)
+      setUsers(res)
+    }).catch(()=> setLoadingCategory(false))
   },[])
 
   const loadMore = () => {
     setMorePostLoading(true)
     let count = {skip: filter.limit+ filter.skip, limit: filter.limit, postType: 'audio'}
-    dispatch(blogsType(filter)).then((res: any) => {
+    const newFilter = {...filter,blogtype: blogtype,slug: slug}
+    dispatch(blogsType(newFilter)).then((res: any) => {
       setFilter(count)
       setMorePostLoading(false)
       setTotalBlogsCount(res.size)
@@ -115,7 +133,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
   const loadMoreCategory = () => {
     setMoreLoadingCategory(true)
     let count = {limit: categoryFilter.limit, skip: categoryFilter.skip + categoryFilter.limit}
-    dispatch(categoryWithTotalBlogs(categoryFilter)).then((res: any)=> {
+    CategoryWithTotalBlogs(categoryFilter).then((res: any)=> {
       setMoreLoadingCategory(false)
       setCategoryFilter(count)
       setCategoryCount(res.totalCategories)
@@ -151,36 +169,42 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
       className={`nc-PageArchiveAudio overflow-hidden ${className}`}
       data-nc-id="PageArchiveAudio"
     >
-      <CommonHeader blogs={audioBlogs} />
+      {/*<CommonHeader blogs={audioBlogs} />*/}
 
       {/* HEADER */}
-      <div className="w-full px-2 xl:max-w-screen-2xl mx-auto">
-        <div className="rounded-3xl relative aspect-w-16 aspect-h-12 sm:aspect-h-7 
-          lg:aspect-h-6 xl:aspect-h-5 2xl:aspect-h-4 overflow-hidden"
-        >
-          <NcImage
-            containerClassName="absolute inset-0"
-            src="https://images.pexels.com/photos/144429/pexels-photo-144429.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            className="object-cover w-full h-full"
-          />
-          <div className="absolute inset-0 bg-black text-white bg-opacity-30 flex flex-col items-center justify-center">
-            <h2 className="inline-block align-middle ml-3 text-5xl font-semibold md:text-7xl ">
-              Audio
-            </h2>
-            <span className="block mt-4 text-neutral-300">
-              {totalBlogsCount} Audio articles
-            </span>
-          </div>
-        </div>
-      </div>
-      {/* ====================== END HEADER ====================== */}
+      <Header
+        data={data}
+        blogs={audioBlogs}
+        blogsTotalCount={totalBlogsCount}
+        postType={'audio'}
+      />
+      
+    {/* ====================== END HEADER ====================== */}
 
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
         <div>
           <div className="flex flex-col sm:items-center sm:justify-between sm:flex-row">
             <div className="flex space-x-2.5">
-              <ModalCategories categories={categories || DEMO_CATEGORIES} loading={loadingCategory} />
-              <ModalTags tags={tags || DEMO_TAGS} loading={tagLoading} />
+              <ModalCategories 
+                categories={categories || DEMO_CATEGORIES} 
+                loading={loadingCategory} postType={'audio'} 
+                loadMoreCategory={loadMoreCategory}
+                remainingCategoryCount={remainingCategoryCount}
+                moreLoadingCategory={moreLoadingCategory}
+              />
+              <ModalTags 
+                tags={tags || DEMO_TAGS} 
+                loading={tagLoading} 
+                setTagFilter={setTagFilter}
+                setRemainingTagCount={setRemainingTagCount}
+                setTagCount={setTagCount}
+                setTags={setTags}
+                setMoreLoadingTag={setMoreLoadingTag}
+                tagFilter={tagFilter}
+                moreLoadingTag={moreLoadingTag}
+                remainingTagCount={remainingTagCount}
+                tagCount={tagCount}
+              />
             </div>
             <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
             
@@ -211,7 +235,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
           <BackgroundSection />
           <SectionGridCategoryBox
             categories={categories || DEMO_CATEGORIES.filter((_, i) => i < 10)}
-            categoryCount={categoryCount}
+            categoryCount={categoryCount} 
           />
           {
             remainingCategoryCount > 0 &&

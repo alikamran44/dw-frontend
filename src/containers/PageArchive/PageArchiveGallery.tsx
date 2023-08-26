@@ -23,7 +23,7 @@ import { allBloggers } from '../../Actions/AuthAction';
 import BlogsHelper from './Helper'
 import { selectTagLoading } from "app/tag/tagSlice";
 import { useAppSelector } from "app/hooks";
-import CommonHeader from "./CommonHeader";
+import Header from "./Header";
 
 export interface PageArchiveGalleryProps {
   className?: string;
@@ -46,6 +46,10 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
   const [galleryLoading, setGalleryLoading] = useState(true);
   const initialFilter = {limit: 2, skip: 0};
   const [filter, setFilter] = useState({skip: 0, limit: 2, postType: 'gallery'});
+  const [morePostLoading, setMorePostLoading] = useState(false);
+  const [users, setUsers] = useState(null);
+  const [data, setData] = useState(null);
+  
   const initialFilterCategory = {limit: 2, skip: 0};
   const [categoryFilter, setCategoryFilter] = useState({skip: 0, limit: 2,});
   const [categories, setCategories] = useState<TaxonomyType[] | null>(null);
@@ -53,10 +57,15 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
   const [loadingCategory, setLoadingCategory] = useState(true);
   const [moreLoadingCategory, setMoreLoadingCategory] = useState(false);
   const [categoryCount, setCategoryCount] = useState(0);
-  const [users, setUsers] = useState(null);
-  const [morePostLoading, setMorePostLoading] = useState(false);
+
+  const initialFilterTags = {limit: 2, skip: 0};
+  const [tagFilter, setTagFilter] = useState({skip: 0, limit: 2,});
+  const [moreLoadingTag, setMoreLoadingTag] = useState(false);
+  const [remainingTagCount, setRemainingTagCount] = useState(0);
+  const [tagCount, setTagCount] = useState(0);
   const [tags, setTags] = useState(null);
   const tagLoading = useAppSelector(selectTagLoading)
+
   const posts: PostDataType[] = DEMO_POSTS_VIDEO.filter((_, i) => i < filter.limit);
   const repeatedCategoriesArray = Array.from({ length: categoryFilter.limit }, (_, index) =>
     DEMO_FAKE_CATEGORY_DATA.map(item => ({ ...item, _id: `${item._id}-${index}` }))
@@ -82,10 +91,15 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
       setTotalBlogsCount(res.size)
       setTotalRemainingBlogsCount(res.remainingBlogs)
       setGalleryLoading(false)
+      setData(res.data)
     }).catch(() => setGalleryLoading(false))
   },[blogtype,slug])
   useEffect(()=>{
-    TagWithTotalBlogs({skip: 0, limit: 20}).then((res: any)=> {
+    TagWithTotalBlogs({skip: 0, limit: 3}).then((res: any)=> {
+      let countTag = {limit: initialFilterTags.limit, skip: initialFilterTags.skip + initialFilterTags.limit}
+      setTagFilter(countTag)
+      setRemainingTagCount(res.remainingTags)
+      setTagCount(res.totalTags)
       setTags(res.tags)
     })
 
@@ -141,27 +155,38 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
       className={`nc-PageArchiveGallery overflow-hidden ${className}`}
       data-nc-id="PageArchiveGallery"
     >
-      <CommonHeader blogs={galleryBlogs} />
- 
+    {/* HEADER */}
+      <Header
+        data={data}
+        blogs={galleryBlogs}
+        blogsTotalCount={totalBlogsCount}
+        postType={'gallery'}
+      />
       
+    {/* ====================== END HEADER ====================== */}
     <div className="container  ">
-        {/* HEADER */}
-      <div className="w-full xl:max-w-screen-2xl mx-auto">
-        <div className=" relative aspect-w-16 lg:pt-28 overflow-hidden ">
-          <div className="absolute inset-0  text-white bg-opacity-30 flex flex-col 
-            items-center justify-center"
-          >
-            <span className="block text-neutral-600">
-              {(totalBlogsCount && totalBlogsCount) || PAGE_DATA.count} Gallery Articles
-            </span>
-          </div>
-        </div>
-      </div>
-        {/* ====================== END HEADER ====================== */}
+      
         <div className="mt-16 flex flex-col sm:items-center sm:justify-between sm:flex-row">
           <div className="flex space-x-2.5">
-            <ModalCategories categories={categories || DEMO_CATEGORIES} loading={loadingCategory} />
-            <ModalTags tags={tags || DEMO_TAGS} loading={tagLoading} />
+            <ModalCategories categories={categories || DEMO_CATEGORIES} 
+              loading={loadingCategory} postType={'gallery'}
+              loadMoreCategory={loadMoreCategory}
+              remainingCategoryCount={remainingCategoryCount}
+              moreLoadingCategory={moreLoadingCategory}
+            />
+            <ModalTags 
+              tags={tags || DEMO_TAGS} 
+              loading={tagLoading} 
+              setTagFilter={setTagFilter}
+              setRemainingTagCount={setRemainingTagCount}
+              setTagCount={setTagCount}
+              setTags={setTags}
+              setMoreLoadingTag={setMoreLoadingTag}
+              tagFilter={tagFilter}
+              moreLoadingTag={moreLoadingTag}
+              remainingTagCount={remainingTagCount}
+              tagCount={tagCount}
+            />
           </div>
 
           <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>

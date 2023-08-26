@@ -54,9 +54,9 @@ export const pages: Page[] = [
   { path: "/blogs/:slug/:blogtype", exact: true, component: PageArchive, isAuth: false },
   { path: "/search/:slug", component: PageSearchV2, isAuth: false },
   //
-  { path: "/blogs-audio", component: PageArchiveAudio, isAuth: false },
-  { path: "/blog-audio/:slug", component: PageSingleAudio, isAuth: false },
+  { path: "/blogs-audio", exact: true, component: PageArchiveAudio, isAuth: false },
   { path: "/blogs-audio/:slug/:blogtype", component: PageArchiveAudio, isAuth: false }, 
+  { path: "/blog-audio/:slug", component: PageSingleAudio, isAuth: false },
   //
   { path: "/blogs-video", exact: true, component: PageArchiveVideo, isAuth: false },
   { path: "/blogs-video/:slug/:blogtype", exact: true, component: PageArchiveVideo, isAuth: false },
@@ -67,7 +67,7 @@ export const pages: Page[] = [
   //
   { path: "/blogs-gallery", exact: true, component: PageArchiveGallery, isAuth: false },
   { path: "/blogs-gallery/:slug/:blogtype", exact: true, component: PageArchiveGallery, isAuth: false },
-  { path: "/blog-gallery/:slug", component: PageSingleGallery, isAuth: false },
+  { path: "/blog-gallery/:slug", exact: true, component: PageSingleGallery, isAuth: false },
   //
   { path: "/contact", component: PageContact, isAuth: false },
   { path: "/thanks", component: PageThanks, isAuth: false },

@@ -12,7 +12,7 @@ export interface Card16PodcastProps {
   className?: string;
   post: PostDataType;
   ratio?: string;
-}
+} 
 
 const Card16Podcast: FC<Card16PodcastProps> = ({
   className = "h-full",
@@ -86,7 +86,7 @@ const Card16Podcast: FC<Card16PodcastProps> = ({
       {/* ABSOLUTE */}
       <Link to={pHref} className="absolute inset-0"></Link>
       <span className="absolute top-3 inset-x-3">
-        <CategoryBadgeList categories={categories} />
+        <CategoryBadgeList categories={categories} postType={postType || null} />
       </span>
 
       {/* MAIN CONTENT */}

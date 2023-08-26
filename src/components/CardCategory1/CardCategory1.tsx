@@ -11,6 +11,7 @@ export interface CardCategory1Props {
   size?: "large" | "normal";
   loading?: boolean;
   modalHandler?: () => void;
+  postType?: any;
 }
 
 const CardCategory1: FC<CardCategory1Props> = ({
@@ -18,10 +19,15 @@ const CardCategory1: FC<CardCategory1Props> = ({
   size = "normal",
   taxonomy,
   loading=false,
-  modalHandler
+  modalHandler,
+  postType
 }) => {
   const { count, name, thumbnail, media, slug } = taxonomy;
   const imgUrl = media ? media.url : ''
+  const hLink = postType ? (`${ postType === 'audio' ? `/blogs-audio/${slug}/category` :
+                  postType === 'video' ? `/blogs-video/${slug}/category` : postType === 'gallery'
+                  ? `/blogs-gallery/${slug}/category` : `/blogs/${slug}/category`}`)
+              : slug ? `/blogs/${slug}/category` : '/#'
   const closeHandler = () => {
     if(modalHandler){
       modalHandler()
@@ -29,7 +35,7 @@ const CardCategory1: FC<CardCategory1Props> = ({
   }
   return (
     <NavLink
-      to={slug ? `/blogs/${slug}/category` : '/#'}
+      to={hLink}
       onClick={closeHandler}
       className={`nc-CardCategory1 flex items-center ${className}`}
       data-nc-id="CardCategory1"
