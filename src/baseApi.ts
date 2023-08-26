@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 const isProduction: boolean = import.meta.env.MODE === 'production';
 const API_ROOT: string | boolean | undefined = 
-        import.meta.env.VITE_BASE_API;
+        'https://dw-backend.connectvirtue.com/api';
 console.log(isProduction,'isProductionisProduction',API_ROOT)
 let token; 
 
