@@ -8,7 +8,7 @@ import BlogsHelper from './Helper'
 export interface ModalTagsProps {
   tags: TaxonomyType[];
   loading?: boolean;
-  setTagFilter: (data: any) => void;
+  setTagFilter: (data: any) => void; 
   setRemainingTagCount: (data: any) => void;
   setTagCount: (data: any) => void;
   setTags: (data: any) => void;
@@ -18,6 +18,7 @@ export interface ModalTagsProps {
   moreLoadingTag?: boolean;
   remainingTagCount?: any;
   tagCount?: any;
+
 }
 
 const ModalTags: FC<ModalTagsProps> = ({ 
@@ -30,6 +31,7 @@ const ModalTags: FC<ModalTagsProps> = ({
     const modalHandler = () => {
       setShow(!show) 
     }
+    console.log('chhhhhhh')
     const renderModalContent = () => {
       const loadMoreTag = () => {
         setMoreLoadingTag(true)
