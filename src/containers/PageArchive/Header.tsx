@@ -13,6 +13,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ data, blogs, blogsTotalCount=0,postType }) => {
   const completeUrl = window.location.href;
   const fCover = data ? data.media?.url : ''
+  console.log(data,'blogsTotalCountblogsTotalCount',blogsTotalCount)
   const filterImage = postType === 'audio' ? 'https://images.pexels.com/photos/144429/pexels-photo-144429.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260'
   : postType === 'gallery' ? 'https://images.pexels.com/photos/12389879/pexels-photo-12389879.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' 
   : postType === 'video' ?
