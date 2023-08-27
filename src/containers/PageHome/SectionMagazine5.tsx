@@ -3,6 +3,7 @@ import { PostDataType } from "data/types";
 import HeaderFilter from "./HeaderFilter";
 import Card12 from "components/Card12/Card12";
 import Card13 from "components/Card13/Card13";
+import EmptyCard from "components/EmptyCard/EmptyCard"; 
 
 export interface SectionMagazine5Props {
   tabs: string[];
@@ -32,7 +33,7 @@ const SectionMagazine5: FC<SectionMagazine5Props> = ({
         heading={heading}
         onClickTab={handleClickTab}
       />
-      {!posts.length && <span>Nothing we found!</span>}
+      {!posts.length && <EmptyCard text={'Nothing we found!'} />}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-7">
         {posts[0] && <Card12 post={posts[0]} />}
         <div className="grid grid-cols-1 gap-5 md:gap-7">

@@ -5,6 +5,7 @@ import NcImage from "components/NcImage/NcImage";
 import PostCardMeta from "components/PostCardMeta/PostCardMeta";
 import { Link } from "react-router-dom";
 import CardAuthor2 from "components/CardAuthor2/CardAuthor2";
+import EmptyCard from "components/EmptyCard/EmptyCard"; 
 
 export interface SectionMagazine6Props {
   tabs: string[];
@@ -93,7 +94,7 @@ const SectionMagazine6: FC<SectionMagazine6Props> = ({
         heading={heading}
         onClickTab={handleClickTab}
       />
-      {!posts.length && <span>Nothing we found!</span>}
+      {!posts.length && <EmptyCard text={'Nothing we found!'} />}
       {posts[0] && renderMain()}
     </div>
   );

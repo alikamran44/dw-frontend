@@ -3,6 +3,7 @@ import { SectionMagazine1Props } from "./SectionMagazine1";
 import HeaderFilter from "./HeaderFilter";
 import Card19 from "components/Card19/Card19";
 import Card18 from "components/Card18/Card18";
+import EmptyCard from "components/EmptyCard/EmptyCard"; 
 
 export interface SectionMagazine10Props extends SectionMagazine1Props {}
 
@@ -32,7 +33,7 @@ const SectionMagazine10: FC<SectionMagazine10Props> = ({
           onClickTab={handleClickTab}
         />
       )}
-      {!posts.length && <span>Nothing we found!</span>}
+      {!posts.length && <EmptyCard text={'Nothing we found!'} />}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-5 gap-5">
           {posts.length > 0 && posts

@@ -3,6 +3,7 @@ import { PostDataType } from "data/types";
 import NcImage from "components/NcImage/NcImage";
 import ButtonSecondary from "components/Button/ButtonSecondary";
 import Card5 from "components/Card5/Card5";
+import EmptyCard from "components/EmptyCard/EmptyCard"; 
 
 export interface SectionHero3Props {
   posts: PostDataType[];
@@ -54,7 +55,7 @@ const SectionHero3: FC<SectionHero3Props> = ({ posts, className = "" }) => {
 
   return (
     <div className={`nc-SectionHero3 ${className}`}>
-      {!posts.length && <span>Nothing we found!</span>}
+      {!posts.length && <EmptyCard text={'Nothing we found!'} />}
       {posts.length && renderMain()}
       {posts.length > 1 && renderSubPosts()}
     </div>
