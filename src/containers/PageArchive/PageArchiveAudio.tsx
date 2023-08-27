@@ -164,10 +164,6 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
       </div>
     );
   };
-
-
-
-
   return (
     <div
       className={`nc-PageArchiveAudio overflow-hidden ${className}`}
@@ -191,7 +187,8 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
             <div className="flex space-x-2.5">
               <ModalCategories 
                 categories={categories || DEMO_CATEGORIES} 
-                loading={loadingCategory} postType={'audio'} 
+                loading={loadingCategory} 
+                postType={'audio'} 
                 loadMoreCategory={loadMoreCategory}
                 remainingCategoryCount={remainingCategoryCount}
                 moreLoadingCategory={moreLoadingCategory}
@@ -199,6 +196,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
               <ModalTags 
                 tags={tags || DEMO_TAGS} 
                 loading={tagLoading} 
+                postType={'audio'} 
                 setTagFilter={setTagFilter}
                 setRemainingTagCount={setRemainingTagCount}
                 setTagCount={setTagCount}
@@ -211,7 +209,6 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
               />
             </div>
             <div className="block my-4 border-b w-full border-neutral-100 sm:hidden"></div>
-            
             {/*Note: Do it Later*/}
             {/*<div className="flex justify-end">
               <ArchiveFilterListBox lists={FILTERS} />

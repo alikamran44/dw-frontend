@@ -26,6 +26,7 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
   const initialCommentFilter = {skip: 1, limit: 4};
   const [commentFilter, setCommentFilter] = useState({skip: 1, limit: 4});
   const [commentCount, setTotalComments] = useState(null);
+  const [commentLoading, setCommentLoading] = useState(false);
   const [remainingCommentCount, setRemainingCommentCount] = useState(0);
   const [commentMoreLoading, setCommentMoreLoading] = useState(false);
   const commentRef = useRef<HTMLDivElement>(null);
@@ -77,15 +78,17 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
     }
   }
 
-  const loginSubmitHandler = (values: any, resetForm: any ) => { 
+  const commentSubmitHandler = (values: any, resetForm: any ) => { 
     if(values){
       values.blog_id = _id;
       values.blog_user_id = postedBy._id;
+      setCommentLoading(true)
       createComment(values).then((res) => {
         resetForm();
+        setCommentLoading(false)
         const newComments = Array.isArray(comments) ? comments : [];
         setComments([res, ...newComments]);
-      })
+      }).catch((err)=>setCommentLoading(false))
     }
   };
 
@@ -129,8 +132,9 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
             : ''
           } 
           <SingleCommentForm
-            onClickSubmit={loginSubmitHandler}
+            onClickSubmit={commentSubmitHandler}
             onClickCancel={(id) => console.log('_id')}
+            loading={commentLoading}
           />
         </div>
 
@@ -143,6 +147,8 @@ const SingleContent: FC<SingleContentProps> = ({ data, loading }) => {
           blog_id = {_id}
           totalComments={commentCount}
           blog_user_id = {postedBy._id}
+          commentLoading={commentLoading}
+          setCommentLoading={setCommentLoading}
           viewMoreComments={viewMoreComments}
           commentMoreLoading={commentMoreLoading}
           remainingCommentCount={remainingCommentCount}

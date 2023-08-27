@@ -172,7 +172,7 @@ const PageArchiveVideo: FC<PageArchiveVideoProps> = ({ className = "" }) => {
             />
             <ModalTags  
               tags={tags || DEMO_TAGS} 
-              loading={tagLoading} 
+              loading={tagLoading} postType={'video'}
               setTagFilter={setTagFilter}
               setRemainingTagCount={setRemainingTagCount}
               setTagCount={setTagCount}

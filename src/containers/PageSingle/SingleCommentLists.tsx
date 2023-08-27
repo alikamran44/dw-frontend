@@ -12,11 +12,13 @@ export interface SingleCommentListsProps {
   loading?: boolean; 
   commentMoreLoading?: boolean;
   remainingCommentCount?: number;
+  commentLoading?: boolean;
+  setCommentLoading?: (data: any) => void;
 }
 
 const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, blog_id,
   blog_user_id, setComments, totalComments, commentMoreLoading, viewMoreComments,
-  remainingCommentCount }) => {
+  remainingCommentCount, commentLoading, setCommentLoading }) => {
   let cmtLv1 = comments ? comments.filter((item: CommentType) => !item.parentId) : [];
 
   const renderCommentItemChild = (comment: CommentType, parentCommentId: any) => {
@@ -24,7 +26,8 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, bl
       <li key={comment._id || comment.id}>
         <CommentCard size="normal" comment={comment} blog_id={blog_id} 
           blog_user_id={blog_user_id} setComments={setComments} comments={comments}
-          parentId={parentCommentId}
+          parentId={parentCommentId} commentLoading={commentLoading}
+          setCommentLoading={setCommentLoading}
         />
         {comment.children && (
           <ul className="pl-4 mt-5 space-y-5 md:pl-9">
@@ -39,7 +42,8 @@ const SingleCommentLists: FC<SingleCommentListsProps> = ({ comments, loading, bl
     return (
       <li key={comment._id || comment.id}>
         <CommentCard comment={comment} blog_id={blog_id} blog_user_id={blog_user_id} 
-          setComments={setComments} comments={comments}
+          setComments={setComments} comments={comments} 
+          commentLoading={commentLoading} setCommentLoading={setCommentLoading}
         />
         {comment.replyCM && (
           <ul className="pl-4 mt-5 space-y-5 md:pl-11">

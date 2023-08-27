@@ -44,6 +44,8 @@ export interface CommentCardProps {
   blog_user_id: any;
   setComments: (data: any) => void;
   comments: CommentType[];
+  commentLoading?: boolean;
+  setCommentLoading?: (data: any) => void;
 }
 
 const CommentCard: FC<CommentCardProps> = ({
@@ -54,7 +56,9 @@ const CommentCard: FC<CommentCardProps> = ({
   blog_user_id,
   setComments,
   parentId,
-  comments
+  comments,
+  commentLoading,
+  setCommentLoading,
 }) => {
   const { author, id, date, content, user, _id, updatedAt } = comment;
    const fullName = user && `${user.firstName} ${user.lastName}`
@@ -125,12 +129,21 @@ const CommentCard: FC<CommentCardProps> = ({
         }else{
           values.comment_root = _id
         }
+        if(setCommentLoading)
+          setCommentLoading(true)
         values.reply_user_id = user?._id
         replyComment(values).then((res: any) => {
           const updateBlog = comments.map((rec: any) => rec._id === res._id ? res : rec)
           setComments(updateBlog)
           closeReplyForm()
-        })
+          if(setCommentLoading)
+            setCommentLoading(false)
+        }).catch((err)=>
+          {
+            if(setCommentLoading)
+            setCommentLoading(false)
+          }
+        )
       }
     }
     return (
@@ -139,6 +152,7 @@ const CommentCard: FC<CommentCardProps> = ({
         onClickSubmit={replySubmitHandler}
         onClickCancel={closeReplyForm}
         className="flex-grow"
+        loading={commentLoading}
       />
     );
   };

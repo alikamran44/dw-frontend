@@ -177,6 +177,7 @@ const PageArchiveGallery: FC<PageArchiveGalleryProps> = ({ className = "" }) => 
             <ModalTags 
               tags={tags || DEMO_TAGS} 
               loading={tagLoading} 
+              postType={'gallery'} 
               setTagFilter={setTagFilter}
               setRemainingTagCount={setRemainingTagCount}
               setTagCount={setTagCount}

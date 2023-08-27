@@ -10,14 +10,21 @@ export interface TagProps {
   hideCount?: boolean;
   loading?: boolean;
   modalHandler?: () => void;
+  postType?: any;
 }
 
-const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, loading = false, modalHandler }) => { 
+const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, 
+  loading = false, modalHandler, postType 
+}) => { 
   const closeHandler = () => {
     if(modalHandler){
       modalHandler()
     }
   }
+ const hLink = postType ? (`${ postType === 'audio' ? `/blogs-audio/${tag.slug}/tag` :
+                postType === 'video' ? `/blogs-video/${tag.slug}/tag` : postType === 'gallery'
+                ? `/blogs-gallery/${tag.slug}/tag` : `/blogs/${tag.slug}/tag`}`)
+            : tag.slug ? `/blogs/${tag.slug}/tag` : '/#'
   return (
     <> 
       {
@@ -27,7 +34,7 @@ const Tag: FC<TagProps> = ({ className = "", tag, hideCount = false, loading = f
             px-3 rounded-lg border border-neutral-100 md:py-2.5 md:px-4 dark:bg-neutral-700 
             dark:border-neutral-700 hover:border-neutral-200 dark:hover:border-neutral-6000 ${className}`}
           data-nc-id="Tag"
-          to={tag.slug ? `/blogs/${tag.slug}/tag` : '/#'}
+          to={hLink}
         >
           {`${tag.name}`}
           {!hideCount && (

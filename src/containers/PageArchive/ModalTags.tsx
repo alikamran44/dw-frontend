@@ -13,7 +13,7 @@ export interface ModalTagsProps {
   setTagCount: (data: any) => void;
   setTags: (data: any) => void;
   setMoreLoadingTag: (data: any) => void;
-
+  postType?: any;
   tagFilter?: any;
   moreLoadingTag?: boolean;
   remainingTagCount?: any;
@@ -24,15 +24,13 @@ export interface ModalTagsProps {
 const ModalTags: FC<ModalTagsProps> = ({ 
   setTagFilter, setRemainingTagCount, setTagCount, setTags, loading,
   tagFilter, moreLoadingTag, remainingTagCount, tagCount, tags,
-  setMoreLoadingTag
+  setMoreLoadingTag, postType
 }) => {
     const [show, setShow] = useState(false)
     const { TagWithTotalBlogs } = BlogsHelper()
     const modalHandler = () => {
       setShow(!show) 
     }
-    console.log('chhhhhhh')
-    console.log('chhhhhhh')
     const renderModalContent = () => {
       const loadMoreTag = () => {
         setMoreLoadingTag(true)
@@ -50,10 +48,12 @@ const ModalTags: FC<ModalTagsProps> = ({
         }).catch( (err) => setMoreLoadingTag(false))
       }
     return (
-      <>
+      <> 
         <div className="flex flex-wrap dark:text-neutral-200">
           {tags.map((tag) => (
-            <Tag modalHandler={modalHandler} key={tag.id} tag={tag} className="mr-2 mb-2" />
+            <Tag modalHandler={modalHandler} key={tag.id} tag={tag} 
+              className="mr-2 mb-2" postType={postType}
+            />
           ))}
         </div>
         {
