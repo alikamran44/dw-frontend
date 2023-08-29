@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && react-snap",
-    "preview": "vite preview"
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "prerender": "react-snap"
   },
   "dependencies": {
     "@glidejs/glide": "^3.5.2",
