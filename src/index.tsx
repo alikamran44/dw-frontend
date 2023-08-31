@@ -19,22 +19,7 @@ document
 
 const rootElement = document.getElementById("root");
 
-if (rootElement.hasChildNodes()) {
-  hydrate(
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-
-        {import.meta.env.VITE_LRT_OR_RTL === "rtl" && (
-          <Suspense fallback={<div />}>
-            <RtlImportCssLazy />
-          </Suspense>
-        )}
-      </PersistGate>
-    </Provider>,
-    rootElement
-  );
-} else {
+if(!rootElement){
   render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -49,6 +34,38 @@ if (rootElement.hasChildNodes()) {
     </Provider>,
     rootElement
   );
+}else{
+  if (rootElement.hasChildNodes()) {
+    hydrate(
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+
+          {import.meta.env.VITE_LRT_OR_RTL === "rtl" && (
+            <Suspense fallback={<div />}>
+              <RtlImportCssLazy />
+            </Suspense>
+          )}
+        </PersistGate>
+      </Provider>,
+      rootElement
+    );
+  } else {
+    render(
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+
+          {import.meta.env.VITE_LRT_OR_RTL === "rtl" && (
+            <Suspense fallback={<div />}>
+              <RtlImportCssLazy />
+            </Suspense>
+          )}
+        </PersistGate>
+      </Provider>,
+      rootElement
+    );
+  }
 }
 
 // If you want to start measuring performance in your app, pass a function
