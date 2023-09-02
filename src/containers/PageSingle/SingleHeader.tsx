@@ -45,10 +45,10 @@ const SingleHeader: FC<SingleHeaderProps> = ({
         <meta 
           property='og:description' content={'Bloggng website hard coded'}
         />
-        <meta property='og:title' content={`${pageData.mtitle}`} />
+        <meta property='og:title' content={'Bloggng website hard coded'} />
         <meta property='og:type' content='website' />
         <meta property='og:url' content={completeUrl} />
-        <meta property='og:site_name' content={APP_NAME} />
+        <meta property='og:site_name' content={'Bloggng website hard coded'} />
         <link rel='canonical' href={completeUrl} />
         <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
