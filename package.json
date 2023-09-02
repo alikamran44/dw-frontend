@@ -47,7 +47,8 @@
     "yup": "^1.2.0"
   },
   "reactSnap": {
-    "include": ["^/blog-view/"]
+    "include": ["^/blog-view/"],
+    "postProcessHtml": "./path/to/custom-postprocess-script.js"
   },
   "devDependencies": {
     "@types/react": "^17.0.33",

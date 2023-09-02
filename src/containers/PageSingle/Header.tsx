@@ -55,8 +55,8 @@ const Header: React.FC<HeaderProps> = ({ pageData }) => {
           </Helmet>
         :
           <Helmet>
-            <title>{APP_NAME} News</title>
-            <meta property='og:title' content={`${APP_NAME} News`} />
+            <title>Bloggging website News </title>
+            <meta property='og:title' content={`Bloggging website News News`} />
             <meta property='og:type' content='website' />
             <meta property='og:url' content={completeUrl} />
             <meta property='og:site_name' content={APP_NAME} />
