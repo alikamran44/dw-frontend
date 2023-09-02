@@ -40,10 +40,10 @@ const SingleHeader: FC<SingleHeaderProps> = ({
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>{pageData.mtitle}</title>
-         <meta name='description' content={pageData.mdesc} />
+        <title>Bloggng website</title>
+         <meta name='description' content={'Bloggng website hard coded'} />
         <meta 
-          property='og:description' content={pageData.mdesc || ''}
+          property='og:description' content={'Bloggng website hard coded'}
         />
         <meta property='og:title' content={`${pageData.mtitle}`} />
         <meta property='og:type' content='website' />
