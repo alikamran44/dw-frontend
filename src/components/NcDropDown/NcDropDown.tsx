@@ -40,7 +40,7 @@ const NcDropDown: FC<NcDropDownProps> = ({
   meta = {},
 }) => {
   const renderShareItem = (item: any) => {
-    const completeUrl = "https://dw-frontend.connectvirtue.com/blog-view/cjkgcfjffffffffffffffffffffffffffffffffffffffffff";
+    const completeUrl = 'https://www.fiverr.com/inbox/techlover4u';
     if(item.id === 'Facebook'){
       return (
         <button
