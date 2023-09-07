@@ -31,7 +31,7 @@ const SectionMagazine10: FC<SectionMagazine10Props> = ({
           tabs={tabs}
           heading={heading}
           onClickTab={handleClickTab}
-        />
+        /> 
       )}
       {!posts.length && <EmptyCard text={'Nothing we found!'} />}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-5">
