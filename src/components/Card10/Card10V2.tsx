@@ -15,8 +15,9 @@ const Card10V2: FC<Card10V2Props> = ({ className = "h-full", post }) => {
   const {  categories, slug } = post;
   const [isHover, setIsHover] = useState(false);
 
-  const pHref = post.postType === 'audio' ? `/blog-audio/${slug}` :
-              post.postType === 'video' ? `/blog-video/${slug}` :post.isSideBar ? `/blog-view/${slug}` : `/blog/${slug}`
+  const pHref = (post.postType === 'audio' && slug) ? `/blog-audio/${slug}` :
+             ( post.postType === 'video' && slug) ? `/blog-video/${slug}` : 
+             post.isSideBar ? `/blog-view/${slug}` : slug && `/blog/${slug}`
   return (
     <div
       className={`nc-Card10V2 relative flex flex-col ${className}`}

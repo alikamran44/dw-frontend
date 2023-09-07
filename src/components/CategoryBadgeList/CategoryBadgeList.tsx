@@ -1,8 +1,6 @@
 import { PostDataType } from "data/types";
 import React, { FC } from "react";
 import Badge from "components/Badge/Badge";
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css'
 
 export interface CategoryBadgeListProps {
   className?: string;

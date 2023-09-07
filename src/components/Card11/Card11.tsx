@@ -26,8 +26,9 @@ const Card11: FC<Card11Props> = ({
   ratio = "aspect-w-4 aspect-h-3",
 }) => {
   const { title, slug, categories, date } = post;
-  const pHref = post.postType === 'audio' ? `/blog-audio/${slug}` :
-              post.postType === 'video' ? `/blog-video/${slug}` :post.isSideBar ? `/blog-view/${slug}` : `/blog/${slug}`
+  const pHref = (post.postType === 'audio' && slug) ? `/blog-audio/${slug}` :
+              (post.postType === 'video' && slug) ? `/blog-video/${slug}` : 
+              post.isSideBar ? `/blog-view/${slug}` : slug && `/blog/${slug}`
   const [isHover, setIsHover] = useState(false);
 
   return (

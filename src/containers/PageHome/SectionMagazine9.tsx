@@ -40,7 +40,7 @@ const SectionMagazine9: FC<SectionMagazine9Props> = ({
             {posts[0] && <Card9 ratio="aspect-w-4 aspect-h-3 " post={posts[0]} />}
             {posts[1] && <Card9 ratio="aspect-w-4 aspect-h-3 " post={posts[1]} />}
             {posts[2] && <Card9 ratio="aspect-w-4 aspect-h-3 " post={posts[2]} />}
-          </div>
+          </div> 
           <div
             className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ${gapClassName} mt-8`}
           >

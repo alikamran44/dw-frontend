@@ -37,9 +37,9 @@ const Card19: FC<Card19Props> = ({
     );
   };
 
-  let urlRef = postType === 'audio' ? `/blog-audio/${slug}` :
-       postType === 'video' ? `/blog-video/${slug}` : postType === 'gallery' ? 
-       `/blog-gallery/${slug}` : post.isSideBar ? `/blog-view/${slug}` : 
+  let urlRef = (postType === 'audio' && slug) ? `/blog-audio/${slug}` :
+       (postType === 'video' && slug) ? `/blog-video/${slug}` : (postType === 'gallery' && slug) ? 
+       `/blog-gallery/${slug}` : post.isSideBar ? `/blog-view/${slug}` : slug &&
        `/blog/${slug}`
 
   const fUrl = (media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
@@ -58,7 +58,7 @@ const Card19: FC<Card19Props> = ({
           <PostFeaturedMedia post={post} />
         </div>
       ) : (
-        <Link to={urlRef ? urlRef : ''}>
+        <Link to={urlRef || ''}>
           <NcImage
             containerClassName="absolute inset-0 rounded-xl"
             className="object-cover w-full h-full rounded-xl"
@@ -74,11 +74,11 @@ const Card19: FC<Card19Props> = ({
         </Link>
       )}
       <Link
-        to={urlRef ? urlRef : ''}
+        to={urlRef || ''}
         className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-black opacity-80"
       ></Link>
       <div className="absolute bottom-0 inset-x-0 p-5 sm:p-10 flex flex-col flex-grow">
-        <Link to={urlRef ? urlRef : ''} className="absolute inset-0"></Link>
+        <Link to={urlRef || ''} className="absolute inset-0"></Link>
         {showCategories && (
           <div className="mb-3">
             <CategoryBadgeList categories={categories} postType={postType || null} />

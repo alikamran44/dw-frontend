@@ -20,10 +20,10 @@ const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
   loading = false,
   onClickLike = () => {},
 }) => {
-   const pHref = postData.postType === 'audio' ? `/blog-audio/${postData.slug}` :
-              postData.postType === 'video' ? `/blog-video/${postData.slug}` : postData.isSideBar ? 
-              `/blog-view/${postData.slug}` : postData.postType === 'gallery' ? 
-              `/blog-gallery/${postData.slug}` : `/blog/${postData.slug}`
+   const pHref = postData.slug ? (postData.postType === 'audio' ? `/blog-audio/${postData.slug}` :
+                 postData.postType === 'video' ? `/blog-video/${postData.slug}` : postData.isSideBar ? 
+                 `/blog-view/${postData.slug}` : postData.postType === 'gallery' ? 
+                 `/blog-gallery/${postData.slug}` : `/blog/${postData.slug}`) : ''
   return (
     <div
       className={`nc-PostCardLikeAndComment flex items-center space-x-2 ${className}`}
@@ -39,7 +39,7 @@ const PostCardLikeAndComment: FC<PostCardLikeAndCommentProps> = ({
       <PostCardCommentBtn
         href={pHref}
         loading={loading}
-        commentCount={postData.comments ? postData.comments?.length : 4}
+        commentCount={postData.comments ? postData.comments?.length : ''}
         className={`${
           hiddenCommentOnMobile ? "hidden sm:flex" : "flex"
         }  ${itemClass}`}

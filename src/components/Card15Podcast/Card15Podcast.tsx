@@ -1,4 +1,6 @@
 import React, { FC } from "react";
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css'
 import NcImage from "components/NcImage/NcImage";
 import { PostDataType } from "data/types";
 import { Link } from "react-router-dom";
@@ -17,7 +19,7 @@ const Card15Podcast: FC<Card15PodcastProps> = ({
   const fUrl = (media && media?.find(((data: any)=> data.fileFolder === 'feature'))?.url) || featuredImage
 
   const IS_AUDIO = postType === "audio";
-  const pHref = postType === "audio" ? `/blog-audio/${slug}` : `/blog/${slug}`
+  const pHref = (postType === "audio" && slug) ? `/blog-audio/${slug}` : slug && `/blog/${slug}`
   const renderIcon = (state?: "loading" | "playing") => {
     switch (state) {
       case "loading":
@@ -79,10 +81,18 @@ const Card15Podcast: FC<Card15PodcastProps> = ({
         <span className="w-8 h-8 flex items-center justify-center rounded-full bg-primary-50 dark:bg-neutral-800 text-primary-6000 dark:text-primary-200">
           {renderIcon(state)}
         </span>
-
-        <span className="ml-3 text-sm font-medium">
-          {state === "playing" ? "Now playing" : "Listen now"}
-        </span>
+        {
+          title ?
+          <span className="ml-3 text-sm font-medium">
+            {state === "playing" ? "Now playing" : "Listen now"}
+          </span>
+          :
+          <span className="ml-3 text-sm font-medium">
+            <SkeletonTheme baseColor="#d1d1d1" highlightColor="#e1dddd">
+              <Skeleton height={12} width={55}  />
+            </SkeletonTheme>
+          </span>
+        }
       </div>
     );
   };
@@ -94,7 +104,7 @@ const Card15Podcast: FC<Card15PodcastProps> = ({
     >
       <div className="w-1/4 flex-shrink-0">
         <Link
-          to={pHref}
+          to={pHref || ''}
           className={`block h-0 aspect-w-1 aspect-h-1 relative rounded-full overflow-hidden shadow-lg `}
         >
           <NcImage
@@ -107,18 +117,36 @@ const Card15Podcast: FC<Card15PodcastProps> = ({
       </div>
 
       <div className="flex flex-col flex-grow ml-4">
-        <h2 className={`nc-card-title block font-semibold text-lg`}>
-          <Link
-            to={`${pHref}`}
-            className={IS_AUDIO ? `line-clamp-1` : "line-clamp-2"}
-            title={title}
-          >
-            {title}
-          </Link>
-        </h2>
-        <span className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 ">
-          {IS_AUDIO ? ` 40 Episode · 110 minutes` : date}
-        </span>
+        {
+          title ? 
+          <h2 className={`nc-card-title block font-semibold text-lg`}>
+            <Link
+              to={pHref || ''}
+              className={IS_AUDIO ? `line-clamp-1` : "line-clamp-2"}
+              title={title}
+            >
+              {title}
+            </Link>
+          </h2>
+          :
+          <h2 className={`nc-card-title block font-semibold text-lg`}>
+            <SkeletonTheme baseColor="#d1d1d1" highlightColor="#e1dddd">
+              <Skeleton height={12} width={55}  />
+            </SkeletonTheme>
+          </h2>
+        }
+        {
+          title ?
+            <span className="text-xs text-neutral-500 dark:text-neutral-400 mt-1 ">
+              {IS_AUDIO ? ` 40 Episode · 110 minutes` : date}
+            </span>
+          :
+          <span className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+            <SkeletonTheme baseColor="#d1d1d1" highlightColor="#e1dddd">
+              <Skeleton height={12} width={55}  />
+            </SkeletonTheme>
+          </span>
+        }
 
         {IS_AUDIO && (
           <ButtonPlayMusicRunningContainer
