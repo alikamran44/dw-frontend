@@ -155,6 +155,7 @@ const PageHomeDemo6: React.FC = () => {
       <div className="relative overflow-hidden">
         {/* ======= START CONTAINER ============= */}
         <div className="container relative">
+        
           <SectionMagazine10 tabs={[]} heading="" posts={MAGAZINE1_POSTS} />
           {/* === SECTION 9 === */}
             <SectionMagazine9
