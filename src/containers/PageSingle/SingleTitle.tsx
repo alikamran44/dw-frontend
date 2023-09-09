@@ -19,7 +19,7 @@ const SingleTitle: FC<SingleTitleProps> = ({
       {
         title ? (
           <h1 className={className + " " + mainClass + " max-w-4xl "} title={title}>
-            {title}yyyyyyyyyyyyyyyyyyyyyyy
+            {title}Khannnnnnnnnnnn oyeee
 
           </h1>)
           : loading && (
