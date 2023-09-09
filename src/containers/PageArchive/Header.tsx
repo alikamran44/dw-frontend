@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ data, blogs, blogsTotalCount=0,postType
                 {data.name ? data.name.charAt(0).toUpperCase() + data.name.slice(1) : ''}
               </h2>
               <span className="block mt-4 text-neutral-300">
-                {(blogs && `${blogsTotalCount > 0 && blogsTotalCount} ${postText} Articles`)}
+                {(blogs && `${blogsTotalCount > 0 ? blogsTotalCount : ''} ${postText} Articles`)}
               </span>
             </div>
           </div>
@@ -65,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ data, blogs, blogsTotalCount=0,postType
                 {postText || 'Articles'}
               </h2>
               <span className="block mt-4 text-neutral-300">
-                {(blogs && `${blogsTotalCount > 0 && blogsTotalCount} ${postText} articles`)}
+                {(blogs && `${blogsTotalCount > 0 ? blogsTotalCount : ''} ${postText} Articles`)}
               </span>
             </div>
             

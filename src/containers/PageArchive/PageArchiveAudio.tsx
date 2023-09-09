@@ -172,6 +172,7 @@ const PageArchiveAudio: FC<PageArchiveAudioProps> = ({ className = "" }) => {
       {/*<CommonHeader blogs={audioBlogs} />*/}
 
       {/* HEADER */}
+    {console.log(totalBlogsCount,'totalBlogsCounttotalBlogsCount',audioBlogs)}
       <Header
         data={data}
         blogs={audioBlogs}
