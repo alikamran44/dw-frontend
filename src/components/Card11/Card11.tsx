@@ -49,7 +49,7 @@ const Card11: FC<Card11Props> = ({
         </div>
       </div>
       {/*/blog-audio*/}
-      <Link to={pHref} 
+      <Link to={pHref || ''} 
         className="absolute inset-0"></Link>
       <span className="absolute top-3 inset-x-3 z-10">
         <CategoryBadgeList categories={categories} postType={post.postType || ''} />
@@ -67,7 +67,7 @@ const Card11: FC<Card11Props> = ({
         <h2 className="nc-card-title block text-base font-semibold text-neutral-900 dark:text-neutral-100 ">
           
           { (!loading && title) ?
-            <Link to={pHref} 
+            <Link to={pHref || ''} 
               className="line-clamp-2" title={title}
             >
               {title}
