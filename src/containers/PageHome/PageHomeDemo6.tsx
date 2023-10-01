@@ -153,7 +153,7 @@ const PageHomeDemo6: React.FC = () => {
 
 
       <div className="relative overflow-hidden">
-        {/* ======= START CONTAINER ============= */}
+        {/* ======= START CONTAINER ============= */} 
         <div className="container relative">
           <SectionMagazine10 tabs={[]} heading="" posts={mainBlogs || MAGAZINE1_POSTS} />
           {/* === SECTION 9 === */}
