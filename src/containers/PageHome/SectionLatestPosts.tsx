@@ -85,7 +85,7 @@ const SectionLatestPosts: FC<SectionLatestPostsProps> = ({
     switch (postCardName) {
       case "card3":
         return (
-        <Card3
+          <Card3
             key={post.id}
             className="p-3 sm:p-5 2xl:p-6 [ nc-box-has-hover ] [ nc-dark-box-bg-has-hover ]"
             post={post}

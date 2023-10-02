@@ -42,11 +42,11 @@ export const Sidebar: FC<SidebarProps> = ({ className = "space-y-6 " }) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(categoryWithTotalBlogs({skip: 0, limit: 5})).then((res: TaxonomyType[])=> {
+    dispatch(categoryWithTotalBlogs({skip: 0, limit: 5})).then((res: any)=> {
       if(res)
         setCategories(res.categories)
     })
-    dispatch(tagWithTotalBlogs({skip: 0, limit: 20})).then((res: TaxonomyType[])=> {      
+    dispatch(tagWithTotalBlogs({skip: 0, limit: 20})).then((res: any)=> {      
       if(res)
         setTags(res.tags)
     })
