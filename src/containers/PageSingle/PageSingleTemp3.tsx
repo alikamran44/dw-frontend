@@ -7,7 +7,7 @@ import { CommentType } from "components/CommentCard/CommentCard";
 import SingleRelatedPosts from "./SingleRelatedPosts";
 import { useAppDispatch } from "app/hooks";
 import { changeCurrentPage } from "app/pages/pages";
-import SingleHeader from "./SingleHeader";
+// import SingleHeader from "./SingleHeader";
 import { fetchPost } from '../../Actions/PostAction';
 
 export interface PageSingleTemplate3Props {
