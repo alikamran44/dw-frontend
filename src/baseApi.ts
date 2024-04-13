@@ -80,7 +80,7 @@ const getMediaConfig = () => {
       authorization: `${auth ? `Bearer ${auth?.token}` : ''}`,
       'content-type': 'multipart/form-data'
     },
-  };
+  }; 
 };
 
 const Auth = {
