@@ -6,5 +6,10 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   base: "https://dw-frontend.connectvirtue.com/",
+  build: {
+    chunkSizeWarningLimit: 1000, // Adjust the limit as needed
+    outDir: 'dist',
+  },
+  
 });
  

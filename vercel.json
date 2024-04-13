@@ -1,8 +1,10 @@
 {
+    "version": 2,
     "routes": [
         {
             "src": "/[^.]+",
             "dest": "/"
         }
-    ]
+    ],
+    "installCommand": "yarn install"
 }
